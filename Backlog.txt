@@ -1,0 +1,98 @@
+19.8.2012
+-- TODO: Toteuta testit siirrolle jossa ei lähderuudussa ole shakkinappulaa
+-- TODO: Käy Bishop-luokan yksikkötestit läpi
+-- TODO: Käy King-luokan yksikkötestit läpi
+-- TODO: Käy Queen-luokan yksikkötestit läpi
+-- TODO: Toteuta En Passant siirtojen tarkastukset Pawn-luokkaan
+-- TODO: Toteuta Promotion siirtojen tarkastukset Pawn-luokkaan
+-- TODO: Toteuta Castling siirtojen tarkastukset King-luokkaan
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+
+- Lisäsin Equals-testit Pawn-luokalle ja siirsin kaikki Pawn-luokan testit PawnTests.cs tiedostoon ChessEngineTest.ChessPieceTests-kansiossa.
+- Lisäsin ChessEngineTestBase-pohjaluokan, johon sisällytetään koko ChessEngineTest-projektissa käytettäviä setup-metodeita.
+- Kävin läpi Pawn-luokan testit ja korjasin testien nimissä olleita virheitä. Samalla yhdenmukaistin testien nimiä 
+  kuvaamaan paremmin niiden tarkoitusta.
+- Lisäsin BoardTests-luokan perimään ChessEngineTestBase-luokan ja poistin CreateEmptyBoard-metodin ko. luokasta koska se on jo
+  ChessEngineTestBase-luokassa.
+- Lisäsin Rook-luokalle oman RookTests.cs testiluokan.
+- Lisäsin Rook-luokalle Equals-testit.
+- Siirsin kaikki Rook-luokan yksikkötestit BoardTests-luokasta RookTests-luokkaan.
+- Kävin läpi Rook-luokan testit. Testien nimissä ei ollut virheitä tai epäselvyyksiä.
+- Lisäsin Knight-luokalle oman KnightTests.cs testiluokan.
+- Lisäsin Knight-luokalle Equals-testit.
+- Siirsin kaikki Knight-luokan yksikkötestit BoardTests-luokasta KnightTests-luokkaan.
+- Kävin läpi kaikki Knight-luokan testit. Testien nimissä ei ollut virheitä tai epäselvyyksiä.
+- Lisäsin Bishop-luokalle oman BishopTests.cs testiluokan.
+- Lisäsin Bishop-luokalle Equals-testit.
+- Siirsin kaikki Bishop-luokan yksikkötestit BoardTests-luokasta BishopTests-luokkaan.
+- Lisäsin King-luokalle oman KingTests.cs testiluokan.
+- Lisäsin King-luokalle Equals-testit.
+- Siirsin kaikki King-luokan yksikkötestit BoardTests-luokasta KingTests-luokkaan.
+- Lisäsin Queen-luokalle oman QueenTests.cs testiluokan.
+- Lisäsin Queen-luokalle Equals-testit.
+- Siirsin kaikki Queen-luokan yksikkötestit BoardTests-luokasta QueenTests-luokkaan.
+- Lisäsin testit aloitus tilanteen/asetelman luontiin BoardTests-luokkaan ja toteutin kyseisen ominaisuuden Board-luokkaan.
+
+
+22.8.2012
+-- TODO: Toteuta testit siirrolle jossa ei lähderuudussa ole shakkinappulaa
+-- TODO: Toteuta En Passant siirtojen tarkastukset Pawn-luokkaan
+-- TODO: Toteuta Promotion siirtojen tarkastukset Pawn-luokkaan
+-- TODO: Toteuta Castling siirtojen tarkastukset King-luokkaan
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+
+- Kävin läpi BishopTests-luokan IsLegal-yksikkötestit ja korjasin muutaman virheen testien nimistä ja itse testeistä.
+- Kävin läpi KingTests-luokan IsLegal-yksikkötestit ja korjasin muutaman virheen testien nimistä ja itse testeistä.
+- Kävin läpi QueenTest-luokan IsLegal-yksikkötestit.
+
+
+
+23.8.2012
+-- TODO: Toteuta En Passant siirtojen tarkastukset
+-- TODO: Toteuta Promotion siirtojen tarkastukset
+-- TODO: Toteuta Castling siirtojen tarkastukset
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+-- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
+
+- Lisäsin Move-metodille laittoman siirron yksikkötestin. Jos tehdään laiton siirto nostetaan laittoman siirron poikkeus(IllegalMoveException).
+- Lisäsin Move-metodille testin, joka tarkastaa että lähderuudun miehittäjä asetetaan kohderuutuun.
+- Lisäsin Move-metodille testin, joka tarkastaa että lähderuudun miehittäjä asetetaan NULL:ksi.
+- Poistin Board-luokasta IsLightSquare(Position position)-metodin turhana/käyttämättömänä.
+
+
+
+26.8.2012
+-- TODO: Toteuta En Passant siirtojen tarkastukset
+-- TODO: Toteuta Promotion siirtojen tarkastukset
+-- TODO: Toteuta Castling siirtojen tarkastukset
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Refactoroi shakkinappula luokkien IsLegalMove-metodien toteutuksia helpommin ymmärrettäväksi!
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+-- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
+
+- Refactoroin Board-luokkaa selkeämmäksi ja itsensä dokumentoivaksi.
+- Refactoroin ChessPiece-luokkaa selkeämmäksi ja itsensä dokumentoivaksi.
+- Lisäsin yksikkötestin Board.Setup-metodille, joka testaa että viidennessä sarakkeessa ensimmäisellä ja viimeseillä rivillä on kuningas.
+
+
