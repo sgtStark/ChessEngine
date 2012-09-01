@@ -14,6 +14,8 @@ namespace ChessEngineLib.ChessPieces
 
         public PieceColor Color { get; private set; }
 
+        public int MoveCount { get; set; }
+
         #endregion Propertyt
 
         #region Konstruktorit
@@ -21,6 +23,7 @@ namespace ChessEngineLib.ChessPieces
         protected ChessPiece(PieceColor color)
         {
             Color = color;
+            MoveCount = 0;
         }
 
         #endregion Konstruktorit

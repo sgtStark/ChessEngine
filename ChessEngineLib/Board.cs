@@ -107,7 +107,9 @@ namespace ChessEngineLib
             // ja poistetaan miehittäjä lähderuudusta.
             if (IsLegalMove(origin, destination))
             {
-                SetPosition(destination.File, destination.Rank, origin.Occupier);
+                var occupier = origin.Occupier;
+                occupier.MoveCount++;
+                SetPosition(destination.File, destination.Rank, occupier);
                 SetPosition(origin.File, origin.Rank, null);
             }
             // Jos siirto oli laiton, nostetaan laittoman siirron poikkeus.

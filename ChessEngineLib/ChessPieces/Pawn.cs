@@ -1,3 +1,5 @@
+using System;
+
 namespace ChessEngineLib.ChessPieces
 {
     /// <summary>
@@ -36,11 +38,8 @@ namespace ChessEngineLib.ChessPieces
                 boolToReturn = true;
             }
             // Jos hyökätään oikealla tai vasemmalla edessä olevalle ruudulle
-            else if (origin.GetDistanceOfRanks(destination) == 1
-                && (directionOfTheMove == Direction.ForwardOnRightDiagonal
-                    || directionOfTheMove == Direction.ForwardOnLeftDiagonal)
-                && origin.Color != destination.Color
-                && destination.Color != PieceColor.Empty)
+            else if (IsAttackMove(origin, destination, directionOfTheMove)
+                || IsEnPassantMove(board, origin, destination, directionOfTheMove))
             {
                 boolToReturn = true;
             }
@@ -103,6 +102,63 @@ namespace ChessEngineLib.ChessPieces
         private static bool IsStartingRank(Position origin)
         {
             return origin.Color == PieceColor.White ? origin.Rank == 2 : origin.Rank == 7;
+        }
+
+        /// <summary>
+        /// Tarkastaa onko kyseessä normaali hyökkäyssiirto.
+        /// </summary>
+        /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirto tarkastetaan.</param>
+        /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
+        /// <param name="directionOfTheMove">Siirron suunta</param>
+        /// <returns></returns>
+        private bool IsAttackMove(Position origin, Position destination, Direction directionOfTheMove)
+        {
+            bool boolToReturn = (origin.GetDistanceOfRanks(destination) == 1
+                                 && directionOfTheMove.IsOnForwardDiagonal()
+                                 && origin.Color.IsOppositeColor(destination.Color));
+
+            return boolToReturn;
+        }
+
+        /// <summary>
+        /// Tarkastaa onko kyseessä En Passant-siirto, joka on laillinen.
+        /// </summary>
+        /// <param name="board">Shakkilauta, jolla siirto tehdään.</param>
+        /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
+        /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
+        /// <param name="directionOfTheMove">Siirron suunta</param>
+        /// <returns>True, jos siirto on En Passant. False, muussa tapauksessa.</returns>
+        private bool IsEnPassantMove(Board board, Position origin, Position destination, Direction directionOfTheMove)
+        {
+            var boolToReturn = false;
+            Position positionUnderEnPassant = null;
+            ChessPiece occupierOfEnPassantPosition = null;
+
+            try
+            {
+                positionUnderEnPassant = Color == PieceColor.White
+                                     ? board.GetPosition(destination.File, destination.Rank - 1)
+                                     : board.GetPosition(destination.File, destination.Rank + 1);
+
+                occupierOfEnPassantPosition = positionUnderEnPassant != null 
+                    ? positionUnderEnPassant.Occupier 
+                    : null;
+            }
+            catch (IndexOutOfRangeException ex)
+            { /* Ei käsitellä millään tavalla koska siihen ei ole tarvetta.*/ }
+
+            if (positionUnderEnPassant != null
+                && occupierOfEnPassantPosition != null
+                && origin.GetDistanceOfRanks(destination) == 1
+                && directionOfTheMove.IsOnForwardDiagonal()
+                && destination.Color == PieceColor.Empty
+                && positionUnderEnPassant.Color.IsOppositeColor(origin.Color)
+                && occupierOfEnPassantPosition.MoveCount == 1)
+            {
+                boolToReturn = true;
+            }
+
+            return boolToReturn;
         }
 
         #endregion Yksityiset metodit

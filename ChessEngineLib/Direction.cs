@@ -36,5 +36,10 @@
                     || directionOfTheMove == Direction.BackwardOnLeftDiagonal);
         }
 
+        public static bool IsOnForwardDiagonal(this Direction directionOfTheMove)
+        {
+            return (directionOfTheMove == Direction.ForwardOnRightDiagonal
+                    || directionOfTheMove == Direction.ForwardOnLeftDiagonal);
+        }
     }
 }

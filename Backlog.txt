@@ -96,3 +96,45 @@
 - Lisäsin yksikkötestin Board.Setup-metodille, joka testaa että viidennessä sarakkeessa ensimmäisellä ja viimeseillä rivillä on kuningas.
 
 
+31.8.2012
+-- TODO: Toteuta En Passant siirtojen tarkastukset
+-- TODO: Toteuta Promotion siirtojen tarkastukset
+-- TODO: Toteuta Castling siirtojen tarkastukset
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Refactoroi shakkinappula luokkien IsLegalMove-metodien toteutuksia helpommin ymmärrettäväksi!
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+-- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
+
+- Lisäsin valkoisen sotilaan En Passant siirtojen testit kun hyökätään vasemmalle.
+
+
+1.9.2012
+-- TODO: Toteuta En Passant siirrot
+-- TODO: Toteuta Promotion siirtojen tarkastukset
+-- TODO: Toteuta Castling siirtojen tarkastukset
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Refactoroi shakkinappula luokkien IsLegalMove-metodien toteutuksia helpommin ymmärrettäväksi!
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+-- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
+-- NOTE: Mielenkiintoista, lisätessä En Passant-siirtoja mustalle sotilaalle, saatuani testin menemään läpi, toteutus rikkoi olemassa olevia testejä. Tätä ei ilman TDD:tä olisi huomannut näin aikaisin.
+-- NOTE: En Passant-siirtojen tarkastus kuuluu yhteen hyökkäyksien tarkastukseen.
+
+- Lisäsin valkoisen sotilaan En Passant siirtojen testit kun hyökätään oikealle.
+- Lisäsin toteutuksen valkoisen sotilaan En Passant siirroille oikealle.
+- Lisäsin mustan sotilaan En Passant siirtojen testit kun hyökätään vasemmalle.
+- Lisäsin toteutuksen mustan sotilaan En Passant siirroille vasemmalle.
+- Lisäsin mustan sotilaan En Passant siirtojen testit kun hyökätään oikealle.
+- Lisäsin toteutuksen mustan sotilaan En Passant siirroille oikealle.
+- Refactoroin Pawn-luokan koodia helpommin ymmärrettävään suuntaan.

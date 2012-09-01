@@ -308,6 +308,164 @@ namespace ChessEngineTests.ChessPieceTests
 
         #endregion Siirrot miehitetyille ruuduille ja siirrot joiden polku on miehitetty
 
-        // TODO: Toteuta En Passant siirtojen tarkastukset sotilaalle
+        #region En Passant siirtojen testit
+
+        [TestMethod]
+        public void IsLegalMove_WhitePawnMakesEnPassantAttackToTheLeft_ReturnsTrue()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään valkoinen sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+
+            // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
+            // En Passant hyökkäyksen ruutuun (3, 6)
+            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 5));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(3, 6));
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_WhitePawnMakesAttackToTheLeftToPositionWhichIsNotAnEnPassant_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään valkoinen sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+
+            // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
+            // En Passant hyökkäyksen ruutuun (3, 6)
+            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 6));
+            board.Move(board.GetPosition(3, 6), board.GetPosition(3, 5));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(3, 6));
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_WhitePawnMakesEnPassantAttachToTheRight_ReturnsTrue()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään valkoinen sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+
+            // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
+            // En Passant hyökkäyksen ruutuun (5, 6)
+            board.Move(board.GetPosition(5, 7), board.GetPosition(5, 5));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(5, 6));
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_WhitePawnMakesAttackToTheRightToPositionWhichIsNotAnEnPassant_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään valkoinen sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+
+            // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
+            // En Passant hyökkäyksen ruutuun (3, 6)
+            board.Move(board.GetPosition(5, 7), board.GetPosition(5, 6));
+            board.Move(board.GetPosition(5, 6), board.GetPosition(5, 5));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(5, 6));
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_BlackPawnMakesEnPassantAttackToTheLeft_ReturnsTrue()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään musta sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+
+            // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
+            // En Passant hyökkäyksen ruutuun (5, 3)
+            board.Move(board.GetPosition(5, 2), board.GetPosition(5, 4));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(5, 3));
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_BlackPawnMakesAttackToTheLeftToPositionWhichIsNotAnEnPassant_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään musta sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+
+            // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
+            // En Passant hyökkäyksen ruutuun (5, 3)
+            board.Move(board.GetPosition(5, 2), board.GetPosition(5, 3));
+            board.Move(board.GetPosition(5, 3), board.GetPosition(5, 4));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(5, 3));
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_BlackPawnMakesEnPassantAttachToTheRight_ReturnsTrue()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään musta sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+
+            // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
+            // En Passant hyökkäyksen ruutuun (3, 3)
+            board.Move(board.GetPosition(3, 2), board.GetPosition(3, 4));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(3, 3));
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsLegalMove_BlackPawnMakesAttackToTheRightToPositionWhichIsNotAnEnPassant_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            // Siirretään musta sotilas hyökkäys asetelmaan
+            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+
+            // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
+            // En Passant hyökkäyksen ruutuun (3, 3)
+            board.Move(board.GetPosition(3, 2), board.GetPosition(3, 3));
+            board.Move(board.GetPosition(3, 3), board.GetPosition(3, 4));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(3, 3));
+
+            Assert.IsFalse(result);
+        }
+
+        #endregion En Passant siirtojen testit
     }
 }
