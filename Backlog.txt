@@ -141,4 +141,4 @@
 - Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin
 - Lisäsin testit En Passant siirroille. Eli kun siirto tehdään katsotaan että lähtönappila siirtyy pääteruutuun ja En Passant uhan alainen nappula poistetaan laudalta.
 - Lisäsin toteutukset En Passant siirroille.
-- 
+- Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin
