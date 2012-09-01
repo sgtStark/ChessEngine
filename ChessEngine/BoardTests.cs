@@ -1,11 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using ChessEngineLib;
 using ChessEngineLib.Exceptions;
-using ChessEngineTests.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ChessEngineLib.ChessPieces;
 
 namespace ChessEngineTests
 {
+    using Helpers;
+
     /// <summary>
     /// Sisältää kaikki shakkilautaan kohdistuvat yksikkötestit.
     /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
@@ -151,15 +153,11 @@ namespace ChessEngineTests
 
         #endregion Aloitus tilanteen/asetelman testit
 
-        #region IsLegalMove
-
         // TODO: Toteuta testit siirrolle jossa ei lähderuudussa ole shakkinappulaa
 
         // TODO: Toteuta Check siirtojen tarkastukset
 
         // TODO: Toteuta End Of Game tarkastus
-
-        #endregion IsLegalMove
 
         #region GetPosition
 
@@ -357,6 +355,55 @@ namespace ChessEngineTests
             board.Move(board.GetPosition(1, 2), board.GetPosition(1, 3));
 
             Assert.IsNull(board.GetPosition(1, 2).Occupier);
+        }
+
+        [TestMethod]
+        public void Move_WhiteMakesAnEnPassantMove_OriginalPositionIsEmptyAndTargetPositionReturnsTheChessPieceAsOccupier()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+            Pawn expected = new Pawn(PieceColor.White);
+
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(3, 6));
+            var actual = board.GetPosition(3, 6).Occupier;
+
+            Assert.IsNull(board.GetPosition(4, 5).Occupier);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Move_WhiteMakesAnEnPassantMove_ChessPieceUnderEnPassantThreatIsRemoved()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(3, 6));
+
+            var positionUnderEnPassantThreat = board.GetPosition(3, 5);
+
+            Assert.IsNull(positionUnderEnPassantThreat.Occupier);
+        }
+
+        [TestMethod]
+        public void Move_BlackMakesAnEnPassantMove_ChessPieceUnderEnPassantThreatIsRemoved()
+        {
+            Board board = CreateEmptyBoard();
+            board.Setup();
+
+            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+            board.Move(board.GetPosition(3, 2), board.GetPosition(3, 4));
+            board.Move(board.GetPosition(4, 4), board.GetPosition(3, 3));
+
+            var positionUnderEnPassantThreat = board.GetPosition(3, 4);
+
+            Assert.IsNull(positionUnderEnPassantThreat.Occupier);
         }
 
         #endregion Move

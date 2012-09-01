@@ -101,6 +101,11 @@ namespace ChessEngineLib
             return boolToReturn;
         }
 
+        /// <summary>
+        /// Tekee siirron shakkilaudalla.
+        /// </summary>
+        /// <param name="origin">Siirron lähtöruutu.</param>
+        /// <param name="destination">Siirron kohderuutu.</param>
         public void Move(Position origin, Position destination)
         {
             // Jos siirto on laillinen asetetaan miehittäjä lähde ruudusta kohderuutuun
@@ -109,8 +114,10 @@ namespace ChessEngineLib
             {
                 var occupier = origin.Occupier;
                 occupier.MoveCount++;
-                SetPosition(destination.File, destination.Rank, occupier);
                 SetPosition(origin.File, origin.Rank, null);
+                SetPosition(destination.File, destination.Rank, occupier);
+
+                HandleEnPassant(origin, destination);
             }
             // Jos siirto oli laiton, nostetaan laittoman siirron poikkeus.
             else
@@ -148,6 +155,9 @@ namespace ChessEngineLib
 
         #region Yksityiset metodit
 
+        /// <summary>
+        /// Alustaa shakkilaudan tyhjäksi.
+        /// </summary>
         private void Initialize()
         {
             _positionMatrix = new Position[DEFAULT_NUMBER_OF_FILES,DEFAULT_NUMBER_OF_RANKS];
@@ -161,6 +171,10 @@ namespace ChessEngineLib
             }
         }
 
+        /// <summary>
+        /// Lisää shakkilaudalle nappulat aloitusruutuihin.
+        /// </summary>
+        /// <param name="pieceColor">Nappuloiden väri</param>
         private void InitializeChessPieces(PieceColor pieceColor)
         {
             var pawnChainRank = pieceColor == PieceColor.White ? PAWN_CHAIN_RANK_FOR_WHITE : PAWN_CHAIN_RANK_FOR_BLACK;
@@ -193,6 +207,30 @@ namespace ChessEngineLib
 
             // Kuninkaat
             SetPosition(5, officerRank, new King(pieceColor));
+        }
+
+        /// <summary>
+        /// Käsittelee En Passant-siirrot.
+        /// </summary>
+        /// <param name="origin">Siirron lähtöruutu.</param>
+        /// <param name="destination">Siirron kohderuutu.</param>
+        private void HandleEnPassant(Position origin, Position destination)
+        {
+            var occupier = origin.Occupier;
+            var enPassantPosition = GetPosition(destination.File,
+                                                origin.Color == PieceColor.White
+                                                    ? destination.Rank - 1
+                                                    : destination.Rank + 1);
+
+            var enPassantOccupier = enPassantPosition.Occupier;
+
+            if (occupier is Pawn
+                && enPassantOccupier is Pawn
+                && occupier.Color.IsOppositeColor(enPassantOccupier.Color)
+                && enPassantOccupier.MoveCount == 1)
+            {
+                SetPosition(enPassantPosition.File, enPassantPosition.Rank, null);
+            }
         }
 
         #endregion Yksityiset metodit

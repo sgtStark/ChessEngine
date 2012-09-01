@@ -115,7 +115,6 @@
 
 
 1.9.2012
--- TODO: Toteuta En Passant siirrot
 -- TODO: Toteuta Promotion siirtojen tarkastukset
 -- TODO: Toteuta Castling siirtojen tarkastukset
 -- TODO: Toteuta Check siirtojen tarkastukset
@@ -129,7 +128,8 @@
 -- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
 -- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
 -- NOTE: Mielenkiintoista, lisätessä En Passant-siirtoja mustalle sotilaalle, saatuani testin menemään läpi, toteutus rikkoi olemassa olevia testejä. Tätä ei ilman TDD:tä olisi huomannut näin aikaisin.
--- NOTE: En Passant-siirtojen tarkastus kuuluu yhteen hyökkäyksien tarkastukseen.
+-- NOTE: En Passant siirto on hankala toteuttaa Board-luokkaan. Ehkäpä sen toteutus kuuluu itse nappullalle. Eli käytännössä koko Move-metodi ehkä kuuluisi olla ChessPiece-luokassa, jolle annetaan parametrinä Board-luokan ilmentymä? Tämän jälkeen Board-luokasta poistuisi IsLegalMove- ja Move-metodit kokonaan.
+-- NOTE: Edellä mainitun muutoksen toteutukseen tarvitaan Board-luokan rajapinnan yksinkertaistamista. Position-täytyy saada sisäiseksi elementiksi. Board.GetPosition-metodi palauttaa suoraan ChessPiece-olion tai null, jos paikka on tyhjä. ChessPiece.IsLegalMove- ottaa parametrikseen vain.
 
 - Lisäsin valkoisen sotilaan En Passant siirtojen testit kun hyökätään oikealle.
 - Lisäsin toteutuksen valkoisen sotilaan En Passant siirroille oikealle.
@@ -138,3 +138,7 @@
 - Lisäsin mustan sotilaan En Passant siirtojen testit kun hyökätään oikealle.
 - Lisäsin toteutuksen mustan sotilaan En Passant siirroille oikealle.
 - Refactoroin Pawn-luokan koodia helpommin ymmärrettävään suuntaan.
+- Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin
+- Lisäsin testit En Passant siirroille. Eli kun siirto tehdään katsotaan että lähtönappila siirtyy pääteruutuun ja En Passant uhan alainen nappula poistetaan laudalta.
+- Lisäsin toteutukset En Passant siirroille.
+- 
