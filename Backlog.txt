@@ -145,8 +145,8 @@
 
 
 2.9.2012
--- TODO: Toteuta Castling siirrot King-luokkaan.
--- TODO: Refactoroi EnPassant siirron toteutus Pawn-luokkaan.
+-- TODO: Refactoroi EnPassant siirron toteutus Pawn-luokkaan, jos mahdollista.
+-- TODO: Refactoroi Castling siirtojen toteutus King-luokkaan, jos mahdollista.
 -- TODO: Toteuta Check siirtojen tarkastukset
 -- TODO: Toteuta End Of Game tarkastus
 -- TODO: Tee testit tallennukselle ja lataukselle (save & load)
@@ -169,4 +169,7 @@
 - Lisäsin yksikkötestit Queenside eli kuningattaren puoleisen linnoitus siirron tarkastukseen.
 - Lisäsin toteutuksen Queenside linnoitus siirron tarkastukseen.
 - Samalla tuli refactoroitua Board.GetPosition ja Board.SetPosition -metodeita niin että jos syötetään virheelliset parametrit nousee ArgumentOutOfRangeException.
+- Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin
+- Lisäsin yksikkötestit Castling siirroille BoardTests-luokkaan.
+- Lisäsin toteutukset Castling siirroille Board-luokkaan.
 - Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin

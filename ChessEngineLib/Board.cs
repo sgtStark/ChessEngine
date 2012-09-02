@@ -129,6 +129,7 @@ namespace ChessEngineLib
                 SetPosition(destination.File, destination.Rank, occupier);
 
                 HandleEnPassant(origin, destination);
+                HandleCastling(origin, destination);
             }
             // Jos siirto oli laiton, nostetaan laittoman siirron poikkeus.
             else
@@ -265,6 +266,35 @@ namespace ChessEngineLib
             }
             catch (ArgumentOutOfRangeException ex)
             { /* Ei käsitellä millään tavalla koska siihen ei ole tarvetta.*/ }
+        }
+
+        /// <summary>
+        /// Käsittelee Castling-siirrot.
+        /// </summary>
+        /// <param name="origin">Siirron lähtöruutu.</param>
+        /// <param name="destination">Siirron kohderuutu.</param>
+        private void HandleCastling(Position origin, Position destination)
+        {
+            var kingsideRookPosition = origin.Color == PieceColor.White ? GetPosition(8, 1) : GetPosition(8, 8);
+            var queensideRookPosition = origin.Color == PieceColor.White ? GetPosition(1, 1) : GetPosition(1, 8);
+
+            if (origin.Occupier is King
+                && kingsideRookPosition.Occupier is Rook
+                && origin.Color == kingsideRookPosition.Color
+                && origin.GetDistanceOfFiles(destination) == 2)
+            {
+                SetPosition(kingsideRookPosition.File, kingsideRookPosition.Rank, null);
+                SetPosition(origin.File + 1, origin.Rank, kingsideRookPosition.Occupier);
+            }
+
+            if (origin.Occupier is King
+                && queensideRookPosition.Occupier is Rook
+                && origin.Color == queensideRookPosition.Color
+                && origin.GetDistanceOfFiles(destination) == 2)
+            {
+                SetPosition(queensideRookPosition.File, queensideRookPosition.Rank, null);
+                SetPosition(origin.File - 1, queensideRookPosition.Rank, queensideRookPosition.Occupier);
+            }
         }
 
         #endregion Yksityiset metodit

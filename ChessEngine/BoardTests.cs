@@ -404,6 +404,63 @@ namespace ChessEngineTests
             Assert.IsNull(positionUnderEnPassantThreat.Occupier);
         }
 
+        [TestMethod]
+        public void Move_WhiteKingMakesKingsideCastlingMove_KingsideRookIsMovedToKingsLeftsidePosition()
+        {
+            Board board = CreateEmptyBoard();
+            var expected = new Rook(PieceColor.White);
+            board.SetPosition(5, 1, new King(PieceColor.White));
+            board.SetPosition(8, 1, expected);
+
+
+            board.Move(board.GetPosition(5, 1), board.GetPosition(7, 1));
+            var actual = board.GetPosition(6, 1).Occupier;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Move_BlackKingMakesKingsideCastlingMove_KingsideRookIsMovedToKingsRightsidePosition()
+        {
+            Board board = CreateEmptyBoard();
+            var expected = new Rook(PieceColor.Black);
+            board.SetPosition(5, 8, new King(PieceColor.Black));
+            board.SetPosition(8, 8, expected);
+
+            board.Move(board.GetPosition(5, 8), board.GetPosition(7, 8));
+            var actual = board.GetPosition(6, 8).Occupier;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Move_WhiteKingMakesQueensideCastlingMove_QueensideRookIsMovedToKingsRightsidePosition()
+        {
+            Board board = CreateEmptyBoard();
+            var expected = new Rook(PieceColor.White);
+            board.SetPosition(5, 1, new King(PieceColor.White));
+            board.SetPosition(1, 1, expected);
+
+            board.Move(board.GetPosition(5, 1), board.GetPosition(3, 1));
+            var actual = board.GetPosition(4, 1).Occupier;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Move_BlackKingMakesQueensideCastlingMove_QueensideRookIsMoveToKingsLeftsidePosition()
+        {
+            Board board = CreateEmptyBoard();
+            var expected = new Rook(PieceColor.Black);
+            board.SetPosition(5, 8, new King(PieceColor.Black));
+            board.SetPosition(1, 8, expected);
+
+            board.Move(board.GetPosition(5, 8), board.GetPosition(3, 8));
+            var actual = board.GetPosition(4, 8).Occupier;
+
+            Assert.AreEqual(expected, actual);
+        }
+
         #endregion Move
     }
 }
