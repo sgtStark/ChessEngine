@@ -144,7 +144,7 @@ namespace ChessEngineLib.ChessPieces
                     ? positionUnderEnPassant.Occupier 
                     : null;
             }
-            catch (IndexOutOfRangeException ex)
+            catch (ArgumentOutOfRangeException ex)
             { /* Ei k‰sitell‰ mill‰‰n tavalla koska siihen ei ole tarvetta.*/ }
 
             if (positionUnderEnPassant != null

@@ -142,3 +142,31 @@
 - Lisäsin testit En Passant siirroille. Eli kun siirto tehdään katsotaan että lähtönappila siirtyy pääteruutuun ja En Passant uhan alainen nappula poistetaan laudalta.
 - Lisäsin toteutukset En Passant siirroille.
 - Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin
+
+
+2.9.2012
+-- TODO: Toteuta Castling siirrot King-luokkaan.
+-- TODO: Refactoroi EnPassant siirron toteutus Pawn-luokkaan.
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Refactoroi shakkinappula luokkien IsLegalMove-metodien toteutuksia helpommin ymmärrettäväksi!
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+
+-- NOTE: KnightTests-luokkaan voisi lisätä pari yksikkötestiä mustan hevosen siirtoon miehitetylle ruudulle.
+-- NOTE: Promotion siirrot kuuluvat Board:n Move()-metodiin. Eivät Pawn-luokalle.
+-- NOTE: Mielenkiintoista, lisätessä En Passant-siirtoja mustalle sotilaalle, saatuani testin menemään läpi, toteutus rikkoi olemassa olevia testejä. Tätä ei ilman TDD:tä olisi huomannut näin aikaisin.
+-- NOTE: En Passant siirto on hankala toteuttaa Board-luokkaan. Ehkäpä sen toteutus kuuluu itse nappullalle. Eli käytännössä koko Move-metodi ehkä kuuluisi olla ChessPiece-luokassa, jolle annetaan parametrinä Board-luokan ilmentymä? Tämän jälkeen Board-luokasta poistuisi IsLegalMove- ja Move-metodit kokonaan.
+-- NOTE: Edellä mainitun muutoksen toteutukseen tarvitaan Board-luokan rajapinnan yksinkertaistamista. Position-täytyy saada sisäiseksi elementiksi. Board.GetPosition-metodi palauttaa suoraan ChessPiece-olion tai null, jos paikka on tyhjä. ChessPiece.IsLegalMove- ottaa parametrikseen vain.
+-- NOTE: Tuli mieleen että Position-luokan voisi refactoroida mahdollisesti linkkilista tyyliseksi. Eli periaatteessa kaksi ulotteiseksi linkkimatriisiksi.
+-- NOTE: Position saisi mahdollisesti refactoroitua pois jos, Board:n positionMatrix muutettaisiin ChessPiece-tyyppiseksi matriisiksi. Hyvänä puolena Board-luokan rajapinta yksinkertaistuu. Huonona puolena on Position-luokan sisältämän toiminnallisuuden refactorointi todennäkoisimmin Board-luokkaan.
+
+- Lisäsin yksikkötestit Kingside eli kuninkaan puoleisen linnoitus siirron tarkastukseen.
+- Lisäsin toteutuksen Kingside linnoitus siirron tarkastukseen.
+- Lisäsin yksikkötestit Queenside eli kuningattaren puoleisen linnoitus siirron tarkastukseen.
+- Lisäsin toteutuksen Queenside linnoitus siirron tarkastukseen.
+- Samalla tuli refactoroitua Board.GetPosition ja Board.SetPosition -metodeita niin että jos syötetään virheelliset parametrit nousee ArgumentOutOfRangeException.
+- Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitHubiin

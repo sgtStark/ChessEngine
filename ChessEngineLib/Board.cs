@@ -1,9 +1,10 @@
 using System;
-using ChessEngineLib.ChessPieces;
-using ChessEngineLib.Exceptions;
 
 namespace ChessEngineLib
 {
+    using Exceptions;
+    using ChessPieces;
+
     /// <summary>
     /// Luokka, joka kuvaa kaikki shakkilautaa koskevat toiminnot.
     /// </summary>
@@ -48,6 +49,9 @@ namespace ChessEngineLib
 
         #region Julkiset metodit
 
+        /// <summary>
+        /// Järjestää shakkilaudan lähtökohtaan.
+        /// </summary>
         public void Setup()
         {
             Initialize();
@@ -63,6 +67,12 @@ namespace ChessEngineLib
         /// <returns>Ruudun tiedot kuvaava Position-olio.</returns>
         public Position GetPosition(int file, int rank)
         {
+            if (AreOutsideBoardBoundaries(file, rank))
+            {
+                // TODO: Refactoroi niin että poikkeus on ChessEngineException-tyyppinen.
+                throw new ArgumentOutOfRangeException("rank and file parameter values must be between 1 and 8");
+            }
+
             return _positionMatrix[file, rank];
         }
 
@@ -74,8 +84,9 @@ namespace ChessEngineLib
         /// <param name="occupier">Ruudun miehittävä shakkinappula.</param>
         public void SetPosition(int file, int rank, ChessPiece occupier)
         {
-            if (file == 0 || rank == 0)
+            if (AreOutsideBoardBoundaries(file, rank))
             {
+                // TODO: Refactoroi niin että poikkeus on ChessEngineException-tyyppinen.
                 throw new ArgumentOutOfRangeException("rank and file parameter values must be between 1 and 8");
             }
 
@@ -210,27 +221,50 @@ namespace ChessEngineLib
         }
 
         /// <summary>
+        /// Tarkastaa ovatko sarake ja rivi parametrit shakkilauden rajojen ulkopuolella.
+        /// </summary>
+        /// <param name="file">Sarake</param>
+        /// <param name="rank">Rivi</param>
+        /// <returns>True, jos ovat ulkopuolella. False, jos ovat sisäpuolella.</returns>
+        private static bool AreOutsideBoardBoundaries(int file, int rank)
+        {
+            return file <= 0 || rank <= 0 || file >= 9 || rank >= 9;
+        }
+
+        /// <summary>
         /// Käsittelee En Passant-siirrot.
         /// </summary>
         /// <param name="origin">Siirron lähtöruutu.</param>
         /// <param name="destination">Siirron kohderuutu.</param>
         private void HandleEnPassant(Position origin, Position destination)
         {
-            var occupier = origin.Occupier;
-            var enPassantPosition = GetPosition(destination.File,
-                                                origin.Color == PieceColor.White
-                                                    ? destination.Rank - 1
-                                                    : destination.Rank + 1);
-
-            var enPassantOccupier = enPassantPosition.Occupier;
-
-            if (occupier is Pawn
-                && enPassantOccupier is Pawn
-                && occupier.Color.IsOppositeColor(enPassantOccupier.Color)
-                && enPassantOccupier.MoveCount == 1)
+            try
             {
-                SetPosition(enPassantPosition.File, enPassantPosition.Rank, null);
+                // Apumuuttujat, haetaan lähtöruudun miehittäjä ja En Passant -hyökkäyksen alainen
+                // ruutu. Ruutu voi myös olla NULL, jos ollaan ensimmäisellä tai viimeisellä rivillä.
+                var occupier = origin.Occupier;
+                var enPassantPosition = GetPosition(destination.File,
+                                                    origin.Color == PieceColor.White
+                                                        ? destination.Rank - 1
+                                                        : destination.Rank + 1);
+
+                // Otetaan NULL mahdollisuus huomioon ja haetaan En Passant -ruudun miehittäjä, 
+                // joka voi niin ikään olla NULL.
+                var enPassantOccupier = enPassantPosition != null ? enPassantPosition.Occupier : null;
+
+                // Tehdään tarkastukset: lähtöruudun ja En Passant -ruutujen miehittäjien pitää 
+                // olla sotilaita sekä En Passant -miehittäjää saa olla siirretty vain kerran.
+                if (occupier is Pawn
+                    && enPassantOccupier is Pawn
+                    && occupier.Color.IsOppositeColor(enPassantOccupier.Color)
+                    && enPassantOccupier.MoveCount == 1)
+                {
+                    // Poistetaan En Passant-miehittäjä.
+                    SetPosition(enPassantPosition.File, enPassantPosition.Rank, null);
+                }
             }
+            catch (ArgumentOutOfRangeException ex)
+            { /* Ei käsitellä millään tavalla koska siihen ei ole tarvetta.*/ }
         }
 
         #endregion Yksityiset metodit

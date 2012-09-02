@@ -93,7 +93,7 @@ namespace ChessEngineLib.ChessPieces
             // Jos siirretään vasemmalle
             for (int file = origin.File; file > destination.File; file--)
             {
-                for (int rank = origin.Rank; rank < destination.Rank; rank++)
+                for (int rank = origin.Rank; rank <= destination.Rank; rank++)
                 {
                     positionsBetweenToReturn.Add(board.GetPosition(file, rank));
                 }

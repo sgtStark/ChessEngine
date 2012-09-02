@@ -31,6 +31,12 @@ namespace ChessEngineLib.ChessPieces
             bool boolToReturn = origin.GetDistanceOfRanks(destination) == 1
                                 || origin.GetDistanceOfFiles(destination) == 1;
 
+            // Jos kyseessä on Castling siirto
+            if (IsCastlingMove(board, origin, destination))
+            {
+                boolToReturn = true;
+            }
+
             // Jos kohde ruudussa on saman värinen nappula on siirto automaattisesti laiton
             if (destination.Color == origin.Color)
             {
@@ -76,5 +82,52 @@ namespace ChessEngineLib.ChessPieces
         }
 
         #endregion Julkiset metodit
+
+        #region Yksityiset metodit
+
+        /// <summary>
+        /// Tarkastaa onko kyseessä Castling-siirto.
+        /// </summary>
+        /// <param name="board">Shakkilauta</param>
+        /// <param name="origin">Lähtöruutu</param>
+        /// <param name="destination">Kohderuutu</param>
+        /// <returns>True, jos kyseessä on Castling-siirto. False, muussa tapauksessa.</returns>
+        private bool IsCastlingMove(Board board, Position origin, Position destination)
+        {
+            // Apumuuttuja tulokselle
+            bool boolToReturn = false;
+
+            // Haetaan kuninkaan puolen torni ruutu
+            var kingsideRookPosition = origin.Color == PieceColor.White
+                                           ? board.GetPosition(8, 1)
+                                           : board.GetPosition(8, 8);
+
+            // Haetaan kuningattaren puolen torni ruutu
+            var queensideRookPosition = origin.Color == PieceColor.White
+                                            ? board.GetPosition(1, 1)
+                                            : board.GetPosition(1, 8);
+
+            // Tarkastetaan castling siirrot kuningkaan puolelle
+            if (destination.Color == PieceColor.Empty
+                && kingsideRookPosition.Occupier is Rook
+                && !IsPathObscured(board, origin, destination)
+                && origin.Occupier.MoveCount == 0)
+            {
+                boolToReturn = true;
+            }
+
+            if (destination.Color == PieceColor.Empty
+                && queensideRookPosition.Occupier is Rook
+                && !IsPathObscured(board, origin, destination)
+                && origin.Occupier.MoveCount == 0)
+            {
+                boolToReturn = true;
+            }
+
+            // Palautetaan lopputulos
+            return boolToReturn;
+        }
+
+        #endregion Yksityiset metodit
     }
 }

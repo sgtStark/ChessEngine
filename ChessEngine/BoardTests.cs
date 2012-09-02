@@ -7,7 +7,7 @@ using ChessEngineLib.ChessPieces;
 namespace ChessEngineTests
 {
     using Helpers;
-
+    
     /// <summary>
     /// Sisältää kaikki shakkilautaan kohdistuvat yksikkötestit.
     /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
@@ -152,8 +152,6 @@ namespace ChessEngineTests
         }
 
         #endregion Aloitus tilanteen/asetelman testit
-
-        // TODO: Toteuta testit siirrolle jossa ei lähderuudussa ole shakkinappulaa
 
         // TODO: Toteuta Check siirtojen tarkastukset
 
