@@ -1,12 +1,19 @@
-using System;
-
 namespace ChessEngineLib.ChessPieces
 {
+    using MovingStrategies;
+
     /// <summary>
     /// Luokka, joka sisältää toiminnallisuuden sotilastyyppiselle shakkinappulalle.
     /// </summary>
     public class Pawn : ChessPiece
     {
+        #region Vakiot
+
+        private const int PAWN_CHAIN_RANK_FOR_WHITE = 2;
+        private const int PAWN_CHAIN_RANK_FOR_BLACK = 7;
+
+        #endregion Vakiot
+
         #region Konstruktorit
 
         public Pawn(PieceColor color)
@@ -17,6 +24,8 @@ namespace ChessEngineLib.ChessPieces
         #endregion Konstruktorit
 
         #region Julkiset metodit
+
+        #region Overrides of ChessPiece
 
         /// <summary>
         /// Tarkastaa onko siirto laillinen annetulla laudalla.
@@ -38,8 +47,7 @@ namespace ChessEngineLib.ChessPieces
                 boolToReturn = true;
             }
             // Jos hyökätään oikealla tai vasemmalla edessä olevalle ruudulle
-            else if (IsAttackMove(origin, destination, directionOfTheMove)
-                || IsEnPassantMove(board, origin, destination, directionOfTheMove))
+            else if (IsAttackMove(origin, destination, directionOfTheMove))
             {
                 boolToReturn = true;
             }
@@ -54,6 +62,18 @@ namespace ChessEngineLib.ChessPieces
 
             return boolToReturn;
         }
+
+        /// <summary>
+        /// Hakee shakkinappulaan liittyvän siirto strategian.
+        /// Siirto strategia käsittelee erikoistapaukset kuten En Passant -siirto sotilaalla,
+        /// Castling-siirrot kuningkaalla.
+        /// </summary>
+        public override IMovingStrategy GetMovingStrategy()
+        {
+            return new PawnMovingStrategy(base.GetMovingStrategy());
+        }
+
+        #endregion Overrides of ChessPiece
 
         /// <summary>
         /// Tarkastaa onko tämä sotilasnappula sama kuin
@@ -101,7 +121,9 @@ namespace ChessEngineLib.ChessPieces
         /// <returns>True, jos parametrina saatu ruutu on aloitusruutu. Muussa tapauksessa False.</returns>
         private static bool IsStartingRank(Position origin)
         {
-            return origin.Color == PieceColor.White ? origin.Rank == 2 : origin.Rank == 7;
+            return origin.Color == PieceColor.White
+                       ? origin.Rank == PAWN_CHAIN_RANK_FOR_WHITE
+                       : origin.Rank == PAWN_CHAIN_RANK_FOR_BLACK;
         }
 
         /// <summary>
@@ -116,47 +138,6 @@ namespace ChessEngineLib.ChessPieces
             bool boolToReturn = (origin.GetDistanceOfRanks(destination) == 1
                                  && directionOfTheMove.IsOnForwardDiagonal()
                                  && origin.Color.IsOppositeColor(destination.Color));
-
-            return boolToReturn;
-        }
-
-        /// <summary>
-        /// Tarkastaa onko kyseessä En Passant-siirto, joka on laillinen.
-        /// </summary>
-        /// <param name="board">Shakkilauta, jolla siirto tehdään.</param>
-        /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
-        /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
-        /// <param name="directionOfTheMove">Siirron suunta</param>
-        /// <returns>True, jos siirto on En Passant. False, muussa tapauksessa.</returns>
-        private bool IsEnPassantMove(Board board, Position origin, Position destination, Direction directionOfTheMove)
-        {
-            var boolToReturn = false;
-            Position positionUnderEnPassant = null;
-            ChessPiece occupierOfEnPassantPosition = null;
-
-            try
-            {
-                positionUnderEnPassant = Color == PieceColor.White
-                                     ? board.GetPosition(destination.File, destination.Rank - 1)
-                                     : board.GetPosition(destination.File, destination.Rank + 1);
-
-                occupierOfEnPassantPosition = positionUnderEnPassant != null 
-                    ? positionUnderEnPassant.Occupier 
-                    : null;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            { /* Ei käsitellä millään tavalla koska siihen ei ole tarvetta.*/ }
-
-            if (positionUnderEnPassant != null
-                && occupierOfEnPassantPosition != null
-                && origin.GetDistanceOfRanks(destination) == 1
-                && directionOfTheMove.IsOnForwardDiagonal()
-                && destination.Color == PieceColor.Empty
-                && positionUnderEnPassant.Color.IsOppositeColor(origin.Color)
-                && occupierOfEnPassantPosition.MoveCount == 1)
-            {
-                boolToReturn = true;
-            }
 
             return boolToReturn;
         }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace ChessEngineLib.ChessPieces
 {
+    using MovingStrategies;
+
     /// <summary>
     /// Abstrakti yliluokka shakkinappulalle, joka sisältää kaikille 
     /// konkreettisille shakkinappuloille yhteiset toiminnot ja tiedot
@@ -38,6 +40,16 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
         public abstract bool IsLegalMove(Board board, Position origin, Position destination);
+
+        /// <summary>
+        /// Hakee shakkinappulaan liittyvän siirto strategian.
+        /// Siirto strategia käsittelee erikoistapaukset kuten En Passant -siirto sotilaalla,
+        /// Castling-siirrot kuningkaalla.
+        /// </summary>
+        public virtual IMovingStrategy GetMovingStrategy()
+        {
+            return new NormalMovingStrategy();
+        }
 
         #endregion Julkiset metodit
 

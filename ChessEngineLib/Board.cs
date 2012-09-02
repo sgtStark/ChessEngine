@@ -18,6 +18,9 @@ namespace ChessEngineLib
         private const int NUMBER_OF_THE_FIRST_FILE = 1;
         private const int NUMBER_OF_THE_FIRST_RANK = 1;
 
+        private const int NUMBER_OF_THE_LAST_FILE = 8;
+        private const int NUMBER_OF_THE_LAST_RANK = 8;
+
         private const int PAWN_CHAIN_RANK_FOR_WHITE = 2;
         private const int PAWN_CHAIN_RANK_FOR_BLACK = 7;
 
@@ -103,10 +106,20 @@ namespace ChessEngineLib
         {
             var boolToReturn = false;
             var chessPiece = origin.Occupier;
+            var movingStrategy = chessPiece != null ? chessPiece.GetMovingStrategy() : null;
 
-            if (chessPiece != null)
+            // Tarkastetaan shakkinappulan siirron laillisuus
+            if (chessPiece != null
+                && chessPiece.IsLegalMove(this, origin, destination))
             {
-                boolToReturn = chessPiece.IsLegalMove(this, origin, destination);
+                boolToReturn = true;
+            }
+            // Tarkastetaan onko shakkinappulan siirto strategiaan liittyvä
+            // erikois siirto, joka on laillinen.
+            else if (movingStrategy != null
+                && movingStrategy.IsSpecialMove(this, origin, destination))
+            {
+                boolToReturn = true;
             }
 
             return boolToReturn;
@@ -120,16 +133,13 @@ namespace ChessEngineLib
         public void Move(Position origin, Position destination)
         {
             // Jos siirto on laillinen asetetaan miehittäjä lähde ruudusta kohderuutuun
-            // ja poistetaan miehittäjä lähderuudusta.
+            // ja poistetaan miehittäjä lähtöruudusta.
             if (IsLegalMove(origin, destination))
             {
                 var occupier = origin.Occupier;
-                occupier.MoveCount++;
-                SetPosition(origin.File, origin.Rank, null);
-                SetPosition(destination.File, destination.Rank, occupier);
+                var movingStrategy = occupier.GetMovingStrategy();
 
-                HandleEnPassant(origin, destination);
-                HandleCastling(origin, destination);
+                movingStrategy.Move(this, origin, destination);
             }
             // Jos siirto oli laiton, nostetaan laittoman siirron poikkeus.
             else
@@ -189,10 +199,11 @@ namespace ChessEngineLib
         /// <param name="pieceColor">Nappuloiden väri</param>
         private void InitializeChessPieces(PieceColor pieceColor)
         {
+            // Päätellään sotilaiden ja upseereiden rivinumerot
             var pawnChainRank = pieceColor == PieceColor.White ? PAWN_CHAIN_RANK_FOR_WHITE : PAWN_CHAIN_RANK_FOR_BLACK;
             var officerRank = pieceColor == PieceColor.White ? OFFICER_RANK_FOR_WHITE : OFFICER_RANK_FOR_BLACK;
 
-            // sotilaat
+            // Sotilaat
             SetPosition(1, pawnChainRank, new Pawn(pieceColor));
             SetPosition(2, pawnChainRank, new Pawn(pieceColor));
             SetPosition(3, pawnChainRank, new Pawn(pieceColor));
@@ -202,22 +213,22 @@ namespace ChessEngineLib
             SetPosition(7, pawnChainRank, new Pawn(pieceColor));
             SetPosition(8, pawnChainRank, new Pawn(pieceColor));
 
-            // tornit
+            // Tornit
             SetPosition(1, officerRank, new Rook(pieceColor));
             SetPosition(8, officerRank, new Rook(pieceColor));
 
-            // hevoset
+            // Hevoset
             SetPosition(2, officerRank, new Knight(pieceColor));
             SetPosition(7, officerRank, new Knight(pieceColor));
 
-            // lähetit
+            // Lähetit
             SetPosition(3, officerRank, new Bishop(pieceColor));
             SetPosition(6, officerRank, new Bishop(pieceColor));
 
-            // Kuningattaret
+            // Kuningatar
             SetPosition(4, officerRank, new Queen(pieceColor));
 
-            // Kuninkaat
+            // Kuningas
             SetPosition(5, officerRank, new King(pieceColor));
         }
 
@@ -229,72 +240,8 @@ namespace ChessEngineLib
         /// <returns>True, jos ovat ulkopuolella. False, jos ovat sisäpuolella.</returns>
         private static bool AreOutsideBoardBoundaries(int file, int rank)
         {
-            return file <= 0 || rank <= 0 || file >= 9 || rank >= 9;
-        }
-
-        /// <summary>
-        /// Käsittelee En Passant-siirrot.
-        /// </summary>
-        /// <param name="origin">Siirron lähtöruutu.</param>
-        /// <param name="destination">Siirron kohderuutu.</param>
-        private void HandleEnPassant(Position origin, Position destination)
-        {
-            try
-            {
-                // Apumuuttujat, haetaan lähtöruudun miehittäjä ja En Passant -hyökkäyksen alainen
-                // ruutu. Ruutu voi myös olla NULL, jos ollaan ensimmäisellä tai viimeisellä rivillä.
-                var occupier = origin.Occupier;
-                var enPassantPosition = GetPosition(destination.File,
-                                                    origin.Color == PieceColor.White
-                                                        ? destination.Rank - 1
-                                                        : destination.Rank + 1);
-
-                // Otetaan NULL mahdollisuus huomioon ja haetaan En Passant -ruudun miehittäjä, 
-                // joka voi niin ikään olla NULL.
-                var enPassantOccupier = enPassantPosition != null ? enPassantPosition.Occupier : null;
-
-                // Tehdään tarkastukset: lähtöruudun ja En Passant -ruutujen miehittäjien pitää 
-                // olla sotilaita sekä En Passant -miehittäjää saa olla siirretty vain kerran.
-                if (occupier is Pawn
-                    && enPassantOccupier is Pawn
-                    && occupier.Color.IsOppositeColor(enPassantOccupier.Color)
-                    && enPassantOccupier.MoveCount == 1)
-                {
-                    // Poistetaan En Passant-miehittäjä.
-                    SetPosition(enPassantPosition.File, enPassantPosition.Rank, null);
-                }
-            }
-            catch (ArgumentOutOfRangeException ex)
-            { /* Ei käsitellä millään tavalla koska siihen ei ole tarvetta.*/ }
-        }
-
-        /// <summary>
-        /// Käsittelee Castling-siirrot.
-        /// </summary>
-        /// <param name="origin">Siirron lähtöruutu.</param>
-        /// <param name="destination">Siirron kohderuutu.</param>
-        private void HandleCastling(Position origin, Position destination)
-        {
-            var kingsideRookPosition = origin.Color == PieceColor.White ? GetPosition(8, 1) : GetPosition(8, 8);
-            var queensideRookPosition = origin.Color == PieceColor.White ? GetPosition(1, 1) : GetPosition(1, 8);
-
-            if (origin.Occupier is King
-                && kingsideRookPosition.Occupier is Rook
-                && origin.Color == kingsideRookPosition.Color
-                && origin.GetDistanceOfFiles(destination) == 2)
-            {
-                SetPosition(kingsideRookPosition.File, kingsideRookPosition.Rank, null);
-                SetPosition(origin.File + 1, origin.Rank, kingsideRookPosition.Occupier);
-            }
-
-            if (origin.Occupier is King
-                && queensideRookPosition.Occupier is Rook
-                && origin.Color == queensideRookPosition.Color
-                && origin.GetDistanceOfFiles(destination) == 2)
-            {
-                SetPosition(queensideRookPosition.File, queensideRookPosition.Rank, null);
-                SetPosition(origin.File - 1, queensideRookPosition.Rank, queensideRookPosition.Occupier);
-            }
+            return file < NUMBER_OF_THE_FIRST_FILE || rank < NUMBER_OF_THE_FIRST_RANK
+                || file > NUMBER_OF_THE_LAST_FILE || rank > NUMBER_OF_THE_LAST_RANK;
         }
 
         #endregion Yksityiset metodit
