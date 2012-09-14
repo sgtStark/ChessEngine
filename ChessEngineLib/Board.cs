@@ -34,7 +34,9 @@ namespace ChessEngineLib
         /// <summary>
         /// Ruudut ja niiden sisällön sisältävä matriisi.
         /// </summary>
-        private Position[,] _positionMatrix;
+        private readonly Square[,] _squareMatrix;
+
+        public event EventHandler<MoveEventArgs> OnMove;
 
         #endregion Sisäiset datajäsenet
 
@@ -45,6 +47,7 @@ namespace ChessEngineLib
         /// </summary>
         public Board()
         {
+            _squareMatrix = new Square[DEFAULT_NUMBER_OF_FILES, DEFAULT_NUMBER_OF_RANKS];
             Initialize();
         }
 
@@ -67,8 +70,8 @@ namespace ChessEngineLib
         /// </summary>
         /// <param name="file">Ruudun sarakekomponentti.</param>
         /// <param name="rank">Ruudun rivikomponentti.</param>
-        /// <returns>Ruudun tiedot kuvaava Position-olio.</returns>
-        public Position GetPosition(int file, int rank)
+        /// <returns>Ruudun tiedot kuvaava Square-olio.</returns>
+        public Square GetPosition(int file, int rank)
         {
             if (AreOutsideBoardBoundaries(file, rank))
             {
@@ -76,7 +79,7 @@ namespace ChessEngineLib
                 throw new ArgumentOutOfRangeException("rank and file parameter values must be between 1 and 8");
             }
 
-            return _positionMatrix[file, rank];
+            return _squareMatrix[file, rank];
         }
 
         /// <summary>
@@ -93,7 +96,7 @@ namespace ChessEngineLib
                 throw new ArgumentOutOfRangeException("rank and file parameter values must be between 1 and 8");
             }
 
-            _positionMatrix[file, rank] = new Position(file, rank, occupier);
+            _squareMatrix[file, rank] = new Square(file, rank, occupier);
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace ChessEngineLib
         /// <param name="origin">Siirron lähtöruutu.</param>
         /// <param name="destination">Siirron kohderuutu.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public bool IsLegalMove(Position origin, Position destination)
+        public bool IsLegalMove(Square origin, Square destination)
         {
             var boolToReturn = false;
             var chessPiece = origin.Occupier;
@@ -130,7 +133,7 @@ namespace ChessEngineLib
         /// </summary>
         /// <param name="origin">Siirron lähtöruutu.</param>
         /// <param name="destination">Siirron kohderuutu.</param>
-        public void Move(Position origin, Position destination)
+        public void Move(Square origin, Square destination)
         {
             // Jos siirto on laillinen asetetaan miehittäjä lähde ruudusta kohderuutuun
             // ja poistetaan miehittäjä lähtöruudusta.
@@ -140,6 +143,7 @@ namespace ChessEngineLib
                 var movingStrategy = occupier.GetMovingStrategy();
 
                 movingStrategy.Move(this, origin, destination);
+                FireOnMoveEvent(new MoveEventArgs(origin, destination));
             }
             // Jos siirto oli laiton, nostetaan laittoman siirron poikkeus.
             else
@@ -159,18 +163,70 @@ namespace ChessEngineLib
         {
             // Kun sarake on jaollinen itsellään ja rivi ei ole 
             // jaollinen itsellään on kyseessä vaalea ruutu
-            bool boolToReturn = file % 2 == 0
-                                && rank % 2 != 0;
-
             // Kun sarake ei ole jaollinen itsellään ja rivi on 
             // jaollinen itsellään on kyseessä vaalea ruutu
-            if (file % 2 != 0
-                && rank % 2 == 0)
+            bool boolToReturn = file % 2 == 0
+                                && rank % 2 != 0
+                                || file % 2 != 0
+                                && rank % 2 == 0;
+
+            return boolToReturn;
+        }
+
+        /// <summary>
+        /// Determines whether the specified Board is equal to the current Board.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        private bool Equals(Board other)
+        {
+            bool boolToReturn = ReferenceEquals(this, other);
+
+            foreach (var position in _squareMatrix)
             {
-                boolToReturn = true;
+                if (position == null) continue;
+
+                var otherPosition = other != null ? other.GetPosition(position.File, position.Rank) : null;
+                
+                if (position.Equals(otherPosition))
+                {
+                    boolToReturn = true;
+                }
+                else
+                {
+                    boolToReturn = false;
+                    break;
+                }
             }
 
             return boolToReturn;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><filterpriority>2</filterpriority>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (Board)) return false;
+            return Equals((Board) obj);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            return (_squareMatrix != null ? _squareMatrix.GetHashCode() : 0);
         }
 
         #endregion Julkiset metodit
@@ -182,13 +238,11 @@ namespace ChessEngineLib
         /// </summary>
         private void Initialize()
         {
-            _positionMatrix = new Position[DEFAULT_NUMBER_OF_FILES,DEFAULT_NUMBER_OF_RANKS];
-
             for (int file = NUMBER_OF_THE_FIRST_FILE; file < DEFAULT_NUMBER_OF_FILES; file++)
             {
                 for (int rank = NUMBER_OF_THE_FIRST_RANK; rank < DEFAULT_NUMBER_OF_RANKS; rank++)
                 {
-                    _positionMatrix[file, rank] = new Position(file, rank);
+                    _squareMatrix[file, rank] = new Square(file, rank);
                 }
             }
         }
@@ -242,6 +296,18 @@ namespace ChessEngineLib
         {
             return file < NUMBER_OF_THE_FIRST_FILE || rank < NUMBER_OF_THE_FIRST_RANK
                 || file > NUMBER_OF_THE_LAST_FILE || rank > NUMBER_OF_THE_LAST_RANK;
+        }
+
+        /// <summary>
+        /// Laukaisee OnMove-eventin.
+        /// </summary>
+        /// <param name="eventArgs">Tiedot siirrosta.</param>
+        private void FireOnMoveEvent(MoveEventArgs eventArgs)
+        {
+            if (OnMove != null)
+            {
+                OnMove.Invoke(this, eventArgs);
+            }
         }
 
         #endregion Yksityiset metodit

@@ -34,7 +34,7 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Position origin, Position destination)
+        public override bool IsLegalMove(Board board, Square origin, Square destination)
         {
             var boolToReturn = false;
             var directionOfTheMove = origin.GetDirectionTo(destination);
@@ -81,7 +81,7 @@ namespace ChessEngineLib.ChessPieces
         /// </summary>
         /// <param name="other">Toinen sotilasnappula, johon tätä nappulaa ollaan vertaamassa.</param>
         /// <returns>True, jos kummatkin nappulat ovat yksi ja sama. False, jos nappulat eroavat toisistaan.</returns>
-        public bool Equals(Pawn other)
+        private bool Equals(Pawn other)
         {
             return !ReferenceEquals(null, other)
                 && Color == other.Color;
@@ -119,7 +119,7 @@ namespace ChessEngineLib.ChessPieces
         /// </summary>
         /// <param name="origin">Ruutu, jota vastaan sotilasnappulaa verrataan.</param>
         /// <returns>True, jos parametrina saatu ruutu on aloitusruutu. Muussa tapauksessa False.</returns>
-        private static bool IsStartingRank(Position origin)
+        private static bool IsStartingRank(Square origin)
         {
             return origin.Color == PieceColor.White
                        ? origin.Rank == PAWN_CHAIN_RANK_FOR_WHITE
@@ -133,7 +133,7 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <param name="directionOfTheMove">Siirron suunta</param>
         /// <returns></returns>
-        private bool IsAttackMove(Position origin, Position destination, Direction directionOfTheMove)
+        private bool IsAttackMove(Square origin, Square destination, Direction directionOfTheMove)
         {
             bool boolToReturn = (origin.GetDistanceOfRanks(destination) == 1
                                  && directionOfTheMove.IsOnForwardDiagonal()

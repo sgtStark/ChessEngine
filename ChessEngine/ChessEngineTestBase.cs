@@ -11,6 +11,22 @@ namespace ChessEngineTests
             return new Board();
         }
 
+        protected static Game CreateNewGame()
+        {
+            return new Game(CreateSetupBoard());
+        }
+
         #endregion Suojatut metodit
+
+        #region Yksityiset metodit
+
+        private static Board CreateSetupBoard()
+        {
+            var boardToReturn = CreateEmptyBoard();
+            boardToReturn.Setup();
+            return boardToReturn;
+        }
+
+        #endregion Yksityiset metodit
     }
 }

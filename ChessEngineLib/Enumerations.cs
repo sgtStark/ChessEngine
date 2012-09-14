@@ -7,6 +7,13 @@ namespace ChessEngineLib
         Black = 2
     }
 
+    public enum GameState
+    {
+        SetupMode,
+        Normal,
+        Check,
+    }
+
     public static class PieceColorExtensions
     {
         public static bool IsOppositeColor(this PieceColor pieceColor, PieceColor otherPieceColor)

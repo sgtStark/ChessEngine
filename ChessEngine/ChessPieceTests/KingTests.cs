@@ -132,6 +132,18 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void IsLegalMove_WhiteKingMovesOneSquareLeftAndSevenSquaresForward_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.SetPosition(4, 1, new King(PieceColor.White));
+            board.SetPosition(5, 8, new King(PieceColor.Black));
+
+            var result = board.IsLegalMove(board.GetPosition(4, 1), board.GetPosition(5, 8));
+
+            Assert.IsFalse(result);
+        }
+
         #endregion Normal Moves
 
         #region Kingside Castling

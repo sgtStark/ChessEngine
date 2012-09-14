@@ -39,7 +39,7 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public abstract bool IsLegalMove(Board board, Position origin, Position destination);
+        public abstract bool IsLegalMove(Board board, Square origin, Square destination);
 
         /// <summary>
         /// Hakee shakkinappulaan liittyvän siirto strategian.
@@ -62,9 +62,9 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Siirron lähtöpiste</param>
         /// <param name="destination">Siirron päätepiste</param>
         /// <returns>True, jos siirtolinjalla on blokkaavia shakkinappuloita. False, jos siirtolinja on vapaa.</returns>
-        protected bool IsPathObscured(Board board, Position origin, Position destination)
+        protected bool IsPathObscured(Board board, Square origin, Square destination)
         {
-            IList<Position> path = null;
+            IList<Square> path = null;
 
             if (origin.Color == PieceColor.White)
             {
@@ -89,9 +89,9 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste</param>
         /// <param name="destination">Päätepiste</param>
         /// <returns>Lista siirtolinjan pisteistä.</returns>
-        private IList<Position> GetPositionsBetween(Board board, Position origin, Position destination)
+        private IList<Square> GetPositionsBetween(Board board, Square origin, Square destination)
         {
-            var positionsBetweenToReturn = new List<Position>();
+            var positionsBetweenToReturn = new List<Square>();
             
             // Jos siirretään oikealle
             for (int file = origin.File; file <= destination.File; file++)

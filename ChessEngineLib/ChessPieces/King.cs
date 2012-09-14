@@ -27,11 +27,15 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Position origin, Position destination)
+        public override bool IsLegalMove(Board board, Square origin, Square destination)
         {
             // Kuningas saa liikkua mihin tahansa suuntaan yhden ruudun verran
-            bool boolToReturn = origin.GetDistanceOfRanks(destination) == 1
-                                || origin.GetDistanceOfFiles(destination) == 1;
+            bool boolToReturn = origin.GetDistanceOfRanks(destination) == 0
+                                && origin.GetDistanceOfFiles(destination) == 1
+                                || origin.GetDistanceOfRanks(destination) == 1
+                                && origin.GetDistanceOfFiles(destination) == 0
+                                || origin.GetDistanceOfRanks(destination) == 1
+                                && origin.GetDistanceOfFiles(destination) == 1;
 
             // Jos kohde ruudussa on saman värinen nappula on siirto automaattisesti laiton
             if (destination.Color == origin.Color)
@@ -54,7 +58,7 @@ namespace ChessEngineLib.ChessPieces
 
         #endregion Overrides of ChessPiece
 
-        public bool Equals(King other)
+        private bool Equals(King other)
         {
             return !ReferenceEquals(null, other)
                 && Color == other.Color;

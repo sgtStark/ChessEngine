@@ -7,7 +7,7 @@ namespace ChessEngineLib
     /// Luokka, joka sis‰lt‰‰ kaikki tarvittavat toiminnot
     /// shakkilaudan ruutujen vertailuun.
     /// </summary>
-    public class Position
+    public class Square
     {
         #region Sis‰iset dataj‰senet
 
@@ -17,7 +17,7 @@ namespace ChessEngineLib
         /// <summary>Rivi</summary>
         private readonly int _rank;
 
-        private ChessPiece _occupier;
+        private readonly ChessPiece _occupier;
 
         #endregion Sis‰iset dataj‰senet
 
@@ -60,14 +60,14 @@ namespace ChessEngineLib
 
         #region Konstruktorit
 
-        public Position(int file, int rank)
+        public Square(int file, int rank)
         {
             _file = file;
             _rank = rank;
             _occupier = null;
         }
 
-        public Position(int file, int rank, ChessPiece occupier)
+        public Square(int file, int rank, ChessPiece occupier)
         {
             _file = file;
             _rank = rank;
@@ -83,7 +83,7 @@ namespace ChessEngineLib
         /// </summary>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>Direction-enumeraation mukainen suunta.</returns>
-        public Direction GetDirectionTo(Position destination)
+        public Direction GetDirectionTo(Square destination)
         {
             var chessPiece = Occupier ?? destination.Occupier;
 
@@ -146,7 +146,7 @@ namespace ChessEngineLib
         /// </summary>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>Kokonaisluku</returns>
-        public int GetDistanceOfRanks(Position destination)
+        public int GetDistanceOfRanks(Square destination)
         {
             return Math.Abs(Rank - destination.Rank);
         }
@@ -156,12 +156,12 @@ namespace ChessEngineLib
         /// </summary>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>Kokonaisluku</returns>
-        public int GetDistanceOfFiles(Position destination)
+        public int GetDistanceOfFiles(Square destination)
         {
             return Math.Abs(File - destination.File);
         }
 
-        public bool Equals(Position other)
+        public bool Equals(Square other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -173,8 +173,8 @@ namespace ChessEngineLib
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Position)) return false;
-            return Equals((Position) obj);
+            if (obj.GetType() != typeof (Square)) return false;
+            return Equals((Square) obj);
         }
 
         public override int GetHashCode()

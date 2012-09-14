@@ -179,4 +179,54 @@
 - Refactoroin Board-luokasta ja King-luokasta Castling-siirtojen tarkastukset ja siirtojen toteutuksen KingMovingStrategy-luokkaan, joka toteuttaa IMovingStrategy-rajapinnan.
 - Refactoroin PawnMovingStrategy-luokasta poikkeusten käsittelyt pois turhina.
 - Refactoroin KingMovingStrategy-luokasta poikkeusten käsittelyt pois turhina.
+- Checkkasin muutokset sisään lokaalisti ja sitten pushasin ne GitBubiin
+- 
+
+
+9.9.2012
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+- Lisäsin GameTests-luokan
+- Lisäsin Game-luokan ja GameState-enumeraation, joka ilmaisee pelin tilaa.
+- Lisäsin yksikkötestejä pelin tilalle ja pelaajan siirrolle.
+- Lisäsin Board-luokalle Equals-testit ja toiminnallisuuden.
+- 
+
+
+13.9.2012
+-- TODO: Toteuta Check siirtojen tarkastukset
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+- Lisäsin testin ja toteutuksen sille että siirron jälkeen Game.PlayerToMove-property päivittyy siirretyn nappulan vastakkaiseksi väriksi.
+- 
+
+
+14.9.2012
+-- TODO: Toteuta End Of Game tarkastus
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+- Lisäsin yksikkötestin Game.PlayerToMove-propertyn päivittymiselle, kun kummatkin pelaajat ovat siirtäneet yhden kerran pitäisi PlayerToMove olla PieceColor.White.
+- Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun valkoinen siirtää shakkinappulan ruutuun josta se on hyökkäyslinjassa mustan kuninkaan kanssa palautuu GameState.Check.
+- Löysin bugin King.IsLegalMove-metodista, kun siirretään kuningasta yksi ruutu vasemmalle ja seitsemän ruutua eteenpäin palautui True vaikka piti palautua False.
+- Lisäsin edellisen bugin korjaavan yksikkötestin ja toteutuksen.
+- Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun musta siirtää shakkinappulan ruutuun josta se on hyökkäyslinjassa valkoisen kuninkaan kanssa palautuu GameState.Check.
+- Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun kuningas siirretään pois Check-uhatulta ruudulta. Palautuu GameState.Normal -tilaan.
+- Lisäsin yksikkötestin Game.State-propertyn päivittymisell, kun toinen nappula siirretään blockkaamaan Check. Palautuu GameState.Normal -tilaan.
+- Korjasin ReSharper 7.0.1 Code Issues In Solution ehdotukset, jotka oli järkevää korjata.
+- Järjestelin GameTests-luokan testit järjestykseen UnitOfWork:n mukaisesti.
 - 

@@ -27,18 +27,15 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Position origin, Position destination)
+        public override bool IsLegalMove(Board board, Square origin, Square destination)
         {
             // Liikutaan kaksi ruutua eteen- tai taaksepäin ja yksi ruutu vasemmalle tai oikealle
             bool boolToReturn = Math.Abs(destination.Rank - origin.Rank) == 2
-                                && Math.Abs(destination.File - origin.File) == 1;
+                                && Math.Abs(destination.File - origin.File) == 1
+                                || Math.Abs(destination.Rank - origin.Rank) == 1
+                                && Math.Abs(destination.File - origin.File) == 2;
 
             // Liikutaan yksi ruutu eteen- tai taaksepäin ja kaksi ruutua vasemmalle tai oikealle
-            if (Math.Abs(destination.Rank - origin.Rank) == 1
-                && Math.Abs(destination.File - origin.File) == 2)
-            {
-                boolToReturn = true;
-            }
 
             // Jos kohde ruutu on miehitetty saman värisellä shakkinappulalla, on 
             // siirto automaattisesti laiton.
@@ -53,7 +50,7 @@ namespace ChessEngineLib.ChessPieces
 
         #endregion
 
-        public bool Equals(Knight other)
+        private bool Equals(Knight other)
         {
             return !ReferenceEquals(null, other)
                 && Color == other.Color;

@@ -21,7 +21,7 @@
         #region Sisäiset datajäsenet
 
         /// <summary>Perus-siirtostrategia, joka ajetaan ensin.</summary>
-        private IMovingStrategy _baseMovingStrategy;
+        private readonly IMovingStrategy _baseMovingStrategy;
 
         #endregion Sisäiset datajäsenet
 
@@ -46,7 +46,7 @@
         /// <param name="board">Shakkilauta</param>
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
-        public void Move(Board board, Position origin, Position destination)
+        public void Move(Board board, Square origin, Square destination)
         {
             _baseMovingStrategy.Move(board, origin, destination);
 
@@ -60,7 +60,7 @@
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>True, jos siirto sisältää normaalin tarkastuksen tuloksen ohittavan tuloksen. False, muutoin.</returns>
-        public bool IsSpecialMove(Board board, Position origin, Position destination)
+        public bool IsSpecialMove(Board board, Square origin, Square destination)
         {
             return IsCastlingMove(board, origin, destination);
         }
@@ -76,7 +76,7 @@
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>True, jos kyseessä on Castling-siirto. False, muussa tapauksessa.</returns>
-        private bool IsCastlingMove(Board board, Position origin, Position destination)
+        private bool IsCastlingMove(Board board, Square origin, Square destination)
         {
             // Apumuuttuja tulokselle
             bool boolToReturn = false;
@@ -128,7 +128,7 @@
         /// </summary>
         /// <param name="origin">Siirron lähtöruutu.</param>
         /// <param name="destination">Siirron kohderuutu.</param>
-        private void HandleCastling(Board board, Position origin, Position destination)
+        private void HandleCastling(Board board, Square origin, Square destination)
         {
             // Haetaan kuninkaan puoleinen torni ruutu
             var kingsideRookPosition = origin.Color == PieceColor.White

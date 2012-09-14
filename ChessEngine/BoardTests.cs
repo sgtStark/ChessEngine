@@ -15,6 +15,46 @@ namespace ChessEngineTests
     [TestClass]
     public class BoardTests : ChessEngineTestBase
     {
+        #region Equals testit
+
+        [TestMethod]
+        public void Equals_TwoBoardsWithExactlyTheSameConfiguration_ReturnsTrue()
+        {
+            Board board1 = new Board();
+            Board board2 = new Board();
+
+            board1.Setup();
+            board2.Setup();
+
+            Assert.AreEqual(board1, board2);
+
+            board1.Move(board1.GetPosition(1, 2), board1.GetPosition(1, 4));
+            board2.Move(board2.GetPosition(1, 2), board2.GetPosition(1, 4));
+
+            Assert.AreEqual(board1, board2);
+        }
+
+        [TestMethod]
+        public void Equals_TwoBoardsWithDifferentConfigurations_ReturnsFalse()
+        {
+            Board board1 = new Board();
+            Board board2 = new Board();
+
+            board1.Setup();
+
+            Assert.AreNotEqual(board1, board2);
+
+            board1 = new Board();
+            board2 = new Board();
+
+            board1.SetPosition(1, 2, null);
+            board2.SetPosition(1, 2, new Pawn(PieceColor.White));
+
+            Assert.AreNotEqual(board1, board2);
+        }
+
+        #endregion Equals testit
+
         #region Aloitus tilanteen/asetelman testit
 
         [TestMethod]
@@ -163,9 +203,9 @@ namespace ChessEngineTests
         public void GetPosition_FirstFileAndRankWhenBoardIsEmpty_ReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Position expected = new Position(1, 1, null);
+            Square expected = new Square(1, 1, null);
 
-            Position actual = board.GetPosition(1, 1);
+            Square actual = board.GetPosition(1, 1);
 
             Assert.AreEqual(expected, actual);
         }
@@ -174,9 +214,9 @@ namespace ChessEngineTests
         public void GetPosition_SecondFileAndRankWhenBoardIsEmpty_ReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Position expected = new Position(2, 2, null);
+            Square expected = new Square(2, 2, null);
 
-            Position actual = board.GetPosition(2, 2);
+            Square actual = board.GetPosition(2, 2);
 
             Assert.AreEqual(expected, actual);
         }
@@ -191,11 +231,11 @@ namespace ChessEngineTests
         public void SetPosition_FirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheValueThatWasSet()
         {
             Board board = CreateEmptyBoard();
-            Position expected = new Position(1, 1, new Pawn(PieceColor.White));
+            Square expected = new Square(1, 1, new Pawn(PieceColor.White));
 
             board.SetPosition(1, 1, new Pawn(PieceColor.White));
 
-            Position actual = board.GetPosition(1, 1);
+            Square actual = board.GetPosition(1, 1);
 
             Assert.AreEqual(expected, actual);
         }
@@ -204,11 +244,11 @@ namespace ChessEngineTests
         public void SetPosition_FirstFileAndRankWhenBoardIsEmpty_GetPositionForSecondFileAndRankReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Position expected = new Position(2, 2, null);
+            Square expected = new Square(2, 2, null);
 
             board.SetPosition(1, 1, new Pawn(PieceColor.White));
 
-            Position actual = board.GetPosition(2, 2);
+            Square actual = board.GetPosition(2, 2);
 
             Assert.AreEqual(expected, actual);
         }
@@ -221,7 +261,7 @@ namespace ChessEngineTests
         public void SetPosition_WhiteRookToFirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheSetValue()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Position(1, 1, new Rook(PieceColor.White));
+            var expected = new Square(1, 1, new Rook(PieceColor.White));
 
             board.SetPosition(1, 1, new Rook(PieceColor.White));
             var actual  = board.GetPosition(1, 1);
@@ -233,7 +273,7 @@ namespace ChessEngineTests
         public void SetPosition_BlackRookToFirstFileAndEightRankWhenBoardIsEmpty_GetPositionReturnsTheSetValue()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Position(1, 8, new Rook(PieceColor.Black));
+            var expected = new Square(1, 8, new Rook(PieceColor.Black));
 
             board.SetPosition(1, 8, new Rook(PieceColor.Black));
             var actual = board.GetPosition(1, 8);
@@ -245,7 +285,7 @@ namespace ChessEngineTests
         public void SetPosition_WhiteRookToFirstFileAndRankWhenBoardIsEmpty_GetPositionFromDifferingCoordinatesIsNotEqual()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Position(1, 1, new Rook(PieceColor.White));
+            var expected = new Square(1, 1, new Rook(PieceColor.White));
 
             board.SetPosition(1, 1, new Rook(PieceColor.White));
             var actual = board.GetPosition(2, 4);

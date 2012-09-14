@@ -25,7 +25,7 @@ namespace ChessEngineLib.ChessPieces
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Position origin, Position destination)
+        public override bool IsLegalMove(Board board, Square origin, Square destination)
         {
             var boolToReturn = false;
             var directionOfTheMove = origin.GetDirectionTo(destination);
@@ -49,7 +49,7 @@ namespace ChessEngineLib.ChessPieces
 
         #endregion Overrides of ChessPiece 
 
-        public bool Equals(Bishop other)
+        private bool Equals(Bishop other)
         {
             return !ReferenceEquals(null, other)
                 && Color == other.Color;

@@ -11,7 +11,7 @@
         /// <param name="board">Shakkilauta</param>
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
-        void Move(Board board, Position origin, Position destination);
+        void Move(Board board, Square origin, Square destination);
 
         /// <summary>
         /// Sisältääkö siirto erikoistarkastuksia, jotka ohittavat normaalin tarkastuksen tuloksen.
@@ -20,6 +20,6 @@
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>True, jos siirto sisältää normaalin tarkastuksen tuloksen ohittavan tuloksen. False, muutoin.</returns>
-        bool IsSpecialMove(Board board, Position origin, Position destination);
+        bool IsSpecialMove(Board board, Square origin, Square destination);
     }
 }

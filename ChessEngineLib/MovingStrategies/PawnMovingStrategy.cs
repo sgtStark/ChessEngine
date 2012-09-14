@@ -42,7 +42,7 @@
         /// <param name="board">Shakkilauta</param>
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
-        public void Move(Board board, Position origin, Position destination)
+        public void Move(Board board, Square origin, Square destination)
         {
             _baseMovingStrategy.Move(board, origin, destination);
 
@@ -56,7 +56,7 @@
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>True, jos kyseessä on En Passant -siirto. False, muussa tapauksissa.</returns>
-        public bool IsSpecialMove(Board board, Position origin, Position destination)
+        public bool IsSpecialMove(Board board, Square origin, Square destination)
         {
             return IsEnPassantMove(board, origin, destination);
         }
@@ -72,7 +72,7 @@
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on En Passant. False, muussa tapauksessa.</returns>
-        private bool IsEnPassantMove(Board board, Position origin, Position destination)
+        private bool IsEnPassantMove(Board board, Square origin, Square destination)
         {
             // Oletusarvo
             var boolToReturn = false;
@@ -114,7 +114,7 @@
         /// </summary>
         /// <param name="origin">Siirron lähtöruutu.</param>
         /// <param name="destination">Siirron kohderuutu.</param>
-        private void HandleEnPassant(Board board, Position origin, Position destination)
+        private void HandleEnPassant(Board board, Square origin, Square destination)
         {
             // Apumuuttujat, haetaan lähtöruudun miehittäjä ja En Passant -hyökkäyksen alainen
             // ruutu. Ruutu voi myös olla NULL, jos ollaan ensimmäisellä tai viimeisellä rivillä.

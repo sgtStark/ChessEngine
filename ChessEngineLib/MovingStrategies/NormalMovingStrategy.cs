@@ -13,7 +13,7 @@
         /// <param name="board">Shakkilauta</param>
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
-        public void Move(Board board, Position origin, Position destination)
+        public void Move(Board board, Square origin, Square destination)
         {
                 var occupier = origin.Occupier;
                 occupier.MoveCount++;
@@ -28,7 +28,7 @@
         /// <param name="origin">Lähtöruutu</param>
         /// <param name="destination">Kohderuutu</param>
         /// <returns>False</returns>
-        public bool IsSpecialMove(Board board, Position origin, Position destination)
+        public bool IsSpecialMove(Board board, Square origin, Square destination)
         {
             return false;
         }

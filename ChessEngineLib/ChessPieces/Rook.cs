@@ -23,7 +23,7 @@
         /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
         /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
         /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Position origin, Position destination)
+        public override bool IsLegalMove(Board board, Square origin, Square destination)
         {
             var boolToReturn = false;
 
@@ -45,7 +45,7 @@
         /// </summary>
         /// <param name="other">Toinen sotilasnappula, johon tätä nappulaa ollaan vertaamassa.</param>
         /// <returns>True, jos kummatkin nappulat ovat yksi ja sama. False, jos nappulat eroavat toisistaan.</returns>
-        public bool Equals(Rook other)
+        private bool Equals(Rook other)
         {
             return !ReferenceEquals(null, other)
                 && Color == other.Color;
