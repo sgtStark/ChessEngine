@@ -96,9 +96,9 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(PieceColor.White));
-            board.SetPosition(5, 8, new King(PieceColor.Black));
-            board.SetPosition(1, 1, new Rook(PieceColor.White));
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
 
             game.Start();
             board.Move(board.GetPosition(1, 1), board.GetPosition(1, 2));
@@ -113,9 +113,9 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(PieceColor.White));
-            board.SetPosition(5, 8, new King(PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(PieceColor.Black));
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
             board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1));
@@ -128,9 +128,9 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(PieceColor.White));
-            board.SetPosition(5, 8, new King(PieceColor.Black));
-            board.SetPosition(1, 1, new Rook(PieceColor.White));
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
 
             game.Start();
             board.Move(board.GetPosition(1, 1), board.GetPosition(1, 2));
@@ -146,9 +146,9 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(PieceColor.White));
-            board.SetPosition(5, 8, new King(PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(PieceColor.Black));
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
             board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1));
@@ -162,10 +162,10 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(PieceColor.White));
-            board.SetPosition(4, 2, new Rook(PieceColor.White));
-            board.SetPosition(5, 8, new King(PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(PieceColor.Black));
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
+            board.SetPosition(4, 2, new Rook(board, PieceColor.White));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
             board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1)); // BlackRook Checks WhiteKing

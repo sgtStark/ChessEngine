@@ -1,71 +1,22 @@
 using System;
-using ChessEngineLib.ChessPieces;
 
 namespace ChessEngineLib
 {
-    /// <summary>
-    /// Luokka, joka sisältää kaikki tarvittavat toiminnot
-    /// shakkilaudan ruutujen vertailuun.
-    /// </summary>
+    using ChessPieces;
+
     public class Square
     {
-        #region Sisäiset datajäsenet
-
-        /// <summary>Sarake</summary>
         private readonly int _file;
-
-        /// <summary>Rivi</summary>
         private readonly int _rank;
-
         private readonly ChessPiece _occupier;
 
-        #endregion Sisäiset datajäsenet
+        public int File { get { return _file; } }
 
-        #region Luokkakohtaiset propertyt
+        public int Rank { get { return _rank; } }
 
-        /// <summary>Sarake</summary>
-        public int File
-        {
-            get { return _file; }
-        }
+        public PieceColor Color { get { return Occupier.Color; } }
 
-        /// <summary>Rivi</summary>
-        public int Rank
-        {
-            get { return _rank; }
-        }
-
-        /// <summary>Tila, eli onko tyhjä vai sisältääkö valkoisen tai mustan shakkinappulan</summary>
-        public PieceColor Color
-        {
-            get
-            {
-                var pieceColorToReturn = PieceColor.Empty;
-
-                if (Occupier != null)
-                {
-                    pieceColorToReturn = Occupier.Color;
-                }
-
-                return pieceColorToReturn;
-            }
-        }
-
-        public ChessPiece Occupier
-        {
-            get { return _occupier; }
-        }
-
-        #endregion Luokkakohtaiset propertyt
-
-        #region Konstruktorit
-
-        public Square(int file, int rank)
-        {
-            _file = file;
-            _rank = rank;
-            _occupier = null;
-        }
+        public ChessPiece Occupier { get { return _occupier; } }
 
         public Square(int file, int rank, ChessPiece occupier)
         {
@@ -73,10 +24,6 @@ namespace ChessEngineLib
             _rank = rank;
             _occupier = occupier;
         }
-
-        #endregion Konstruktorit
-
-        #region Julkiset metodit
 
         /// <summary>
         /// Päättelee suunnan lähderuudusta kohderuutuun.
@@ -132,7 +79,7 @@ namespace ChessEngineLib
             }
 
             // Tarkastetaan lopuksi onko siirto epäsäännöllinen
-            if (result.IsAlongDiagonal() 
+            if (result.Diagonally() 
                 && GetDistanceOfFiles(destination) != GetDistanceOfRanks(destination))
             {
                 result = Direction.Irregular;
@@ -141,21 +88,11 @@ namespace ChessEngineLib
             return result;
         }
 
-        /// <summary>
-        /// Palauttaa etäisyyden kohderuutuun riveissä.
-        /// </summary>
-        /// <param name="destination">Kohderuutu</param>
-        /// <returns>Kokonaisluku</returns>
         public int GetDistanceOfRanks(Square destination)
         {
             return Math.Abs(Rank - destination.Rank);
         }
 
-        /// <summary>
-        /// Palauttaa etäisyyden kohderuutuun sarakkeissa.
-        /// </summary>
-        /// <param name="destination">Kohderuutu</param>
-        /// <returns>Kokonaisluku</returns>
         public int GetDistanceOfFiles(Square destination)
         {
             return Math.Abs(File - destination.File);
@@ -187,7 +124,5 @@ namespace ChessEngineLib
                 return result;
             }
         }
-
-        #endregion Julkiset metodit
     }
 }

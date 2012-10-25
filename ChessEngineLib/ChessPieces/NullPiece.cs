@@ -1,9 +1,9 @@
 ﻿namespace ChessEngineLib.ChessPieces
 {
-    public class Rook : ChessPiece
+    public class NullPiece : ChessPiece
     {
-        public Rook(Board board, PieceColor color)
-            : base(board, color)
+        public NullPiece()
+            : base(null, PieceColor.Empty)
         {
         }
 
@@ -11,23 +11,21 @@
         {
             if (origin.Color == destination.Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
-
-            return (moving.AlongFileOrRank() && PathIsFree(origin, destination));
+            return true;
         }
 
-        private bool Equals(Rook other)
+        private bool Equals(NullPiece other)
         {
-            return !ReferenceEquals(null, other)
-                && Color == other.Color;
+            return true;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(Rook)) return false;
-            return Equals((Rook)obj);
+            if (obj.GetType() != this.GetType()) return false;
+
+            return Equals((NullPiece) obj);
         }
 
         public override int GetHashCode()

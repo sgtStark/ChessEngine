@@ -2,61 +2,48 @@ namespace ChessEngineLib.ChessPieces
 {
     using MovingStrategies;
 
-    /// <summary>
-    /// Luokka, joka sisältää toiminnallisuuden kuningas tyyppiselle shakkinappulalle.
-    /// </summary>
     public class King : ChessPiece
     {
-        #region Konstruktorit
+        private readonly MovingStrategy _movingStrategy;
 
-        public King(PieceColor color)
-            : base(color)
+        public King(Board board, PieceColor color)
+            : base(board, color)
         {
+            _movingStrategy = new KingMovingStrategy(Board);
         }
 
-        #endregion Konstruktorit
-
-        #region Julkiset metodit
-
-        #region Overrides of ChessPiece
-
-        /// <summary>
-        /// Tarkastaa onko siirto laillinen annetulla laudalla.
-        /// </summary>
-        /// <param name="board">Shakkilauta, jolla siirto tehdään.</param>
-        /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
-        /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
-        /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public override bool IsLegalMove(Board board, Square origin, Square destination)
+        public override bool IsLegalMove(Square origin, Square destination)
         {
-            // Kuningas saa liikkua mihin tahansa suuntaan yhden ruudun verran
-            bool boolToReturn = origin.GetDistanceOfRanks(destination) == 0
-                                && origin.GetDistanceOfFiles(destination) == 1
-                                || origin.GetDistanceOfRanks(destination) == 1
-                                && origin.GetDistanceOfFiles(destination) == 0
-                                || origin.GetDistanceOfRanks(destination) == 1
-                                && origin.GetDistanceOfFiles(destination) == 1;
+            if (origin.Color == destination.Color) return false;
+            if (MovingOneSquareLeftOrRight(origin, destination)) return true;
+            if (MovingOneSquareForwardOrBackward(origin, destination)) return true;
+            if (MovingOneSquareDiagonally(origin, destination)) return true;
 
-            // Jos kohde ruudussa on saman värinen nappula on siirto automaattisesti laiton
-            if (destination.Color == origin.Color)
-            {
-                boolToReturn = false;
-            }
-
-            return boolToReturn;
+            return false;
         }
 
-        /// <summary>
-        /// Hakee shakkinappulaan liittyvän siirto strategian.
-        /// Siirto strategia käsittelee erikoistapaukset kuten En Passant -siirto sotilaalla,
-        /// Castling-siirrot kuningkaalla.
-        /// </summary>
-        public override IMovingStrategy GetMovingStrategy()
+        private bool MovingOneSquareLeftOrRight(Square origin, Square destination)
         {
-            return new KingMovingStrategy(base.GetMovingStrategy());
+            return (origin.GetDistanceOfRanks(destination) == 0
+                   && origin.GetDistanceOfFiles(destination) == 1);
         }
 
-        #endregion Overrides of ChessPiece
+        private bool MovingOneSquareForwardOrBackward(Square origin, Square destination)
+        {
+            return (origin.GetDistanceOfRanks(destination) == 1
+                    && origin.GetDistanceOfFiles(destination) == 0);
+        }
+
+        private bool MovingOneSquareDiagonally(Square origin, Square destination)
+        {
+            return (origin.GetDistanceOfRanks(destination) == 1
+                    && origin.GetDistanceOfFiles(destination) == 1);
+        }
+
+        public override MovingStrategy GetMovingStrategy()
+        {
+            return _movingStrategy;
+        }
 
         private bool Equals(King other)
         {
@@ -64,13 +51,6 @@ namespace ChessEngineLib.ChessPieces
                 && Color == other.Color;
         }
 
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -79,18 +59,9 @@ namespace ChessEngineLib.ChessPieces
             return Equals((King) obj);
         }
 
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             return 0;
         }
-
-        #endregion Julkiset metodit
     }
 }

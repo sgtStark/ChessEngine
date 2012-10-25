@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using ChessEngineLib;
-using ChessEngineLib.Exceptions;
 using ChessEngineLib.ChessPieces;
 
 namespace ChessEngineTests
@@ -47,8 +46,8 @@ namespace ChessEngineTests
             board1 = new Board();
             board2 = new Board();
 
-            board1.SetPosition(1, 2, null);
-            board2.SetPosition(1, 2, new Pawn(PieceColor.White));
+            board1.SetPosition(1, 2, new NullPiece());
+            board2.SetPosition(1, 2, new Pawn(board2, PieceColor.White));
 
             Assert.AreNotEqual(board1, board2);
         }
@@ -61,7 +60,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_PositionsAlongSecondRankReturnWhitePawns()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Pawn(PieceColor.White);
+            var expected = new Pawn(board, PieceColor.White);
 
             board.Setup();
 
@@ -79,7 +78,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_PositionsAlongSeventhRankReturnBlackPawns()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Pawn(PieceColor.Black);
+            var expected = new Pawn(board, PieceColor.Black);
 
             board.Setup();
 
@@ -97,7 +96,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_FirstAndEightFilePositionsOnTheFirstRankReturnWhiteRooks()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.White);
+            var expected = new Rook(board, PieceColor.White);
 
             board.Setup();
 
@@ -109,7 +108,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_FirstAndEightFilePositionsOnTheEightRankReturnBlackRooks()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.Black);
+            var expected = new Rook(board, PieceColor.Black);
 
             board.Setup();
 
@@ -121,7 +120,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_SecondAndSeventhFilePositionsOnTheFirstRankReturnWhiteKnights()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Knight(PieceColor.White);
+            var expected = new Knight(board, PieceColor.White);
 
             board.Setup();
 
@@ -133,7 +132,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_SecondAndSeventhFilePositionsOnTheEightRankReturnBlackKnights()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Knight(PieceColor.Black);
+            var expected = new Knight(board, PieceColor.Black);
 
             board.Setup();
 
@@ -145,7 +144,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_ThirdAndSixthFilePositionsOnTheFirstRankReturnWhiteBishops()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Bishop(PieceColor.White);
+            var expected = new Bishop(board, PieceColor.White);
 
             board.Setup();
 
@@ -157,7 +156,7 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_ThirdAndSixthFilePositionsOnTheEightRankReturnBlackBishops()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Bishop(PieceColor.Black);
+            var expected = new Bishop(board, PieceColor.Black);
 
             board.Setup();
 
@@ -169,8 +168,8 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_FourthFilePositionsOnTheFirstAndEightRankReturnQueens()
         {
             Board board = CreateEmptyBoard();
-            var expectedWhiteQueen = new Queen(PieceColor.White);
-            var expectedBlackQueen = new Queen(PieceColor.Black);
+            var expectedWhiteQueen = new Queen(board, PieceColor.White);
+            var expectedBlackQueen = new Queen(board, PieceColor.Black);
 
             board.Setup();
 
@@ -182,8 +181,8 @@ namespace ChessEngineTests
         public void Setup_WhenBoardIsSetup_FifthFilePositionsOnTheFirstAndEightRankReturnKings()
         {
             Board board = CreateEmptyBoard();
-            var expectedWhiteKing = new King(PieceColor.White);
-            var expectedBlackKing = new King(PieceColor.Black);
+            var expectedWhiteKing = new King(board, PieceColor.White);
+            var expectedBlackKing = new King(board, PieceColor.Black);
 
             board.Setup();
 
@@ -203,7 +202,7 @@ namespace ChessEngineTests
         public void GetPosition_FirstFileAndRankWhenBoardIsEmpty_ReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Square expected = new Square(1, 1, null);
+            Square expected = new Square(1, 1, new NullPiece());
 
             Square actual = board.GetPosition(1, 1);
 
@@ -214,7 +213,7 @@ namespace ChessEngineTests
         public void GetPosition_SecondFileAndRankWhenBoardIsEmpty_ReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Square expected = new Square(2, 2, null);
+            Square expected = new Square(2, 2, new NullPiece());
 
             Square actual = board.GetPosition(2, 2);
 
@@ -231,9 +230,9 @@ namespace ChessEngineTests
         public void SetPosition_FirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheValueThatWasSet()
         {
             Board board = CreateEmptyBoard();
-            Square expected = new Square(1, 1, new Pawn(PieceColor.White));
+            Square expected = new Square(1, 1, new Pawn(board, PieceColor.White));
 
-            board.SetPosition(1, 1, new Pawn(PieceColor.White));
+            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
 
             Square actual = board.GetPosition(1, 1);
 
@@ -244,9 +243,9 @@ namespace ChessEngineTests
         public void SetPosition_FirstFileAndRankWhenBoardIsEmpty_GetPositionForSecondFileAndRankReturnsEmptyPosition()
         {
             Board board = CreateEmptyBoard();
-            Square expected = new Square(2, 2, null);
+            Square expected = new Square(2, 2, new NullPiece());
 
-            board.SetPosition(1, 1, new Pawn(PieceColor.White));
+            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
 
             Square actual = board.GetPosition(2, 2);
 
@@ -261,9 +260,9 @@ namespace ChessEngineTests
         public void SetPosition_WhiteRookToFirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheSetValue()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Square(1, 1, new Rook(PieceColor.White));
+            var expected = new Square(1, 1, new Rook(board, PieceColor.White));
 
-            board.SetPosition(1, 1, new Rook(PieceColor.White));
+            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
             var actual  = board.GetPosition(1, 1);
 
             Assert.AreEqual(expected, actual);
@@ -273,9 +272,9 @@ namespace ChessEngineTests
         public void SetPosition_BlackRookToFirstFileAndEightRankWhenBoardIsEmpty_GetPositionReturnsTheSetValue()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Square(1, 8, new Rook(PieceColor.Black));
+            var expected = new Square(1, 8, new Rook(board, PieceColor.Black));
 
-            board.SetPosition(1, 8, new Rook(PieceColor.Black));
+            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
             var actual = board.GetPosition(1, 8);
 
             Assert.AreEqual(expected, actual);
@@ -285,9 +284,9 @@ namespace ChessEngineTests
         public void SetPosition_WhiteRookToFirstFileAndRankWhenBoardIsEmpty_GetPositionFromDifferingCoordinatesIsNotEqual()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Square(1, 1, new Rook(PieceColor.White));
+            var expected = new Square(1, 1, new Rook(board, PieceColor.White));
 
-            board.SetPosition(1, 1, new Rook(PieceColor.White));
+            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
             var actual = board.GetPosition(2, 4);
 
             Assert.AreNotEqual(expected, actual);
@@ -364,35 +363,25 @@ namespace ChessEngineTests
         #region Move
 
         [TestMethod]
-        public void Move_WhenIllegalMoveMade_ThrowsIllegalMoveExceptionWithSpecificMessage()
-        {
-            Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(PieceColor.White));
-
-            AssertHelper.Throws<IllegalMoveException>(
-                () => board.Move(board.GetPosition(1, 2), board.GetPosition(1, 5)), string.Empty);
-        }
-
-        [TestMethod]
         public void Move_ChessPieceIsMovedToEmptyPosition_TargetPositionReturnsTheChessPieceAsOccupier()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(PieceColor.White));
+            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
 
             board.Move(board.GetPosition(1, 2), board.GetPosition(1, 3));
 
-            Assert.AreEqual(new Pawn(PieceColor.White), board.GetPosition(1, 3).Occupier);
+            Assert.AreEqual(new Pawn(board, PieceColor.White), board.GetPosition(1, 3).Occupier);
         }
 
         [TestMethod]
         public void Move_ChessPieceIsMovedToEmptyPosition_OriginalPositionsOccupierReturnsNull()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(PieceColor.White));
+            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
 
             board.Move(board.GetPosition(1, 2), board.GetPosition(1, 3));
 
-            Assert.IsNull(board.GetPosition(1, 2).Occupier);
+            Assert.AreEqual(new NullPiece(), board.GetPosition(1, 2).Occupier);
         }
 
         [TestMethod]
@@ -400,7 +389,7 @@ namespace ChessEngineTests
         {
             Board board = CreateEmptyBoard();
             board.Setup();
-            Pawn expected = new Pawn(PieceColor.White);
+            Pawn expected = new Pawn(board, PieceColor.White);
 
             board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
             board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
@@ -408,7 +397,7 @@ namespace ChessEngineTests
             board.Move(board.GetPosition(4, 5), board.GetPosition(3, 6));
             var actual = board.GetPosition(3, 6).Occupier;
 
-            Assert.IsNull(board.GetPosition(4, 5).Occupier);
+            Assert.AreEqual(new NullPiece(), board.GetPosition(4, 5).Occupier);
             Assert.AreEqual(expected, actual);
         }
 
@@ -425,7 +414,7 @@ namespace ChessEngineTests
 
             var positionUnderEnPassantThreat = board.GetPosition(3, 5);
 
-            Assert.IsNull(positionUnderEnPassantThreat.Occupier);
+            Assert.AreEqual(new NullPiece(), positionUnderEnPassantThreat.Occupier);
         }
 
         [TestMethod]
@@ -441,15 +430,15 @@ namespace ChessEngineTests
 
             var positionUnderEnPassantThreat = board.GetPosition(3, 4);
 
-            Assert.IsNull(positionUnderEnPassantThreat.Occupier);
+            Assert.AreEqual(new NullPiece(), positionUnderEnPassantThreat.Occupier);
         }
 
         [TestMethod]
         public void Move_WhiteKingMakesKingsideCastlingMove_KingsideRookIsMovedToKingsLeftsidePosition()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.White);
-            board.SetPosition(5, 1, new King(PieceColor.White));
+            var expected = new Rook(board, PieceColor.White);
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
             board.SetPosition(8, 1, expected);
 
 
@@ -463,8 +452,8 @@ namespace ChessEngineTests
         public void Move_BlackKingMakesKingsideCastlingMove_KingsideRookIsMovedToKingsRightsidePosition()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.Black);
-            board.SetPosition(5, 8, new King(PieceColor.Black));
+            var expected = new Rook(board, PieceColor.Black);
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
             board.SetPosition(8, 8, expected);
 
             board.Move(board.GetPosition(5, 8), board.GetPosition(7, 8));
@@ -477,8 +466,8 @@ namespace ChessEngineTests
         public void Move_WhiteKingMakesQueensideCastlingMove_QueensideRookIsMovedToKingsRightsidePosition()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.White);
-            board.SetPosition(5, 1, new King(PieceColor.White));
+            var expected = new Rook(board, PieceColor.White);
+            board.SetPosition(5, 1, new King(board, PieceColor.White));
             board.SetPosition(1, 1, expected);
 
             board.Move(board.GetPosition(5, 1), board.GetPosition(3, 1));
@@ -491,8 +480,8 @@ namespace ChessEngineTests
         public void Move_BlackKingMakesQueensideCastlingMove_QueensideRookIsMoveToKingsLeftsidePosition()
         {
             Board board = CreateEmptyBoard();
-            var expected = new Rook(PieceColor.Black);
-            board.SetPosition(5, 8, new King(PieceColor.Black));
+            var expected = new Rook(board, PieceColor.Black);
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
             board.SetPosition(1, 8, expected);
 
             board.Move(board.GetPosition(5, 8), board.GetPosition(3, 8));

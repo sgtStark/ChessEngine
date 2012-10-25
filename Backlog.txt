@@ -213,7 +213,7 @@
 
 
 14.9.2012
--- TODO: Toteuta End Of Game tarkastus
+-- TODO: Toteuta Checkmate tarkastus
 -- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
 -- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
 -- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
@@ -226,7 +226,23 @@
 - Lisäsin edellisen bugin korjaavan yksikkötestin ja toteutuksen.
 - Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun musta siirtää shakkinappulan ruutuun josta se on hyökkäyslinjassa valkoisen kuninkaan kanssa palautuu GameState.Check.
 - Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun kuningas siirretään pois Check-uhatulta ruudulta. Palautuu GameState.Normal -tilaan.
-- Lisäsin yksikkötestin Game.State-propertyn päivittymisell, kun toinen nappula siirretään blockkaamaan Check. Palautuu GameState.Normal -tilaan.
+- Lisäsin yksikkötestin Game.State-propertyn päivittymiselle, kun toinen nappula siirretään blockkaamaan Check. Palautuu GameState.Normal -tilaan.
 - Korjasin ReSharper 7.0.1 Code Issues In Solution ehdotukset, jotka oli järkevää korjata.
 - Järjestelin GameTests-luokan testit järjestykseen UnitOfWork:n mukaisesti.
 - 
+
+
+25.10.2012
+-- TODO: DrawByRepetition tarkastus
+-- TODO: DrawInsufficientMaterial tarkastus
+-- TODO: Draw50MoveRule tarkastus
+-- TODO: Toteuta Stalemate tarkastus
+-- TODO: Toteuta Checkmate tarkastus
+-- TODO: Heti kun tulee tarvetta tehdä lisää erilaisia poikkeuksia. Pitää niille erottaa yleiskäyttöinen pohjaluokka ChessEngineException.
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+- Refactoroitu ChessPiece-luokka ja siitä johdetut luokat
+- Refactoroitu IMovingStategy-rajapinnan toteutukset

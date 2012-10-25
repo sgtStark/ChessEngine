@@ -5,91 +5,43 @@ namespace ChessEngineLib.ChessPieces
 {
     using MovingStrategies;
 
-    /// <summary>
-    /// Abstrakti yliluokka shakkinappulalle, joka sisältää kaikille 
-    /// konkreettisille shakkinappuloille yhteiset toiminnot ja tiedot
-    /// sekä tarjoaa mahdollisuuden hyödyntää monimuotoisuutta(polymorphism).
-    /// </summary>
     public abstract class ChessPiece
     {
-        #region Propertyt
+        protected readonly Board Board;
 
         public PieceColor Color { get; private set; }
+        public int MoveCount { get { return GetMovingStrategy().MoveCount; } }
 
-        public int MoveCount { get; set; }
-
-        #endregion Propertyt
-
-        #region Konstruktorit
-
-        protected ChessPiece(PieceColor color)
+        protected ChessPiece(Board board, PieceColor color)
         {
+            Board = board;
             Color = color;
-            MoveCount = 0;
         }
 
-        #endregion Konstruktorit
+        public abstract bool IsLegalMove(Square origin, Square destination);
 
-        #region Julkiset metodit
-
-        /// <summary>
-        /// Tarkastaa onko siirto laillinen annetulla laudalla.
-        /// </summary>
-        /// <param name="board">Shakkilauta, jolla siirto tehdään.</param>
-        /// <param name="origin">Lähtöpiste, jolla olevan shakkinappulan siirtoa tarkastetaan.</param>
-        /// <param name="destination">Päätepiste, johon lähtöpisteen shakkinappulaa ollaan siirtämässä.</param>
-        /// <returns>True, jos siirto on laillinen. False, jos siirto on laiton.</returns>
-        public abstract bool IsLegalMove(Board board, Square origin, Square destination);
-
-        /// <summary>
-        /// Hakee shakkinappulaan liittyvän siirto strategian.
-        /// Siirto strategia käsittelee erikoistapaukset kuten En Passant -siirto sotilaalla,
-        /// Castling-siirrot kuningkaalla.
-        /// </summary>
-        public virtual IMovingStrategy GetMovingStrategy()
+        public virtual MovingStrategy GetMovingStrategy()
         {
-            return new NormalMovingStrategy();
+            return new NormalMovingStrategy(Board);
         }
 
-        #endregion Julkiset metodit
-
-        #region Yksityiset metodit
-
-        /// <summary>
-        /// Tarkastaa onko shakkilaudalla tehtävän siirron linjalla muita blokkaavia shakkinappuloita.
-        /// </summary>
-        /// <param name="board">Shakkilauta</param>
-        /// <param name="origin">Siirron lähtöpiste</param>
-        /// <param name="destination">Siirron päätepiste</param>
-        /// <returns>True, jos siirtolinjalla on blokkaavia shakkinappuloita. False, jos siirtolinja on vapaa.</returns>
-        protected bool IsPathObscured(Board board, Square origin, Square destination)
+        protected bool PathIsFree(Square origin, Square destination)
         {
-            IList<Square> path = null;
+            IList<Square> path = new List<Square>();
 
             if (origin.Color == PieceColor.White)
             {
-                path = GetPositionsBetween(board, origin, destination);
+                path = GetPositionsBetween(origin, destination);
             }
             else if (origin.Color == PieceColor.Black)
             {
-                path = GetPositionsBetween(board, destination, origin);
+                path = GetPositionsBetween(destination, origin);
             }
 
-            // Poistetaan lähtöpiste, koska siinä meillä on nappula jota ollaan siirtämässä.
-            path.Remove(origin);
-            path.Remove(destination);
-
-            return path.Any(position => position.Color != PieceColor.Empty);
+            return path.All(position => position.Color == PieceColor.Empty);
         }
 
-        /// <summary>
-        /// Hakee siirtolinjan pisteet, lähtö- ja päätepisteet mukaanlukien.
-        /// </summary>
-        /// <param name="board">Shakkilauta</param>
-        /// <param name="origin">Lähtöpiste</param>
-        /// <param name="destination">Päätepiste</param>
-        /// <returns>Lista siirtolinjan pisteistä.</returns>
-        private IList<Square> GetPositionsBetween(Board board, Square origin, Square destination)
+        private IList<Square> GetPositionsBetween(Square origin, Square destination)
         {
             var positionsBetweenToReturn = new List<Square>();
             
@@ -98,7 +50,7 @@ namespace ChessEngineLib.ChessPieces
             {
                 for (int rank = origin.Rank; rank <= destination.Rank; rank++)
                 {
-                    positionsBetweenToReturn.Add(board.GetPosition(file, rank));
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
                 }
             }
 
@@ -107,13 +59,14 @@ namespace ChessEngineLib.ChessPieces
             {
                 for (int rank = origin.Rank; rank <= destination.Rank; rank++)
                 {
-                    positionsBetweenToReturn.Add(board.GetPosition(file, rank));
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
                 }
             }
 
+            positionsBetweenToReturn.Remove(origin);
+            positionsBetweenToReturn.Remove(destination);
+
             return positionsBetweenToReturn;
         }
-
-        #endregion Yksityiset metodit
     }
 }

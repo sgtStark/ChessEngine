@@ -1,11 +1,22 @@
-using System.Linq;
 using System.Collections.Generic;
-using ChessEngineLib.ChessPieces;
 
 namespace ChessEngineLib
 {
+    using ChessPieces;
+
     public class Game
     {
+        private Square _whiteKingsSquare;
+        private Square _blackKingsSquare;
+
+        private readonly List<Square> _occupiedSquares;
+        private readonly List<Square> _squaresOccupiedByOpponent;
+
+        private Square _currentColorKingSquare;
+
+        private PieceColor _currentColor;
+
+
         #region Propertyt
 
         public Board Board { get; private set; }
@@ -24,6 +35,12 @@ namespace ChessEngineLib
             board.OnMove += Update;
             State = GameState.SetupMode;
             PlayerToMove = PieceColor.Empty;
+
+            _whiteKingsSquare = null;
+            _blackKingsSquare = null;
+
+            _occupiedSquares = new List<Square>();
+            _squaresOccupiedByOpponent = new List<Square>();
         }
 
         #endregion Konstruktorit
@@ -58,18 +75,14 @@ namespace ChessEngineLib
         private bool IsKingChecked(PieceColor color)
         {
             var boolToReturn = false;
-            var occupiedSquares = OccupiedSquares();
-            var king = new King(color);
+            RefreshOccupiedSquares();
+            _currentColor = color;
+            Board.Iterate(KingSearchHandler);
+            Board.Iterate(OpponentSquareHandler);
 
-            var squareOccupiedByKing = occupiedSquares
-                .SingleOrDefault(square => king.Equals(square.Occupier));
-
-            var whiteOccupiedSquares = occupiedSquares
-                .Where(square => square.Color.IsOppositeColor(color));
-
-            foreach (var whiteOccupiedSquare in whiteOccupiedSquares)
+            foreach (var square in _squaresOccupiedByOpponent)
             {
-                if (Board.IsLegalMove(whiteOccupiedSquare, squareOccupiedByKing))
+                if (Board.IsLegalMove(square, _currentColorKingSquare))
                 {
                     boolToReturn = true;
                 }
@@ -78,24 +91,37 @@ namespace ChessEngineLib
             return boolToReturn;
         }
 
-        private List<Square> OccupiedSquares()
+        private void OpponentSquareHandler(Square square)
         {
-            var occupiedSquaresToReturn = new List<Square>();
+            if (_currentColor.IsOppositeColor(square.Color))
+                _squaresOccupiedByOpponent.Add(square);
+        }
 
-            for (int i = 1; i < 9; i++)
+        private void KingSearchHandler(Square square)
+        {
+            if (IsOccupied(square)
+                && square.Occupier is King
+                && square.Color == _currentColor)
             {
-                for (int j = 1; j < 9; j++)
-                {
-                    var square = Board.GetPosition(i, j);
-
-                    if (square.Occupier != null)
-                    {
-                        occupiedSquaresToReturn.Add(square);
-                    }
-                }
+                _currentColorKingSquare = square;
             }
+        }
 
-            return occupiedSquaresToReturn;
+        private void RefreshOccupiedSquares()
+        {
+            _occupiedSquares.Clear();
+            Board.Iterate(OnIterationHandler);
+        }
+
+        private void OnIterationHandler(Square square)
+        {
+            if (IsOccupied(square))
+                _occupiedSquares.Add(square);
+        }
+
+        private bool IsOccupied(Square square)
+        {
+            return square.Occupier != null;
         }
 
         #endregion Yksityiset metodit

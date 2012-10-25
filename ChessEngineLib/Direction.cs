@@ -20,26 +20,31 @@
     /// </summary>
     public static class DirectionExtensions
     {
-        public static bool IsAlongFileOrRank(this Direction directionOfTheMove)
+        public static bool Forward(this Direction movingDirection)
         {
-            return (directionOfTheMove == Direction.Forward
-                    || directionOfTheMove == Direction.Backward
-                    || directionOfTheMove == Direction.Right
-                    || directionOfTheMove == Direction.Left);
+            return (movingDirection == Direction.Forward);
         }
 
-        public static bool IsAlongDiagonal(this Direction directionOfTheMove)
+        public static bool AlongFileOrRank(this Direction movingDirection)
         {
-            return (directionOfTheMove == Direction.ForwardOnRightDiagonal
-                    || directionOfTheMove == Direction.ForwardOnLeftDiagonal
-                    || directionOfTheMove == Direction.BackwardOnRightDiagonal
-                    || directionOfTheMove == Direction.BackwardOnLeftDiagonal);
+            return (movingDirection == Direction.Forward
+                    || movingDirection == Direction.Backward
+                    || movingDirection == Direction.Right
+                    || movingDirection == Direction.Left);
         }
 
-        public static bool IsOnForwardDiagonal(this Direction directionOfTheMove)
+        public static bool Diagonally(this Direction movingDirection)
         {
-            return (directionOfTheMove == Direction.ForwardOnRightDiagonal
-                    || directionOfTheMove == Direction.ForwardOnLeftDiagonal);
+            return (movingDirection == Direction.ForwardOnRightDiagonal
+                    || movingDirection == Direction.ForwardOnLeftDiagonal
+                    || movingDirection == Direction.BackwardOnRightDiagonal
+                    || movingDirection == Direction.BackwardOnLeftDiagonal);
+        }
+
+        public static bool DiagonallyForward(this Direction movingDirection)
+        {
+            return (movingDirection == Direction.ForwardOnRightDiagonal
+                    || movingDirection == Direction.ForwardOnLeftDiagonal);
         }
     }
 }

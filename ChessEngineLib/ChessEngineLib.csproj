@@ -45,6 +45,7 @@
     <Compile Include="ChessPieces\ChessPiece.cs" />
     <Compile Include="ChessPieces\King.cs" />
     <Compile Include="ChessPieces\Knight.cs" />
+    <Compile Include="ChessPieces\NullPiece.cs" />
     <Compile Include="ChessPieces\Queen.cs" />
     <Compile Include="ChessPieces\Rook.cs" />
     <Compile Include="Direction.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Exceptions\IllegalMoveException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MoveEventArgs.cs" />
-    <Compile Include="MovingStrategies\IMovingStrategy.cs" />
+    <Compile Include="MovingStrategies\MovingStrategy.cs" />
     <Compile Include="MovingStrategies\KingMovingStrategy.cs" />
     <Compile Include="MovingStrategies\NormalMovingStrategy.cs" />
     <Compile Include="MovingStrategies\PawnMovingStrategy.cs" />

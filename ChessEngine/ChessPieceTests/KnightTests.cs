@@ -16,8 +16,8 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void Equals_TwoOppositeColorKnights_AreNotEqual()
         {
-            Knight knight1 = new Knight(PieceColor.White);
-            Knight knight2 = new Knight(PieceColor.Black);
+            Knight knight1 = new Knight(new Board(), PieceColor.White);
+            Knight knight2 = new Knight(new Board(), PieceColor.Black);
 
             Assert.AreNotEqual(knight1, knight2);
         }
@@ -25,10 +25,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void Equals_TwoSameColorKnights_AreEqual()
         {
-            Knight knight1 = new Knight(PieceColor.White);
-            Knight knight2 = new Knight(PieceColor.White);
-            Knight knight3 = new Knight(PieceColor.Black);
-            Knight knight4 = new Knight(PieceColor.Black);
+            Knight knight1 = new Knight(new Board(), PieceColor.White);
+            Knight knight2 = new Knight(new Board(), PieceColor.White);
+            Knight knight3 = new Knight(new Board(), PieceColor.Black);
+            Knight knight4 = new Knight(new Board(), PieceColor.Black);
 
             Assert.AreEqual(knight1, knight2);
             Assert.AreEqual(knight3, knight4);
@@ -42,7 +42,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesTwoSquaresForwardAndOneSquaresRight_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(3, 3));
 
@@ -53,7 +53,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesTwoSquaresForwardAndTwoSquaresRight_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(4, 3));
 
@@ -64,7 +64,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesOneSquareForwardAndTwoSquaresRight_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(4, 2));
 
@@ -75,7 +75,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteDarkSquareKnightMovesTwoSquaresForwardAndOneSquareLeft_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(7, 1, new Knight(PieceColor.White));
+            board.SetPosition(7, 1, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(7, 1), board.GetPosition(6, 3));
 
@@ -86,7 +86,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteDarkSquareKnightMovesOneSquareForwardAndTwoSquaresLeft_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(7, 1, new Knight(PieceColor.White));
+            board.SetPosition(7, 1, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(7, 1), board.GetPosition(5, 2));
 
@@ -97,7 +97,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesTwoSquaresBackwardAndOneSquaresRight_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(3, 3, new Knight(PieceColor.White));
+            board.SetPosition(3, 3, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(3, 3), board.GetPosition(2, 1));
 
@@ -108,7 +108,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesOneSquareBackwardAndTwoSquaresRight_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(4, 2, new Knight(PieceColor.White));
+            board.SetPosition(4, 2, new Knight(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(4, 2), board.GetPosition(2, 1));
 
@@ -119,7 +119,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackDarkSquareKnightMovesTwoSquaresForwardAndOneSquareRight_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 8, new Knight(PieceColor.Black));
+            board.SetPosition(2, 8, new Knight(board, PieceColor.Black));
 
             var result = board.IsLegalMove(board.GetPosition(2, 8), board.GetPosition(1, 6));
 
@@ -130,7 +130,7 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackDarkSquareKnightMovesOneSquareForwardAndTwoSquaresLeft_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 8, new Knight(PieceColor.Black));
+            board.SetPosition(2, 8, new Knight(board, PieceColor.Black));
 
             var result = board.IsLegalMove(board.GetPosition(2, 8), board.GetPosition(4, 7));
 
@@ -141,8 +141,8 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesTwoSquaresForwardAndOneSquareRightWhileObscuredInFront_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
-            board.SetPosition(2, 2, new Pawn(PieceColor.White));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
+            board.SetPosition(2, 2, new Pawn(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(3, 3));
 
@@ -153,8 +153,8 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesOneSquareForwardAndTwoSquaresRightToPositionWhichIsOccupiedBySameColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
-            board.SetPosition(3, 3, new Pawn(PieceColor.White));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
+            board.SetPosition(3, 3, new Pawn(board, PieceColor.White));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(3, 3));
 
@@ -165,8 +165,8 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhiteLightSquareKnightMovesOneSquareForwardAndTwoSquaresRightToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 1, new Knight(PieceColor.White));
-            board.SetPosition(3, 3, new Pawn(PieceColor.Black));
+            board.SetPosition(2, 1, new Knight(board, PieceColor.White));
+            board.SetPosition(3, 3, new Pawn(board, PieceColor.Black));
 
             var result = board.IsLegalMove(board.GetPosition(2, 1), board.GetPosition(3, 3));
 
