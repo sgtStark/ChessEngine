@@ -10,12 +10,9 @@ namespace ChessEngineLib.ChessPieces
         public override bool IsLegalMove(Square origin, Square destination)
         {
             if (origin.Color == destination.Color) return false;
+            if (origin.AlongFileOrRank(destination)) return true;
 
-            var moving = origin.GetDirectionTo(destination);
-
-            if (moving.AlongFileOrRank()) return true;
-
-            return moving.Diagonally();
+            return origin.DiagonallyTo(destination);
         }
 
         private bool Equals(Queen other)

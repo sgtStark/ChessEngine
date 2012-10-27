@@ -48,10 +48,8 @@
     <Compile Include="ChessPieces\NullPiece.cs" />
     <Compile Include="ChessPieces\Queen.cs" />
     <Compile Include="ChessPieces\Rook.cs" />
-    <Compile Include="Direction.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="ChessPieces\Pawn.cs" />
-    <Compile Include="Exceptions\IllegalMoveException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MoveEventArgs.cs" />
     <Compile Include="MovingStrategies\MovingStrategy.cs" />

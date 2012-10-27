@@ -28,27 +28,23 @@ namespace ChessEngineLib.ChessPieces
 
         private bool MovingSingleRankForward(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
             var distance = origin.GetDistanceOfRanks(destination);
 
-            return (moving.Forward() && distance == 1 && destination.Color == PieceColor.Empty);
+            return (origin.ForwardTo(destination) && distance == 1 && destination.Color == PieceColor.Empty);
         }
 
         private bool Attacking(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
             var distance = origin.GetDistanceOfRanks(destination);
 
             return (origin.Color != destination.Color && destination.Color != PieceColor.Empty
-                    && distance == 1 && moving.DiagonallyForward());
+                    && distance == 1 && origin.DiagonallyForwardTo(destination));
         }
 
         private bool MovingTwoRanksForwardFromStartingRank(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
-
             return (FromStartingRank(origin)
-                    && moving.Forward()
+                    && origin.ForwardTo(destination)
                     && origin.GetDistanceOfRanks(destination) == 2
                     && PathIsFree(origin, destination));
         }

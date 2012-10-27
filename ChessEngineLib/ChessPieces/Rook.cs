@@ -11,9 +11,7 @@
         {
             if (origin.Color == destination.Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
-
-            return (moving.AlongFileOrRank() && PathIsFree(origin, destination));
+            return (origin.AlongFileOrRank(destination) && PathIsFree(origin, destination));
         }
 
         private bool Equals(Rook other)

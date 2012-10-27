@@ -11,9 +11,7 @@ namespace ChessEngineLib.ChessPieces
         {
             if (origin.Color == destination.Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
-
-            return (moving.Diagonally() && PathIsFree(origin, destination));
+            return (origin.DiagonallyTo(destination) && PathIsFree(origin, destination));
         }
 
         private bool Equals(Bishop other)
