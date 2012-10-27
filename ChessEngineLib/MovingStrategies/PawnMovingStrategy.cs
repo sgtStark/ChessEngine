@@ -41,11 +41,10 @@
         {
             if (origin.Color == GetEnPassantSquare(origin, destination).Color) return false;
 
-            var distance = origin.GetDistanceOfRanks(destination);
             var occupierOfEnPassantPosition = GetEnPassantSquare(origin, destination).Occupier;
 
             return (origin.DiagonallyForwardTo(destination)
-                    && distance == 1
+                    && origin.DistanceOfRanksIsOneTo(destination)
                     && destination.Color == PieceColor.Empty
                     && occupierOfEnPassantPosition.MoveCount == 1);
         }

@@ -27,7 +27,7 @@
             var kingsideRookSquare = GetKingsideRookSquare(origin);
 
             if (origin.Color != kingsideRookSquare.Color) return;
-            if (origin.GetDistanceOfFiles(destination) != 2) return;
+            if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(kingsideRookSquare.Occupier is Rook)) return;
 
             Board.SetPosition(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece());
@@ -46,7 +46,7 @@
             var queensideRookSquare = GetQueensideRookSquare(origin);
 
             if (origin.Color != queensideRookSquare.Color) return;
-            if (origin.GetDistanceOfFiles(destination) != 2) return;
+            if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(queensideRookSquare.Occupier is Rook)) return;
 
             Board.SetPosition(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece());

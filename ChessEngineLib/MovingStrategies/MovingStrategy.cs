@@ -1,7 +1,7 @@
-﻿using ChessEngineLib.ChessPieces;
-
-namespace ChessEngineLib.MovingStrategies
+﻿namespace ChessEngineLib.MovingStrategies
 {
+    using ChessPieces;
+
     public abstract class MovingStrategy
     {
         protected readonly Board Board;

@@ -52,7 +52,7 @@ namespace ChessEngineLib
 
         public bool DiagonallyForwardTo(Square destination)
         {
-            if (GetDistanceOfFiles(destination) != GetDistanceOfRanks(destination)) return false;
+            if (Math.Abs(File - destination.File) != Math.Abs(Rank - destination.Rank)) return false;
             if (DiagonallyForwardToLeftForWhite(destination)) return true;
             if (DiagonallyForwardToRightForWhite(destination)) return true;
             if (DiagonallyForwardToLeftForBlack(destination)) return true;
@@ -87,7 +87,7 @@ namespace ChessEngineLib
 
         public bool DiagonallyTo(Square destination)
         {
-            if (GetDistanceOfFiles(destination) != GetDistanceOfRanks(destination)) return false;
+            if (Math.Abs(File - destination.File) != Math.Abs(Rank - destination.Rank)) return false;
             if (File < destination.File && Rank < destination.Rank) return true;
             if (File > destination.File && Rank > destination.Rank) return true;
             if (File > destination.File && Rank < destination.Rank) return true;
@@ -96,14 +96,34 @@ namespace ChessEngineLib
             return false;
         }
 
-        public int GetDistanceOfRanks(Square destination)
+        public bool DistanceOfRanksIsZeroTo(Square destination)
         {
-            return Math.Abs(Rank - destination.Rank);
+            return (Math.Abs(Rank - destination.Rank) == 0);
         }
 
-        public int GetDistanceOfFiles(Square destination)
+        public bool DistanceOfRanksIsOneTo(Square destination)
         {
-            return Math.Abs(File - destination.File);
+            return (Math.Abs(Rank - destination.Rank) == 1);
+        }
+
+        public bool DistanceOfRanksIsTwoTo(Square destination)
+        {
+            return (Math.Abs(Rank - destination.Rank) == 2);
+        }
+
+        public bool DistanceOfFilesIsZeroTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 0);
+        }
+
+        public bool DistanceOfFilesIsOneTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 1);
+        }
+
+        public bool DistanceOfFilesIsNotTwoTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) != 2);
         }
 
         public bool Equals(Square other)

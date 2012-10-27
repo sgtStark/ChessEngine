@@ -24,20 +24,20 @@ namespace ChessEngineLib.ChessPieces
 
         private bool MovingOneSquareLeftOrRight(Square origin, Square destination)
         {
-            return (origin.GetDistanceOfRanks(destination) == 0
-                   && origin.GetDistanceOfFiles(destination) == 1);
+            return (origin.DistanceOfRanksIsZeroTo(destination)
+                   && origin.DistanceOfFilesIsOneTo(destination));
         }
 
         private bool MovingOneSquareForwardOrBackward(Square origin, Square destination)
         {
-            return (origin.GetDistanceOfRanks(destination) == 1
-                    && origin.GetDistanceOfFiles(destination) == 0);
+            return (origin.DistanceOfRanksIsOneTo(destination)
+                    && origin.DistanceOfFilesIsZeroTo(destination));
         }
 
         private bool MovingOneSquareDiagonally(Square origin, Square destination)
         {
-            return (origin.GetDistanceOfRanks(destination) == 1
-                    && origin.GetDistanceOfFiles(destination) == 1);
+            return (origin.DistanceOfRanksIsOneTo(destination)
+                    && origin.DistanceOfFilesIsOneTo(destination));
         }
 
         public override MovingStrategy GetMovingStrategy()
