@@ -1,51 +1,32 @@
 using System.Collections.Generic;
+using System.Linq;
+using ChessEngineLib.GameStateDetection;
 
 namespace ChessEngineLib
 {
-    using ChessPieces;
-
     public class Game
     {
-        private Square _whiteKingsSquare;
-        private Square _blackKingsSquare;
+        private readonly List<Square> _allSquares;
+        private readonly List<Square> _squaresOccupiedByPlayer;
+        private readonly CheckStateDetector _checkStateDetector;
 
-        private readonly List<Square> _occupiedSquares;
-        private readonly List<Square> _squaresOccupiedByOpponent;
-
-        private Square _currentColorKingSquare;
-
-        private PieceColor _currentColor;
-
-
-        #region Propertyt
 
         public Board Board { get; private set; }
-
         public GameState State { get; private set; }
-
         public PieceColor PlayerToMove { get; private set; }
 
-        #endregion Propertyt
-
-        #region Konstruktorit
 
         public Game(Board board)
         {
             Board = board;
-            board.OnMove += Update;
+            board.OnMove += OnChessPieceMoved;
             State = GameState.SetupMode;
             PlayerToMove = PieceColor.Empty;
 
-            _whiteKingsSquare = null;
-            _blackKingsSquare = null;
-
-            _occupiedSquares = new List<Square>();
-            _squaresOccupiedByOpponent = new List<Square>();
+            _allSquares = new List<Square>();
+            _squaresOccupiedByPlayer = new List<Square>();
+            _checkStateDetector = new CheckStateDetector();
         }
-
-        #endregion Konstruktorit
-
-        #region Julkiset metodit
 
         public void Start()
         {
@@ -53,18 +34,29 @@ namespace ChessEngineLib
             PlayerToMove = PieceColor.White;
         }
 
-        #endregion Julkiset metodit
-
-        #region Yksityiset metodit
-
-        private void Update(object sender, MoveEventArgs e)
+        public void Start(PieceColor playerToMove)
         {
-            PlayerToMove = e.From.Color == PieceColor.White ? PieceColor.Black : PieceColor.White;
+            State = GameState.Normal;
+            PlayerToMove = playerToMove;
+            Update(playerToMove == PieceColor.White ? PieceColor.Black : PieceColor.White);
+        }
 
-            if (IsKingChecked(PieceColor.White)
-                || IsKingChecked(PieceColor.Black))
+        private void OnChessPieceMoved(object sender, MoveEventArgs e)
+        {
+            Update(e.From.Color);
+        }
+
+        private void Update(PieceColor lastMovedColor)
+        {
+            PlayerToMove = lastMovedColor == PieceColor.White ? PieceColor.Black : PieceColor.White;
+
+            if (_checkStateDetector.KingIsChecked(Board, PieceColor.White)
+                || _checkStateDetector.KingIsChecked(Board, PieceColor.Black))
             {
-                State = GameState.Check;
+                if (HasLegalMoves())
+                    State = GameState.Check;
+                else
+                    State = GameState.CheckMate;
             }
             else
             {
@@ -72,58 +64,47 @@ namespace ChessEngineLib
             }
         }
 
-        private bool IsKingChecked(PieceColor color)
+        private bool HasLegalMoves()
         {
+            // Apumuuttuja
             var boolToReturn = false;
-            RefreshOccupiedSquares();
-            _currentColor = color;
-            Board.Iterate(KingSearchHandler);
-            Board.Iterate(OpponentSquareHandler);
 
-            foreach (var square in _squaresOccupiedByOpponent)
+            // Haetaan kaikki laudan ruudut
+            Board.Iterate(square => _allSquares.Add(square));
+
+            // Haetaan siirtävän pelaajan ruudit
+            Board.Iterate(PlayerSquareHandler);
+
+            // Käydään kaikki siirtävän pelaajan ruudut läpi tarkastaen voidaanko
+            // ruudun nappulaa siirtää mihinkään
+            foreach (var origin in _squaresOccupiedByPlayer)
             {
-                if (Board.IsLegalMove(square, _currentColorKingSquare))
+                var destinationSquares = _allSquares.Where(square => !square.Equals(origin));
+
+                foreach (var destinationSquare in destinationSquares)
                 {
-                    boolToReturn = true;
+                    if (Board.IsLegalMove(origin, destinationSquare))
+                    {
+                        var simulated = Board.SimulatedMove(origin, destinationSquare);
+
+                        if (!_checkStateDetector.KingIsChecked(simulated, PlayerToMove))
+                        {
+                            boolToReturn = true;
+                            break;
+                        }
+                    }
                 }
             }
 
             return boolToReturn;
         }
 
-        private void OpponentSquareHandler(Square square)
+        private void PlayerSquareHandler(Square square)
         {
-            if (_currentColor.IsOppositeColor(square.Color))
-                _squaresOccupiedByOpponent.Add(square);
-        }
-
-        private void KingSearchHandler(Square square)
-        {
-            if (IsOccupied(square)
-                && square.Occupier is King
-                && square.Color == _currentColor)
+            if (square.Color == PlayerToMove)
             {
-                _currentColorKingSquare = square;
+                _squaresOccupiedByPlayer.Add(square);
             }
         }
-
-        private void RefreshOccupiedSquares()
-        {
-            _occupiedSquares.Clear();
-            Board.Iterate(OnIterationHandler);
-        }
-
-        private void OnIterationHandler(Square square)
-        {
-            if (IsOccupied(square))
-                _occupiedSquares.Add(square);
-        }
-
-        private bool IsOccupied(Square square)
-        {
-            return square.Occupier != null;
-        }
-
-        #endregion Yksityiset metodit
     }
 }

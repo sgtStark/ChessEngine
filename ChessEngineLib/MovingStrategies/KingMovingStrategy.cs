@@ -106,5 +106,11 @@
                        ? Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_WHITE)
                        : Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_BLACK);
         }
+
+        public override MovingStrategy Clone(Board board)
+        {
+            var clone = new KingMovingStrategy(board) {MoveCount = MoveCount};
+            return clone;
+        }
     }
 }

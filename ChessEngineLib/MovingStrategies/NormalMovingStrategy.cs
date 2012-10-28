@@ -1,6 +1,4 @@
-﻿using ChessEngineLib.ChessPieces;
-
-namespace ChessEngineLib.MovingStrategies
+﻿namespace ChessEngineLib.MovingStrategies
 {
     internal class NormalMovingStrategy : MovingStrategy
     {
@@ -12,6 +10,14 @@ namespace ChessEngineLib.MovingStrategies
         public override bool IsSpecialMove(Square origin, Square destination)
         {
             return false;
+        }
+
+        public override MovingStrategy Clone(Board board)
+        {
+            return new NormalMovingStrategy(board)
+                {
+                    MoveCount = MoveCount
+                };
         }
     }
 }

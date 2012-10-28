@@ -12,13 +12,14 @@ namespace ChessEngineLib
         SetupMode,
         Normal,
         Check,
+        CheckMate
     }
 
     public static class PieceColorExtensions
     {
         public static bool IsOppositeColor(this PieceColor pieceColor, PieceColor otherPieceColor)
         {
-            return (pieceColor != otherPieceColor && otherPieceColor != PieceColor.Empty);
+            return (pieceColor != PieceColor.Empty && pieceColor != otherPieceColor && otherPieceColor != PieceColor.Empty);
         }
     }
 }

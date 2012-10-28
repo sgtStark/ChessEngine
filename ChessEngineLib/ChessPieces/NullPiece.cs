@@ -14,6 +14,21 @@
             return true;
         }
 
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return IsLegalMove(origin, destination);
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new NullPiece()
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
+        }
+
         private bool Equals(NullPiece other)
         {
             return true;

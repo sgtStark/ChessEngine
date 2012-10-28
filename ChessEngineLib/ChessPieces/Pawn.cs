@@ -26,6 +26,11 @@ namespace ChessEngineLib.ChessPieces
             return false;
         }
 
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return Attacking(origin, destination);
+        }
+
         private bool MovingSingleRankForward(Square origin, Square destination)
         {
             return (origin.ForwardTo(destination)
@@ -59,6 +64,16 @@ namespace ChessEngineLib.ChessPieces
         public override MovingStrategy GetMovingStrategy()
         {
             return _movingStrategy;
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new Pawn(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
         }
 
         private bool Equals(Pawn other)

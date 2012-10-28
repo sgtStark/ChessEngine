@@ -8,6 +8,7 @@ namespace ChessEngineLib.ChessPieces
     public abstract class ChessPiece
     {
         protected readonly Board Board;
+        protected MovingStrategy MovingStrategy;
 
         public PieceColor Color { get; private set; }
         public int MoveCount { get { return GetMovingStrategy().MoveCount; } }
@@ -16,13 +17,16 @@ namespace ChessEngineLib.ChessPieces
         {
             Board = board;
             Color = color;
+            MovingStrategy = new NormalMovingStrategy(Board);
         }
 
         public abstract bool IsLegalMove(Square origin, Square destination);
 
+        public abstract bool Attacks(Square origin, Square destination);
+
         public virtual MovingStrategy GetMovingStrategy()
         {
-            return new NormalMovingStrategy(Board);
+            return MovingStrategy;
         }
 
         protected bool PathIsFree(Square origin, Square destination)
@@ -41,32 +45,62 @@ namespace ChessEngineLib.ChessPieces
             return path.All(position => position.Color == PieceColor.Empty);
         }
 
+        // TODO: Refactoroi
         private IList<Square> GetPositionsBetween(Square origin, Square destination)
         {
             var positionsBetweenToReturn = new List<Square>();
-            
-            // Jos siirretään oikealle
-            for (int file = origin.File; file <= destination.File; file++)
-            {
-                for (int rank = origin.Rank; rank <= destination.Rank; rank++)
-                {
-                    positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
-                }
-            }
 
-            // Jos siirretään vasemmalle
-            for (int file = origin.File; file > destination.File; file--)
+            if (origin.AlongFile(destination))
             {
-                for (int rank = origin.Rank; rank <= destination.Rank; rank++)
+                for (int file = origin.File; file < destination.File; file++)
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
+
+                for (int file = origin.File; file > destination.File; file--)
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
+            }
+            else if (origin.AlongRank(destination))
+            {
+                for (int rank = origin.Rank; rank < destination.Rank; rank++)
+                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+                for (int rank = origin.Rank; rank > destination.Rank; rank--)
+                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+            }
+            else if (origin.DiagonallyTo(destination))
+            {
+                for (int file = origin.File; file < destination.File; file++)
                 {
-                    positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
+                    for (int rank = origin.Rank; rank <= destination.Rank; rank++)
+                    {
+                        if (SquareBackgroundDiffersFromOrigin(origin, rank, file))
+                            continue;
+
+                        positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
+                    }
+                }
+
+                for (int file = origin.File; file > destination.File; file--)
+                {
+                    for (int rank = origin.Rank; rank <= destination.Rank; rank++)
+                    {
+                        if (SquareBackgroundDiffersFromOrigin(origin, rank, file))
+                            continue;
+
+                        positionsBetweenToReturn.Add(Board.GetPosition(file, rank));
+                    }
                 }
             }
 
             positionsBetweenToReturn.Remove(origin);
-            positionsBetweenToReturn.Remove(destination);
 
             return positionsBetweenToReturn;
         }
+
+        //TODO: täytyy refactoroida!!
+        private bool SquareBackgroundDiffersFromOrigin(Square origin, int rank, int file)
+        {
+            return Board.IsLightSquare(file, rank) != Board.IsLightSquare(origin.File, origin.Rank);
+        }
+
+        public abstract ChessPiece Clone(Board board);
     }
 }

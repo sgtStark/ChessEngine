@@ -174,6 +174,39 @@ namespace ChessEngineTests
             Assert.AreEqual(GameState.Normal, game.State);
         }
 
+        [TestMethod]
+        public void GameState_WhiteMovesToCheckTheBlackKingAndBlackHasNoLegalMoves_GameStateIsCheckMate()
+        {
+            Game game = new Game(new Board());
+            Board board = game.Board;
+            board.SetPosition(1, 6, new King(board, PieceColor.White));
+            board.SetPosition(1, 8, new King(board, PieceColor.Black));
+            board.SetPosition(4, 6, new Bishop(board, PieceColor.White));
+            board.SetPosition(2, 5, new Bishop(board, PieceColor.White));
+
+            game.Start(PieceColor.White);
+            board.Move(board.GetPosition(2,5), board.GetPosition(3, 6));
+
+            Assert.AreEqual(GameState.CheckMate, game.State);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void GameState_BlackMovesToCheckTheWhiteKingAndWhiteHasNoLegalMoves_GameStateIsCheckMate()
+        {
+            Game game = new Game(new Board());
+            Board board = game.Board;
+            board.SetPosition(8, 1, new King(board, PieceColor.White));
+            board.SetPosition(8, 3, new King(board, PieceColor.Black));
+            board.SetPosition(7, 4, new Bishop(board, PieceColor.Black));
+            board.SetPosition(5, 3, new Bishop(board, PieceColor.Black));
+
+            game.Start(PieceColor.Black);
+            board.Move(board.GetPosition(7, 4), board.GetPosition(6, 3));
+
+            Assert.AreEqual(GameState.CheckMate, game.State);
+        }
+
         #endregion GameState tests
     }
 }

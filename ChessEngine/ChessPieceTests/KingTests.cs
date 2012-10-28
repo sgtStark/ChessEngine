@@ -302,6 +302,18 @@ namespace ChessEngineTests.ChessPieceTests
 
         #endregion Queenside Castling
 
+        [TestMethod]
+        public void IsLegalMove_WhiteKingMovesIntoAttackedSquare_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.SetPosition(1, 8, new King(board, PieceColor.Black));
+            board.SetPosition(1, 6, new King(board, PieceColor.White));
+
+            var result = board.IsLegalMove(board.GetPosition(1, 8), board.GetPosition(1, 7));
+
+            Assert.IsFalse(result);
+        }
+
         #endregion IsLegalMove
     }
 }

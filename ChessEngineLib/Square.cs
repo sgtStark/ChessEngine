@@ -38,13 +38,13 @@ namespace ChessEngineLib
             return false;
         }
 
-        private bool AlongRank(Square destination)
+        public bool AlongRank(Square destination)
         {
             return Rank > destination.Rank && File == destination.File
                    || Rank < destination.Rank && File == destination.File;
         }
 
-        private bool AlongFile(Square destination)
+        public bool AlongFile(Square destination)
         {
             return Rank == destination.Rank && File > destination.File
                    || Rank == destination.Rank && File < destination.File;
@@ -119,6 +119,11 @@ namespace ChessEngineLib
         public bool DistanceOfFilesIsOneTo(Square destination)
         {
             return (Math.Abs(File - destination.File) == 1);
+        }
+
+        public bool DistanceOfFilesIsTwoTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 2);
         }
 
         public bool DistanceOfFilesIsNotTwoTo(Square destination)

@@ -51,6 +51,7 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="ChessPieces\Pawn.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameStateDetection\CheckStateDetector.cs" />
     <Compile Include="MoveEventArgs.cs" />
     <Compile Include="MovingStrategies\MovingStrategy.cs" />
     <Compile Include="MovingStrategies\KingMovingStrategy.cs" />
@@ -59,9 +60,7 @@
     <Compile Include="Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameStateDetection\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

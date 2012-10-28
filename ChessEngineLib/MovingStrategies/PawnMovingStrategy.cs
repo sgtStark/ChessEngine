@@ -48,5 +48,13 @@
                     && destination.Color == PieceColor.Empty
                     && occupierOfEnPassantPosition.MoveCount == 1);
         }
+
+        public override MovingStrategy Clone(Board board)
+        {
+            return new PawnMovingStrategy(board)
+                {
+                    MoveCount = MoveCount
+                };
+        }
     }
 }
