@@ -11,11 +11,8 @@ namespace ChessEngineLib
         private readonly ChessPiece _occupier;
 
         public int File { get { return _file; } }
-
         public int Rank { get { return _rank; } }
-
         public PieceColor Color { get { return Occupier.Color; } }
-
         public ChessPiece Occupier { get { return _occupier; } }
 
         public Square(int file, int rank, ChessPiece occupier)
@@ -25,77 +22,113 @@ namespace ChessEngineLib
             _occupier = occupier;
         }
 
-        /// <summary>
-        /// P‰‰ttelee suunnan l‰hderuudusta kohderuutuun.
-        /// </summary>
-        /// <param name="destination">Kohderuutu</param>
-        /// <returns>Direction-enumeraation mukainen suunta.</returns>
-        public Direction GetDirectionTo(Square destination)
+        public bool ForwardTo(Square destination)
         {
-            var chessPiece = Occupier ?? destination.Occupier;
-
-            Direction result = chessPiece.Color == PieceColor.White ? Direction.Forward : Direction.Backward;
-
-            if (File < destination.File
-                && Rank < destination.Rank)
-            {
-                result = Occupier.Color == PieceColor.White
-                             ? Direction.ForwardOnLeftDiagonal
-                             : Direction.BackwardOnRightDiagonal;
-            }
-            else if (File > destination.File
-                     && Rank > destination.Rank)
-            {
-                result = Occupier.Color == PieceColor.White
-                             ? Direction.BackwardOnLeftDiagonal
-                             : Direction.ForwardOnRightDiagonal;
-            }
-            else if (File > destination.File
-                     && Rank < destination.Rank)
-            {
-                result = Occupier.Color == PieceColor.White
-                             ? Direction.ForwardOnLeftDiagonal
-                             : Direction.BackwardOnRightDiagonal;
-            }
-            else if (File < destination.File
-                     && Rank > destination.Rank)
-            {
-                result = Occupier.Color == PieceColor.White
-                             ? Direction.BackwardOnRightDiagonal
-                             : Direction.ForwardOnLeftDiagonal;
-            }
-
-            else if (Rank > destination.Rank)
-            {
-                result = Occupier.Color == PieceColor.White ? Direction.Backward : Direction.Forward;
-            }
-            else if (File > destination.File)
-            {
-                result = Direction.Left;
-            }
-            else if (File < destination.File)
-            {
-                result = Direction.Right;
-            }
-
-            // Tarkastetaan lopuksi onko siirto ep‰s‰‰nnˆllinen
-            if (result.Diagonally() 
-                && GetDistanceOfFiles(destination) != GetDistanceOfRanks(destination))
-            {
-                result = Direction.Irregular;
-            }
-
-            return result;
+            if (Color == PieceColor.White && Rank < destination.Rank && File == destination.File) return true;
+            if (Color == PieceColor.Black && Rank > destination.Rank && File == destination.File) return true;
+            
+            return false;
         }
 
-        public int GetDistanceOfRanks(Square destination)
+        public bool AlongFileOrRank(Square destination)
         {
-            return Math.Abs(Rank - destination.Rank);
+            if (AlongRank(destination)) return true;
+            if (AlongFile(destination)) return true;
+
+            return false;
         }
 
-        public int GetDistanceOfFiles(Square destination)
+        public bool AlongRank(Square destination)
         {
-            return Math.Abs(File - destination.File);
+            return Rank > destination.Rank && File == destination.File
+                   || Rank < destination.Rank && File == destination.File;
+        }
+
+        public bool AlongFile(Square destination)
+        {
+            return Rank == destination.Rank && File > destination.File
+                   || Rank == destination.Rank && File < destination.File;
+        }
+
+        public bool DiagonallyForwardTo(Square destination)
+        {
+            if (Math.Abs(File - destination.File) != Math.Abs(Rank - destination.Rank)) return false;
+            if (DiagonallyForwardToLeftForWhite(destination)) return true;
+            if (DiagonallyForwardToRightForWhite(destination)) return true;
+            if (DiagonallyForwardToLeftForBlack(destination)) return true;
+            if (DiagonallyForwardToRightForBlack(destination)) return true;
+
+            return false;
+        }
+
+        private bool DiagonallyForwardToLeftForBlack(Square destination)
+        {
+            return Color == PieceColor.Black
+                   && File < destination.File && Rank > destination.Rank;
+        }
+
+        private bool DiagonallyForwardToRightForBlack(Square destination)
+        {
+            return Color == PieceColor.Black
+                   && File > destination.File && Rank > destination.Rank;
+        }
+
+        private bool DiagonallyForwardToLeftForWhite(Square destination)
+        {
+            return Color == PieceColor.White
+                   && File < destination.File && Rank < destination.Rank;
+        }
+
+        private bool DiagonallyForwardToRightForWhite(Square destination)
+        {
+            return Color == PieceColor.White
+                   && File > destination.File && Rank < destination.Rank;
+        }
+
+        public bool DiagonallyTo(Square destination)
+        {
+            if (Math.Abs(File - destination.File) != Math.Abs(Rank - destination.Rank)) return false;
+            if (File < destination.File && Rank < destination.Rank) return true;
+            if (File > destination.File && Rank > destination.Rank) return true;
+            if (File > destination.File && Rank < destination.Rank) return true;
+            if (File < destination.File && Rank > destination.Rank) return true;
+
+            return false;
+        }
+
+        public bool DistanceOfRanksIsZeroTo(Square destination)
+        {
+            return (Math.Abs(Rank - destination.Rank) == 0);
+        }
+
+        public bool DistanceOfRanksIsOneTo(Square destination)
+        {
+            return (Math.Abs(Rank - destination.Rank) == 1);
+        }
+
+        public bool DistanceOfRanksIsTwoTo(Square destination)
+        {
+            return (Math.Abs(Rank - destination.Rank) == 2);
+        }
+
+        public bool DistanceOfFilesIsZeroTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 0);
+        }
+
+        public bool DistanceOfFilesIsOneTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 1);
+        }
+
+        public bool DistanceOfFilesIsTwoTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) == 2);
+        }
+
+        public bool DistanceOfFilesIsNotTwoTo(Square destination)
+        {
+            return (Math.Abs(File - destination.File) != 2);
         }
 
         public bool Equals(Square other)

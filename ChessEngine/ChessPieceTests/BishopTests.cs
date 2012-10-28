@@ -177,6 +177,22 @@ namespace ChessEngineTests.ChessPieceTests
         }
 
         [TestMethod]
+        public void IsLegalMove_BlackDarkSquareBishopMovesTwoSquaresForwardOnTheRightDiagonalWhenObscuredBySameColorPieceInAllDirections_ReturnsFalse()
+        {
+            Board board = CreateEmptyBoard();
+            board.SetPosition(7, 8, new Knight(board, PieceColor.Black));
+            board.SetPosition(7, 7, new Pawn(board, PieceColor.Black));
+            board.SetPosition(6, 8, new Bishop(board, PieceColor.Black));
+            board.SetPosition(6, 7, new Pawn(board, PieceColor.Black));
+            board.SetPosition(5, 8, new King(board, PieceColor.Black));
+            board.SetPosition(5, 7, new Pawn(board, PieceColor.Black));
+
+            var result = board.IsLegalMove(board.GetPosition(6, 8), board.GetPosition(4, 6));
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public void IsLegalMove_BlackDarkSquareBishopMovesTwoSquaresForwardOnTheLeftDiagonalWhenObscuredBySameColorPieceInAllDirections_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();

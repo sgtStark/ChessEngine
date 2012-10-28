@@ -1,5 +1,3 @@
-using System;
-
 namespace ChessEngineLib.ChessPieces
 {
     public class Knight : ChessPiece
@@ -19,16 +17,31 @@ namespace ChessEngineLib.ChessPieces
             return false;
         }
 
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return IsLegalMove(origin, destination);
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new Knight(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
+        }
+
         private bool MovingTwoRanksAndOneFile(Square origin, Square destination)
         {
-            return (Math.Abs(destination.Rank - origin.Rank) == 2
-                    && Math.Abs(destination.File - origin.File) == 1);
+            return (origin.DistanceOfRanksIsTwoTo(destination)
+                    && origin.DistanceOfFilesIsOneTo(destination));
         }
 
         private bool MovingOneRankAndTwoFiles(Square origin, Square destination)
         {
-            return (Math.Abs(destination.Rank - origin.Rank) == 1
-                    && Math.Abs(destination.File - origin.File) == 2);
+            return (origin.DistanceOfRanksIsOneTo(destination)
+                    && origin.DistanceOfFilesIsTwoTo(destination));
         }
 
         private bool Equals(Knight other)

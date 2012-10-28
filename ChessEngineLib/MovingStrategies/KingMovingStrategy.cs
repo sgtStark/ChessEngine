@@ -27,7 +27,7 @@
             var kingsideRookSquare = GetKingsideRookSquare(origin);
 
             if (origin.Color != kingsideRookSquare.Color) return;
-            if (origin.GetDistanceOfFiles(destination) != 2) return;
+            if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(kingsideRookSquare.Occupier is Rook)) return;
 
             Board.SetPosition(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece());
@@ -46,7 +46,7 @@
             var queensideRookSquare = GetQueensideRookSquare(origin);
 
             if (origin.Color != queensideRookSquare.Color) return;
-            if (origin.GetDistanceOfFiles(destination) != 2) return;
+            if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(queensideRookSquare.Occupier is Rook)) return;
 
             Board.SetPosition(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece());
@@ -105,6 +105,12 @@
             return origin.Color == PieceColor.White
                        ? Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_WHITE)
                        : Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_BLACK);
+        }
+
+        public override MovingStrategy Clone(Board board)
+        {
+            var clone = new KingMovingStrategy(board) {MoveCount = MoveCount};
+            return clone;
         }
     }
 }

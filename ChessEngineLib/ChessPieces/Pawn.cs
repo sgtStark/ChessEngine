@@ -26,30 +26,31 @@ namespace ChessEngineLib.ChessPieces
             return false;
         }
 
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return Attacking(origin, destination);
+        }
+
         private bool MovingSingleRankForward(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
-            var distance = origin.GetDistanceOfRanks(destination);
-
-            return (moving.Forward() && distance == 1 && destination.Color == PieceColor.Empty);
+            return (origin.ForwardTo(destination)
+                    && origin.DistanceOfRanksIsOneTo(destination)
+                    && destination.Color == PieceColor.Empty);
         }
 
         private bool Attacking(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
-            var distance = origin.GetDistanceOfRanks(destination);
-
-            return (origin.Color != destination.Color && destination.Color != PieceColor.Empty
-                    && distance == 1 && moving.DiagonallyForward());
+            return (origin.Color != destination.Color
+                    && destination.Color != PieceColor.Empty
+                    && origin.DistanceOfRanksIsOneTo(destination)
+                    && origin.DiagonallyForwardTo(destination));
         }
 
         private bool MovingTwoRanksForwardFromStartingRank(Square origin, Square destination)
         {
-            var moving = origin.GetDirectionTo(destination);
-
             return (FromStartingRank(origin)
-                    && moving.Forward()
-                    && origin.GetDistanceOfRanks(destination) == 2
+                    && origin.ForwardTo(destination)
+                    && origin.DistanceOfRanksIsTwoTo(destination)
                     && PathIsFree(origin, destination));
         }
 
@@ -63,6 +64,16 @@ namespace ChessEngineLib.ChessPieces
         public override MovingStrategy GetMovingStrategy()
         {
             return _movingStrategy;
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new Pawn(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
         }
 
         private bool Equals(Pawn other)

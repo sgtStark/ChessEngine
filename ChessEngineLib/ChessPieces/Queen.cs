@@ -10,12 +10,24 @@ namespace ChessEngineLib.ChessPieces
         public override bool IsLegalMove(Square origin, Square destination)
         {
             if (origin.Color == destination.Color) return false;
+            if (origin.AlongFileOrRank(destination)) return true;
 
-            var moving = origin.GetDirectionTo(destination);
+            return origin.DiagonallyTo(destination);
+        }
 
-            if (moving.AlongFileOrRank()) return true;
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return IsLegalMove(origin, destination);
+        }
 
-            return moving.Diagonally();
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new Queen(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
         }
 
         private bool Equals(Queen other)

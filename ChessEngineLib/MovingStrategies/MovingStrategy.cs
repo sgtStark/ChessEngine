@@ -1,7 +1,7 @@
-﻿using ChessEngineLib.ChessPieces;
-
-namespace ChessEngineLib.MovingStrategies
+﻿namespace ChessEngineLib.MovingStrategies
 {
+    using ChessPieces;
+
     public abstract class MovingStrategy
     {
         protected readonly Board Board;
@@ -11,7 +11,7 @@ namespace ChessEngineLib.MovingStrategies
             Board = board;
         }
 
-        public int MoveCount { get; private set; }
+        public int MoveCount { get; protected set; }
 
         public virtual void Move(Square origin, Square destination)
         {
@@ -21,5 +21,7 @@ namespace ChessEngineLib.MovingStrategies
         }
 
         public abstract bool IsSpecialMove(Square origin, Square destination);
+
+        public abstract MovingStrategy Clone(Board board);
     }
 }

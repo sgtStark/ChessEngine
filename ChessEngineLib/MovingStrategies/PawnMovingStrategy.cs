@@ -41,14 +41,20 @@
         {
             if (origin.Color == GetEnPassantSquare(origin, destination).Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
-            var distance = origin.GetDistanceOfRanks(destination);
             var occupierOfEnPassantPosition = GetEnPassantSquare(origin, destination).Occupier;
 
-            return (moving.DiagonallyForward()
-                    && distance == 1
+            return (origin.DiagonallyForwardTo(destination)
+                    && origin.DistanceOfRanksIsOneTo(destination)
                     && destination.Color == PieceColor.Empty
                     && occupierOfEnPassantPosition.MoveCount == 1);
+        }
+
+        public override MovingStrategy Clone(Board board)
+        {
+            return new PawnMovingStrategy(board)
+                {
+                    MoveCount = MoveCount
+                };
         }
     }
 }

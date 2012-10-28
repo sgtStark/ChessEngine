@@ -11,9 +11,22 @@ namespace ChessEngineLib.ChessPieces
         {
             if (origin.Color == destination.Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
+            return (origin.DiagonallyTo(destination) && PathIsFree(origin, destination));
+        }
 
-            return (moving.Diagonally() && PathIsFree(origin, destination));
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return IsLegalMove(origin, destination);
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var newBishopToReturn = new Bishop(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return newBishopToReturn;
         }
 
         private bool Equals(Bishop other)

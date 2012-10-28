@@ -11,9 +11,22 @@
         {
             if (origin.Color == destination.Color) return false;
 
-            var moving = origin.GetDirectionTo(destination);
+            return (origin.AlongFileOrRank(destination) && PathIsFree(origin, destination));
+        }
 
-            return (moving.AlongFileOrRank() && PathIsFree(origin, destination));
+        public override bool Attacks(Square origin, Square destination)
+        {
+            return IsLegalMove(origin, destination);
+        }
+
+        public override ChessPiece Clone(Board board)
+        {
+            var clone = new Rook(board, Color)
+                {
+                    MovingStrategy = MovingStrategy.Clone(board)
+                };
+
+            return clone;
         }
 
         private bool Equals(Rook other)

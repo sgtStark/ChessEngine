@@ -4,7 +4,7 @@ namespace ChessEngineLib
 {
     using ChessPieces;
 
-    public class Board
+    public class Board : ICloneable
     {
         private const int DEFAULT_NUMBER_OF_FILES = 9;
         private const int DEFAULT_NUMBER_OF_RANKS = 9;
@@ -24,21 +24,12 @@ namespace ChessEngineLib
 
         private readonly Square[,] _squareMatrix;
 
-
         public event EventHandler<MoveEventArgs> OnMove;
-
 
         public Board()
         {
             _squareMatrix = new Square[DEFAULT_NUMBER_OF_FILES, DEFAULT_NUMBER_OF_RANKS];
             Initialize();
-        }
-
-        public void Setup()
-        {
-            Initialize();
-            InitializeChessPieces(PieceColor.White);
-            InitializeChessPieces(PieceColor.Black);
         }
 
         private void Initialize()
@@ -50,6 +41,13 @@ namespace ChessEngineLib
                     _squareMatrix[file, rank] = new Square(file, rank, new NullPiece());
                 }
             }
+        }
+
+        public void Setup()
+        {
+            Initialize();
+            InitializeChessPieces(PieceColor.White);
+            InitializeChessPieces(PieceColor.Black);
         }
 
         private void InitializeChessPieces(PieceColor pieceColor)
@@ -145,6 +143,24 @@ namespace ChessEngineLib
             FireOnMoveEvent(new MoveEventArgs(origin, destination));
         }
 
+        public Board SimulatedMove(Square origin, Square destination)
+        {
+            var simulatedBoard = new Board();
+
+            foreach (var square in _squareMatrix)
+            {
+                simulatedBoard.SetPosition(square.File, square.Rank, square.Occupier.Clone(simulatedBoard));
+            }
+
+            simulatedBoard.Move
+                (
+                    simulatedBoard.GetPosition(origin.File, origin.Rank),
+                    simulatedBoard.GetPosition(destination.File, destination.Rank)
+                );
+
+            return simulatedBoard;
+        }
+
         private void FireOnMoveEvent(MoveEventArgs eventArgs)
         {
             if (OnMove != null)
@@ -196,6 +212,18 @@ namespace ChessEngineLib
         public override int GetHashCode()
         {
             return (_squareMatrix != null ? _squareMatrix.GetHashCode() : 0);
+        }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }
