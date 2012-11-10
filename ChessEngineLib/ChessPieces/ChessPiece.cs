@@ -43,8 +43,22 @@ namespace ChessEngineLib.ChessPieces
         private IList<Square> GetPositionsBetween(Square origin, Square destination)
         {
             var positionsBetweenToReturn = new List<Square>();
+                for (int file = origin.File; file < destination.File; file++)
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
 
-            if (origin.AlongFile(destination))
+                for (int file = origin.File; file > destination.File; file--)
+                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
+            }
+            else if (origin.AlongRank(destination))
+            {
+                for (int rank = origin.Rank; rank < destination.Rank; rank++)
+                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+                for (int rank = origin.Rank; rank > destination.Rank; rank--)
+                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+            }
+            else if (origin.DiagonallyTo(destination))
+            {
+                for (int file = origin.File; file < destination.File; file++)
             {
                 for (int file = origin.File; file < destination.File; file++)
                     positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
@@ -59,7 +73,7 @@ namespace ChessEngineLib.ChessPieces
 
                 for (int rank = origin.Rank; rank > destination.Rank; rank--)
                     positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
-            }
+                }
             else if (origin.DiagonallyTo(destination))
             {
                 var startingFile = origin.File;
@@ -104,6 +118,7 @@ namespace ChessEngineLib.ChessPieces
                         startingFile -= 1;
                         startingRank -= 1;
                     }
+                    }
                 }
             }
 
@@ -113,6 +128,7 @@ namespace ChessEngineLib.ChessPieces
             return positionsBetweenToReturn;
         }
 
-        public abstract ChessPiece Clone(Board board);
+
+                public abstract ChessPiece Clone(Board board);
     }
 }
