@@ -1,18 +1,30 @@
 using System.Collections.Generic;
 using System.Linq;
-using ChessEngineLib.GameStateDetection;
+<<<<<<< HEAD
 
 namespace ChessEngineLib
 {
     using GameStateDetection;
 
+=======
+using ChessEngineLib.GameStateDetection;
+
+namespace ChessEngineLib
+{
+>>>>>>> e1b7334974f1635644f912e15f20f6cb51b26834
     public class Game
     {
         private readonly List<Square> _allSquares;
         private readonly List<Square> _squaresOccupiedByPlayer;
+<<<<<<< HEAD
         private readonly List<Square> _squaresOccupiedByOpponent;
         private readonly CheckStateDetector _checkStateDetector;
 
+=======
+        private readonly CheckStateDetector _checkStateDetector;
+
+
+>>>>>>> e1b7334974f1635644f912e15f20f6cb51b26834
         public Board Board { get; private set; }
         public GameState State { get; private set; }
         public PieceColor PlayerToMove { get; private set; }
@@ -27,7 +39,10 @@ namespace ChessEngineLib
 
             _allSquares = new List<Square>();
             _squaresOccupiedByPlayer = new List<Square>();
+<<<<<<< HEAD
             _squaresOccupiedByOpponent = new List<Square>();
+=======
+>>>>>>> e1b7334974f1635644f912e15f20f6cb51b26834
             _checkStateDetector = new CheckStateDetector();
         }
 
@@ -57,6 +72,11 @@ namespace ChessEngineLib
                 || _checkStateDetector.KingIsChecked(Board, PieceColor.Black))
             {
                 State = PlayerHasLegalMoves() ? GameState.Check : GameState.CheckMate;
+
+                if (HasLegalMoves())
+                    State = GameState.Check;
+                else
+                    State = GameState.CheckMate;
             }
             else
             {
@@ -73,8 +93,11 @@ namespace ChessEngineLib
             _allSquares.Clear();
             Board.Iterate(square => _allSquares.Add(square));
 
-            // Haetaan siirt‰v‰n pelaajan ruudit
+            // Haetaan siirt‰v‰n pelaajan ruudut
             _squaresOccupiedByPlayer.Clear();
+            Board.Iterate(square => _allSquares.Add(square));
+
+            // Haetaan siirt‰v‰n pelaajan ruudit
             Board.Iterate(PlayerSquareHandler);
 
             // K‰yd‰‰n kaikki siirt‰v‰n pelaajan ruudut l‰pi tarkastaen voidaanko

@@ -185,11 +185,12 @@ namespace ChessEngineTests
             board.SetPosition(2, 5, new Bishop(board, PieceColor.White));
 
             game.Start(PieceColor.White);
-            board.Move(board.GetPosition(2, 5), board.GetPosition(3, 6));
+            board.Move(board.GetPosition(2,5), board.GetPosition(3, 6));
 
             Assert.AreEqual(GameState.CheckMate, game.State);
         }
 
+        [Ignore]
         [TestMethod]
         public void GameState_BlackMovesToCheckTheWhiteKingAndWhiteHasNoLegalMoves_GameStateIsCheckMate()
         {
@@ -217,7 +218,7 @@ namespace ChessEngineTests
 
             game.Start(PieceColor.Black);
             Assert.AreEqual(GameState.Check, game.State);
-
+            
             board.Move(board.GetPosition(1, 6), board.GetPosition(1, 5));
 
             Assert.AreEqual(GameState.StaleMate, game.State);

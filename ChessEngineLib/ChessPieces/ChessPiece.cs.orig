@@ -43,8 +43,9 @@ namespace ChessEngineLib.ChessPieces
         private IList<Square> GetPositionsBetween(Square origin, Square destination)
         {
             var positionsBetweenToReturn = new List<Square>();
-   
+
             if (origin.AlongFile(destination))
+<<<<<<< HEAD
             {
                 for (int file = origin.File; file < destination.File; file++)
                     positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
@@ -108,11 +109,19 @@ namespace ChessEngineLib.ChessPieces
             }
 
             positionsBetweenToReturn.Remove(origin);
-            positionsBetweenToReturn.Remove(destination);
 
             return positionsBetweenToReturn;
         }
 
+<<<<<<< HEAD
+=======
+        //TODO: täytyy refactoroida!!
+        private bool SquareBackgroundDiffersFromOrigin(Square origin, int rank, int file)
+        {
+            return Board.IsLightSquare(file, rank) != Board.IsLightSquare(origin.File, origin.Rank);
+        }
+
+>>>>>>> e1b7334974f1635644f912e15f20f6cb51b26834
         public abstract ChessPiece Clone(Board board);
     }
 }
