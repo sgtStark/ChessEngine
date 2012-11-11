@@ -54,7 +54,6 @@
     <Compile Include="ChessPieceTests\QueenTests.cs" />
     <Compile Include="ChessPieceTests\RookTests.cs" />
     <Compile Include="GameTests.cs" />
-    <Compile Include="Helpers\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

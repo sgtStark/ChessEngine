@@ -1,9 +1,10 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     /// <summary>
     /// Sisältää kaikki sotilas shakkinappulaan kohdistuvat yksikkötestit.
     /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
@@ -22,8 +23,6 @@ namespace ChessEngineTests.ChessPieceTests
     [TestClass]
     public class PawnTests : ChessEngineTestBase
     {
-        #region Equals
-
         [TestMethod]
         public void Equals_TwoOppositeColorPawns_AreNotEqual()
         {
@@ -44,10 +43,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(pawn1, pawn2);
             Assert.AreEqual(pawn3, pawn4);
         }
-
-        #endregion Equals
-
-        #region Yhden ruudun siirtojen laillisuuden tarkastus testit
 
         [TestMethod]
         public void IsLegalMove_WhitePawnOneSquareForward_ReturnsTrue()
@@ -70,10 +65,6 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        #endregion Yhden ruudun siirtojen laillisuuden tarkastus testit
-
-        #region Kahden ruudun siirtojen laillisuuden testit
 
         [TestMethod]
         public void IsLegalMove_WhitePawnMovesTwoSquaresForward_ReturnsFalse()
@@ -118,10 +109,6 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        #endregion Kahden ruudun siirtojen laillisuuden testit
-
-        #region Viistosiirtojen laillisuuden testit
 
         [TestMethod]
         public void IsLegalMove_WhitePawnMovesOneSquareDiagonallyToRight_ReturnsFalse()
@@ -193,10 +180,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsTrue(result);
         }
 
-        #endregion Viistosiirtojen laillisuuden testit
-
-        #region Laittomien ja muiden virheellisten siirtojen testit
-
         [TestMethod]
         public void IsLegalMove_WhitePawnMovesOneSquareToRight_ReturnsFalse()
         {
@@ -229,10 +212,6 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion Laittomien ja muiden virheellisten siirtojen testit
-
-        #region Siirrot miehitetyille ruuduille ja siirrot joiden polku on miehitetty
 
         [TestMethod]
         public void IsLegalMove_WhitePawnMovesOneSquareForwardToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsFalse()
@@ -305,10 +284,6 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion Siirrot miehitetyille ruuduille ja siirrot joiden polku on miehitetty
-
-        #region En Passant siirtojen testit
 
         [TestMethod]
         public void IsLegalMove_WhitePawnMakesEnPassantAttackToTheLeft_ReturnsTrue()
@@ -465,7 +440,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion En Passant siirtojen testit
     }
 }

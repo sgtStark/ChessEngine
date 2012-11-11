@@ -1,18 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
-    /// <summary>
-    /// Sisältää kaikki kuningas shakkinappulaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class KingTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoOppositeColorKings_AreNotEqual()
         {
@@ -33,12 +28,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(king1, king2);
             Assert.AreEqual(king3, king4);
         }
-
-        #endregion Equals testit
-
-        #region IsLegalMove
-
-        #region Normal Moves
 
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareForward_ReturnsTrue()
@@ -144,10 +133,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsFalse(result);
         }
 
-        #endregion Normal Moves
-
-        #region Kingside Castling
-
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToKingsideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
@@ -250,10 +235,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsFalse(result);
         }
 
-        #endregion Kingside Castling
-
-        #region Queenside Castling
-
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToQueensideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
@@ -300,8 +281,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsFalse(result);
         }
 
-        #endregion Queenside Castling
-
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesIntoAttackedSquare_ReturnsFalse()
         {
@@ -313,7 +292,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion IsLegalMove
     }
 }

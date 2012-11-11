@@ -1,18 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
-    /// <summary>
-    /// Sisältää kaikki kuningatar shakkinappulaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class QueenTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoOppositeColorQueens_AreNotEqual()
         {
@@ -33,10 +28,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(queen1, queen2);
             Assert.AreEqual(queen3, queen4);
         }
-
-        #endregion Equals testit
-
-        #region IsLegalMove
 
         [TestMethod]
         public void IsLegalMove_WhiteQueenMovesOneSquareForward_ReturnsTrue()
@@ -118,7 +109,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        #endregion IsLegalMove
     }
 }

@@ -1,18 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
-    /// <summary>
-    /// Sisältää kaikki hevos shakkinappulaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class KnightTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoOppositeColorKnights_AreNotEqual()
         {
@@ -33,10 +28,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(knight1, knight2);
             Assert.AreEqual(knight3, knight4);
         }
-
-        #endregion Equals testit
-
-        #region IsLegalMove testit
 
         [TestMethod]
         public void IsLegalMove_WhiteLightSquareKnightMovesTwoSquaresForwardAndOneSquaresRight_ReturnsTrue()
@@ -172,9 +163,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        // NOTE: Tähän voisi lisätä myös mustalle hevoselle siirrot miehitettyihin ruutuihin testaukset
-
-        #endregion IsLegalMove testit
     }
 }

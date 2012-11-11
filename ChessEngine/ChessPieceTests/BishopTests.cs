@@ -1,18 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
-    /// <summary>
-    /// Sisältää kaikki lähetti shakkinappulaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class BishopTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoOppositeColorBishops_AreNotEqual()
         {
@@ -33,10 +28,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(bishop1, bishop2);
             Assert.AreEqual(bishop3, bishop4);
         }
-
-        #endregion Equals testit
-
-        #region IsLegalMove
 
         [TestMethod]
         public void IsLegalMove_WhiteDarkSquareBishopMovesThreeSquaresForwardOnTheRightDiagonal_ReturnsTrue()
@@ -266,7 +257,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        #endregion IsLegalMove
     }
 }

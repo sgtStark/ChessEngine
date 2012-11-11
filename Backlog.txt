@@ -290,4 +290,5 @@
 -- NOTE: Poikkeuksia ei tarvita ChessEngine-kirjastossa. Poikkeustilanteista päästään eroon refactoroimalla!
 
 - Refactoroitu Game-luokasta aiemmin toteutetun toiminnallisuuden ylimääräinen monimutkaisuus ja toisteisuus pois.
-- 
+- Poistettu testi luokista regionit.
+- Poistettu täysin käyttämätön Helpers-kansio ja AssertExtensions-luokka ChessEngineTests-projektista.

@@ -1,18 +1,13 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests.ChessPieceTests
 {
-    /// <summary>
-    /// Sisältää kaikki torni shakkinappulaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class RookTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoOppositeColorRooks_AreNotEqual()
         {
@@ -33,10 +28,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.AreEqual(rook1, rook2);
             Assert.AreEqual(rook3, rook4);
         }
-
-        #endregion Equals testit
-
-        #region Saraketta pitkin tehtävien siirtojen testit
 
         [TestMethod]
         public void IsLegalMove_WhiteRookMovesTwoSquaresForward_ReturnsTrue()
@@ -82,10 +73,6 @@ namespace ChessEngineTests.ChessPieceTests
             Assert.IsTrue(result);
         }
 
-        #endregion Saraketta pitkin tehtävien siirtojen testit
-
-        #region Riviä pitkin tehtävien siirtojen testit
-
         [TestMethod]
         public void IsLegalMove_WhiteRookMovesThreeSquaresRight_ReturnsTrue()
         {
@@ -129,10 +116,6 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsTrue(result);
         }
-
-        #endregion Riviä pitkin tehtävien siirtojen testit
-
-        #region Siirrot miehitetyille ruuduille ja siirrot joiden polku on miehitetty testit
 
         [TestMethod]
         public void IsLegalMove_WhiteRookMovesThreeSquaresForwardWhileItsPathIsOccupiedBySameColorPiece_ReturnsFalse()
@@ -253,7 +236,5 @@ namespace ChessEngineTests.ChessPieceTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion Siirrot miehitetyille ruuduille ja siirrot joiden polku on miehitetty testit
     }
 }

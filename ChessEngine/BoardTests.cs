@@ -1,21 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-
 namespace ChessEngineTests
 {
-    using Helpers;
-    
-    /// <summary>
-    /// Sisältää kaikki shakkilautaan kohdistuvat yksikkötestit.
-    /// HUOM! Perii yhteisestä ChessEngineTestBase-luokasta yleisiä setup-metodeita.
-    /// </summary>
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class BoardTests : ChessEngineTestBase
     {
-        #region Equals testit
-
         [TestMethod]
         public void Equals_TwoBoardsWithExactlyTheSameConfiguration_ReturnsTrue()
         {
@@ -51,10 +43,6 @@ namespace ChessEngineTests
 
             Assert.AreNotEqual(board1, board2);
         }
-
-        #endregion Equals testit
-
-        #region Aloitus tilanteen/asetelman testit
 
         [TestMethod]
         public void Setup_WhenBoardIsSetup_PositionsAlongSecondRankReturnWhitePawns()
@@ -190,14 +178,6 @@ namespace ChessEngineTests
             Assert.AreEqual(expectedBlackKing, board.GetPosition(5, 8).Occupier);
         }
 
-        #endregion Aloitus tilanteen/asetelman testit
-
-        // TODO: Toteuta Check siirtojen tarkastukset
-
-        // TODO: Toteuta End Of Game tarkastus
-
-        #region GetPosition
-
         [TestMethod]
         public void GetPosition_FirstFileAndRankWhenBoardIsEmpty_ReturnsEmptyPosition()
         {
@@ -219,12 +199,6 @@ namespace ChessEngineTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion GetPosition
-
-        #region SetPosition
-
-        #region Pawn
 
         [TestMethod]
         public void SetPosition_FirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheValueThatWasSet()
@@ -251,10 +225,6 @@ namespace ChessEngineTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion Pawn
-
-        #region Rook
 
         [TestMethod]
         public void SetPosition_WhiteRookToFirstFileAndRankWhenBoardIsEmpty_GetPositionReturnsTheSetValue()
@@ -291,12 +261,6 @@ namespace ChessEngineTests
 
             Assert.AreNotEqual(expected, actual);
         }
-
-        #endregion Rook
-
-        #endregion SetPosition
-
-        #region IsLightSquare
 
         [TestMethod]
         public void IsLightSquare_FirstFileAndFirstRank_ReturnsFalse()
@@ -357,10 +321,6 @@ namespace ChessEngineTests
 
             Assert.IsFalse(result);
         }
-
-        #endregion IsLightSquare
-
-        #region Move
 
         [TestMethod]
         public void Move_ChessPieceIsMovedToEmptyPosition_TargetPositionReturnsTheChessPieceAsOccupier()
@@ -489,7 +449,5 @@ namespace ChessEngineTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion Move
     }
 }

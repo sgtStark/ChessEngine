@@ -1,11 +1,9 @@
-﻿using ChessEngineLib;
-
-namespace ChessEngineTests
+﻿namespace ChessEngineTests
 {
+    using ChessEngineLib;
+
     public class ChessEngineTestBase
     {
-        #region Suojatut metodit
-
         protected static Board CreateEmptyBoard()
         {
             return new Board();
@@ -16,17 +14,11 @@ namespace ChessEngineTests
             return new Game(CreateSetupBoard());
         }
 
-        #endregion Suojatut metodit
-
-        #region Yksityiset metodit
-
         private static Board CreateSetupBoard()
         {
             var boardToReturn = CreateEmptyBoard();
             boardToReturn.Setup();
             return boardToReturn;
         }
-
-        #endregion Yksityiset metodit
     }
 }

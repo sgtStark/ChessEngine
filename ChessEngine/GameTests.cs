@@ -1,9 +1,10 @@
-﻿using ChessEngineLib;
-using ChessEngineLib.ChessPieces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests
 {
+    using ChessEngineLib;
+    using ChessEngineLib.ChessPieces;
+
     [TestClass]
     public class GameTests : ChessEngineTestBase
     {
@@ -18,8 +19,6 @@ namespace ChessEngineTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        #region PlayerToMove tests
 
         [TestMethod]
         public void PlayerToMove_BeforeGameIsStarted_ReturnsEmpty()
@@ -68,10 +67,6 @@ namespace ChessEngineTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion PlayerToMove tests
-
-        #region GameState tests
 
         [TestMethod]
         public void GameState_WhenGameIsCreatedWithSetupBoard_GameStateIsSetupMode()
@@ -282,7 +277,5 @@ namespace ChessEngineTests
 
             Assert.AreEqual(GameState.StaleMate, game.State);
         }
-
-        #endregion GameState tests
     }
 }
