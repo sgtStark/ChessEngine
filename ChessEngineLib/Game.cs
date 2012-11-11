@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using ChessEngineLib.GameStateDetection;
 
 namespace ChessEngineLib
 {
@@ -51,10 +50,10 @@ namespace ChessEngineLib
 
         private void Update(PieceColor lastMovedColor)
         {
-            PlayerToMove = lastMovedColor == PieceColor.White ? PieceColor.Black : PieceColor.White;
+            UpdatePlayerToMove(lastMovedColor);
+            UpdateSquareDistribution();
 
-            if (_checkStateDetector.KingIsChecked(Board, PieceColor.White)
-                || _checkStateDetector.KingIsChecked(Board, PieceColor.Black))
+            if (EitherKingIsChecked())
             {
                 State = PlayerHasLegalMoves() ? GameState.Check : GameState.CheckMate;
             }
@@ -64,94 +63,72 @@ namespace ChessEngineLib
             }
         }
 
-        private bool PlayerHasLegalMoves()
+        private void UpdatePlayerToMove(PieceColor lastMovedColor)
         {
-            // Apumuuttuja
-            var boolToReturn = false;
+            PlayerToMove = lastMovedColor == PieceColor.White ? PieceColor.Black : PieceColor.White;
+        }
 
-            // Haetaan kaikki laudan ruudut
+        private void UpdateSquareDistribution()
+        {
             _allSquares.Clear();
             Board.Iterate(square => _allSquares.Add(square));
 
-            // Haetaan siirtävän pelaajan ruudit
             _squaresOccupiedByPlayer.Clear();
-            Board.Iterate(PlayerSquareHandler);
+            Board.Iterate(square =>
+            {
+                if (square.Color == PlayerToMove)
+                    _squaresOccupiedByPlayer.Add(square);
+            });
 
-            // Käydään kaikki siirtävän pelaajan ruudut läpi tarkastaen voidaanko
-            // ruudun nappulaa siirtää mihinkään
+            _squaresOccupiedByOpponent.Clear();
+            Board.Iterate(square =>
+            {
+                if (square.Color.IsOppositeColor(PlayerToMove))
+                    _squaresOccupiedByOpponent.Add(square);
+            });
+        }
+
+        private bool EitherKingIsChecked()
+        {
+            return _checkStateDetector.KingIsChecked(Board, PieceColor.White)
+                   || _checkStateDetector.KingIsChecked(Board, PieceColor.Black);
+        }
+
+        private bool PlayerHasLegalMoves()
+        {
+            var boolToReturn = false;
+
             foreach (var origin in _squaresOccupiedByPlayer)
             {
-                var destinationSquares = _allSquares.Where(square => !square.Equals(origin));
+                _allSquares.Remove(origin);
 
-                foreach (var destinationSquare in destinationSquares)
-                {
-                    if (Board.IsLegalMove(origin, destinationSquare))
-                    {
-                        var simulated = Board.SimulatedMove(origin, destinationSquare);
-
-                        if (!_checkStateDetector.KingIsChecked(simulated, PlayerToMove))
-                        {
-                            boolToReturn = true;
-                            break;
-                        }
-                    }
-                }
+                if (_allSquares.Any(destination => KingIsReleasedBy(origin, destination)))
+                    boolToReturn = true;
             }
 
             return boolToReturn;
-        }
-
-        private void PlayerSquareHandler(Square square)
-        {
-            if (square.Color == PlayerToMove)
-            {
-                _squaresOccupiedByPlayer.Add(square);
-            }
         }
 
         private bool OpponentHasLegalMoves()
         {
-            // Apumuuttuja
             var boolToReturn = false;
 
-            // Haetaan kaikki laudan ruudut
-            _allSquares.Clear();
-            Board.Iterate(square => _allSquares.Add(square));
-
-            // Haetaan siirtävän vastustajan ruudut
-            _squaresOccupiedByOpponent.Clear();
-            Board.Iterate(OpponentSquareHandler);
-
-            // Käydään kaikki siirtäneen pelaajan ruudut läpi tarkastaen onko siirtäjällä
-            // mahdollisia siirtoja
             foreach (var origin in _squaresOccupiedByOpponent)
             {
-                var destinationSquares = _allSquares.Where(square => !square.Equals(origin));
+                _allSquares.Remove(origin);
 
-                foreach (var destinationSquare in destinationSquares)
-                {
-                    if (Board.IsLegalMove(origin, destinationSquare))
-                    {
-                        var simulated = Board.SimulatedMove(origin, destinationSquare);
-
-                        if (!_checkStateDetector.KingIsChecked(simulated, PlayerToMove))
-                        {
-                            boolToReturn = true;
-                            break;
-                        }
-                    }
-                }
+                if (_allSquares.Any(destination => KingIsReleasedBy(origin, destination)))
+                    boolToReturn = true;
             }
 
             return boolToReturn;
         }
 
-        private void OpponentSquareHandler(Square square)
+        private bool KingIsReleasedBy(Square origin, Square destination)
         {
-            if (square.Color.IsOppositeColor(PlayerToMove))
-            {
-                _squaresOccupiedByOpponent.Add(square);
-            }
+            if (!Board.IsLegalMove(origin, destination)) return false;
+            var simulation = Board.SimulatedMove(origin, destination);
+            return !_checkStateDetector.KingIsChecked(simulation, PlayerToMove);
         }
     }
 }

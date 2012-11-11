@@ -276,3 +276,18 @@
 
 - Lisätty testit ja toteutus CheckMate tarkastukselle.
 - Lisätty testit ja toteutus StaleMate-tarkastukselle.
+
+11.11.2012
+-- TODO: Laadi test DSL siirroille ja/tai nappuloiden asetukselle.
+-- TODO: DrawByRepetition tarkastus
+-- TODO: DrawInsufficientMaterial tarkastus
+-- TODO: Draw50MoveRule tarkastus
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Lisää järkevät virheviestit ja testaa lisää ne testeihin!
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+-- NOTE: Poikkeuksia ei tarvita ChessEngine-kirjastossa. Poikkeustilanteista päästään eroon refactoroimalla!
+
+- Refactoroitu Game-luokasta aiemmin toteutetun toiminnallisuuden ylimääräinen monimutkaisuus ja toisteisuus pois.
+- 
