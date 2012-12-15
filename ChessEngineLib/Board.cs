@@ -57,32 +57,32 @@ namespace ChessEngineLib
             var officerRank = pieceColor == PieceColor.White ? OFFICER_RANK_FOR_WHITE : OFFICER_RANK_FOR_BLACK;
 
             // Sotilaat
-            SetPosition(1, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(2, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(3, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(4, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(5, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(6, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(7, pawnChainRank, new Pawn(this, pieceColor));
-            SetPosition(8, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(1, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(2, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(3, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(4, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(5, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(6, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(7, pawnChainRank, new Pawn(this, pieceColor));
+            SetSquare(8, pawnChainRank, new Pawn(this, pieceColor));
 
             // Tornit
-            SetPosition(1, officerRank, new Rook(this, pieceColor));
-            SetPosition(8, officerRank, new Rook(this, pieceColor));
+            SetSquare(1, officerRank, new Rook(this, pieceColor));
+            SetSquare(8, officerRank, new Rook(this, pieceColor));
 
             // Hevoset
-            SetPosition(2, officerRank, new Knight(this, pieceColor));
-            SetPosition(7, officerRank, new Knight(this, pieceColor));
+            SetSquare(2, officerRank, new Knight(this, pieceColor));
+            SetSquare(7, officerRank, new Knight(this, pieceColor));
 
             // Lähetit
-            SetPosition(3, officerRank, new Bishop(this, pieceColor));
-            SetPosition(6, officerRank, new Bishop(this, pieceColor));
+            SetSquare(3, officerRank, new Bishop(this, pieceColor));
+            SetSquare(6, officerRank, new Bishop(this, pieceColor));
 
             // Kuningatar
-            SetPosition(4, officerRank, new Queen(this, pieceColor));
+            SetSquare(4, officerRank, new Queen(this, pieceColor));
 
             // Kuningas
-            SetPosition(5, officerRank, new King(this, pieceColor));
+            SetSquare(5, officerRank, new King(this, pieceColor));
         }
 
         public void Iterate(Action<Square> onIteration)
@@ -96,7 +96,7 @@ namespace ChessEngineLib
             }
         }
 
-        public Square GetPosition(int file, int rank)
+        public Square GetSquare(int file, int rank)
         {
             if (AreOutsideBoardBoundaries(file, rank)) return CreateNullSquare(file, rank);
 
@@ -114,7 +114,7 @@ namespace ChessEngineLib
             return new Square(file, rank, new NullPiece());
         }
 
-        public void SetPosition(int file, int rank, ChessPiece occupier)
+        public void SetSquare(int file, int rank, ChessPiece occupier)
         {
             if (AreOutsideBoardBoundaries(file, rank)) return;
 
@@ -149,13 +149,13 @@ namespace ChessEngineLib
 
             foreach (var square in _squareMatrix)
             {
-                simulatedBoard.SetPosition(square.File, square.Rank, square.Occupier.Clone(simulatedBoard));
+                simulatedBoard.SetSquare(square.File, square.Rank, square.Occupier.Clone(simulatedBoard));
             }
 
             simulatedBoard.Move
                 (
-                    simulatedBoard.GetPosition(origin.File, origin.Rank),
-                    simulatedBoard.GetPosition(destination.File, destination.Rank)
+                    simulatedBoard.GetSquare(origin.File, origin.Rank),
+                    simulatedBoard.GetSquare(destination.File, destination.Rank)
                 );
 
             return simulatedBoard;
@@ -191,7 +191,7 @@ namespace ChessEngineLib
 
             foreach (var square in _squareMatrix)
             {
-                if (!square.Equals(other.GetPosition(square.File, square.Rank)))
+                if (!square.Equals(other.GetSquare(square.File, square.Rank)))
                 {
                     boolToReturn = false;
                     break;

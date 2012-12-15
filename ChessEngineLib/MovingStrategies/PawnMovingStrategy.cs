@@ -27,14 +27,14 @@
             var enPassantOccupier = enPassantPosition.Occupier;
             if (enPassantOccupier.MoveCount != 1) return;
 
-            Board.SetPosition(enPassantPosition.File, enPassantPosition.Rank, new NullPiece());
+            Board.SetSquare(enPassantPosition.File, enPassantPosition.Rank, new NullPiece());
         }
 
         private Square GetEnPassantSquare(Square origin, Square destination)
         {
             return origin.Color == PieceColor.White
-                       ? Board.GetPosition(destination.File, EN_PASSANT_RANK_FOR_WHITE)
-                       : Board.GetPosition(destination.File, EN_PASSANT_RANK_FOR_BLACK);
+                       ? Board.GetSquare(destination.File, EN_PASSANT_RANK_FOR_WHITE)
+                       : Board.GetSquare(destination.File, EN_PASSANT_RANK_FOR_BLACK);
         }
 
         public override bool IsSpecialMove(Square origin, Square destination)

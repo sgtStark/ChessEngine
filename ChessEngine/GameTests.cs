@@ -48,7 +48,7 @@ namespace ChessEngineTests
             const PieceColor expected = PieceColor.Black;
 
             Board board = game.Board;
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
             var actual = game.PlayerToMove;
 
             Assert.AreEqual(expected, actual);
@@ -61,8 +61,8 @@ namespace ChessEngineTests
             const PieceColor expected = PieceColor.White;
 
             Board board = game.Board;
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
-            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
+            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
             var actual = game.PlayerToMove;
 
             Assert.AreEqual(expected, actual);
@@ -91,14 +91,14 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(board, PieceColor.White));
-            board.SetPosition(5, 8, new King(board, PieceColor.Black));
-            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
+            board.SetSquare(5, 1, new King(board, PieceColor.White));
+            board.SetSquare(5, 8, new King(board, PieceColor.Black));
+            board.SetSquare(1, 1, new Rook(board, PieceColor.White));
 
             game.Start();
-            board.Move(board.GetPosition(1, 1), board.GetPosition(1, 2));
-            board.Move(board.GetPosition(5, 8), board.GetPosition(4, 8));
-            board.Move(board.GetPosition(1, 2), board.GetPosition(4, 2));
+            board.Move(board.GetSquare(1, 1), board.GetSquare(1, 2));
+            board.Move(board.GetSquare(5, 8), board.GetSquare(4, 8));
+            board.Move(board.GetSquare(1, 2), board.GetSquare(4, 2));
 
             Assert.AreEqual(GameState.Check, game.State);
         }
@@ -108,12 +108,12 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(board, PieceColor.White));
-            board.SetPosition(5, 8, new King(board, PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
+            board.SetSquare(5, 1, new King(board, PieceColor.White));
+            board.SetSquare(5, 8, new King(board, PieceColor.Black));
+            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
-            board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1));
+            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1));
 
             Assert.AreEqual(GameState.Check, game.State);
         }
@@ -123,15 +123,15 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(board, PieceColor.White));
-            board.SetPosition(5, 8, new King(board, PieceColor.Black));
-            board.SetPosition(1, 1, new Rook(board, PieceColor.White));
+            board.SetSquare(5, 1, new King(board, PieceColor.White));
+            board.SetSquare(5, 8, new King(board, PieceColor.Black));
+            board.SetSquare(1, 1, new Rook(board, PieceColor.White));
 
             game.Start();
-            board.Move(board.GetPosition(1, 1), board.GetPosition(1, 2));
-            board.Move(board.GetPosition(5, 8), board.GetPosition(4, 8));
-            board.Move(board.GetPosition(1, 2), board.GetPosition(4, 2));
-            board.Move(board.GetPosition(4, 8), board.GetPosition(3, 7));
+            board.Move(board.GetSquare(1, 1), board.GetSquare(1, 2));
+            board.Move(board.GetSquare(5, 8), board.GetSquare(4, 8));
+            board.Move(board.GetSquare(1, 2), board.GetSquare(4, 2));
+            board.Move(board.GetSquare(4, 8), board.GetSquare(3, 7));
 
             Assert.AreEqual(GameState.Normal, game.State);
         }
@@ -141,13 +141,13 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(board, PieceColor.White));
-            board.SetPosition(5, 8, new King(board, PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
+            board.SetSquare(5, 1, new King(board, PieceColor.White));
+            board.SetSquare(5, 8, new King(board, PieceColor.Black));
+            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
-            board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1));
-            board.Move(board.GetPosition(5, 1), board.GetPosition(5, 2));
+            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1));
+            board.Move(board.GetSquare(5, 1), board.GetSquare(5, 2));
 
             Assert.AreEqual(GameState.Normal, game.State);
         }
@@ -157,14 +157,14 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(5, 1, new King(board, PieceColor.White));
-            board.SetPosition(4, 2, new Rook(board, PieceColor.White));
-            board.SetPosition(5, 8, new King(board, PieceColor.Black));
-            board.SetPosition(1, 8, new Rook(board, PieceColor.Black));
+            board.SetSquare(5, 1, new King(board, PieceColor.White));
+            board.SetSquare(4, 2, new Rook(board, PieceColor.White));
+            board.SetSquare(5, 8, new King(board, PieceColor.Black));
+            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
 
             game.Start();
-            board.Move(board.GetPosition(1, 8), board.GetPosition(1, 1)); // BlackRook Checks WhiteKing
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 1)); // WhiteRook Is Moved To Block The Check
+            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1)); // BlackRook Checks WhiteKing
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 1)); // WhiteRook Is Moved To Block The Check
 
             Assert.AreEqual(GameState.Normal, game.State);
         }
@@ -174,13 +174,13 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(1, 6, new King(board, PieceColor.White));
-            board.SetPosition(1, 8, new King(board, PieceColor.Black));
-            board.SetPosition(4, 6, new Bishop(board, PieceColor.White));
-            board.SetPosition(2, 5, new Bishop(board, PieceColor.White));
+            board.SetSquare(1, 6, new King(board, PieceColor.White));
+            board.SetSquare(1, 8, new King(board, PieceColor.Black));
+            board.SetSquare(4, 6, new Bishop(board, PieceColor.White));
+            board.SetSquare(2, 5, new Bishop(board, PieceColor.White));
 
             game.Start(PieceColor.White);
-            board.Move(board.GetPosition(2, 5), board.GetPosition(3, 6));
+            board.Move(board.GetSquare(2, 5), board.GetSquare(3, 6));
 
             Assert.AreEqual(GameState.CheckMate, game.State);
         }
@@ -190,13 +190,13 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(8, 1, new King(board, PieceColor.White));
-            board.SetPosition(8, 3, new King(board, PieceColor.Black));
-            board.SetPosition(7, 4, new Bishop(board, PieceColor.Black));
-            board.SetPosition(5, 3, new Bishop(board, PieceColor.Black));
+            board.SetSquare(8, 1, new King(board, PieceColor.White));
+            board.SetSquare(8, 3, new King(board, PieceColor.Black));
+            board.SetSquare(7, 4, new Bishop(board, PieceColor.Black));
+            board.SetSquare(5, 3, new Bishop(board, PieceColor.Black));
 
             game.Start(PieceColor.Black);
-            board.Move(board.GetPosition(7, 4), board.GetPosition(6, 3));
+            board.Move(board.GetSquare(7, 4), board.GetSquare(6, 3));
 
             Assert.AreEqual(GameState.CheckMate, game.State);
         }
@@ -206,14 +206,14 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(3, 4, new King(board, PieceColor.White));
-            board.SetPosition(3, 6, new Queen(board, PieceColor.White));
-            board.SetPosition(1, 6, new King(board, PieceColor.Black));
+            board.SetSquare(3, 4, new King(board, PieceColor.White));
+            board.SetSquare(3, 6, new Queen(board, PieceColor.White));
+            board.SetSquare(1, 6, new King(board, PieceColor.Black));
 
             game.Start(PieceColor.Black);
             Assert.AreEqual(GameState.Check, game.State);
 
-            board.Move(board.GetPosition(1, 6), board.GetPosition(1, 5));
+            board.Move(board.GetSquare(1, 6), board.GetSquare(1, 5));
 
             Assert.AreEqual(GameState.StaleMate, game.State);
         }
@@ -224,21 +224,21 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(1, 6, new Pawn(board, PieceColor.White));
-            board.SetPosition(2, 6, new Rook(board, PieceColor.White));
-            board.SetPosition(6, 3, new Pawn(board, PieceColor.White));
-            board.SetPosition(7, 3, new King(board, PieceColor.White));
-            board.SetPosition(6, 5, new King(board, PieceColor.Black));
-            board.SetPosition(1, 2, new Rook(board, PieceColor.Black));
+            board.SetSquare(1, 6, new Pawn(board, PieceColor.White));
+            board.SetSquare(2, 6, new Rook(board, PieceColor.White));
+            board.SetSquare(6, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(7, 3, new King(board, PieceColor.White));
+            board.SetSquare(6, 5, new King(board, PieceColor.Black));
+            board.SetSquare(1, 2, new Rook(board, PieceColor.Black));
 
             game.Start(PieceColor.White);
-            board.Move(board.GetPosition(2, 6), board.GetPosition(3, 6));
-            board.Move(board.GetPosition(6, 5), board.GetPosition(7, 5));
-            board.Move(board.GetPosition(7, 3), board.GetPosition(8, 3));
-            board.Move(board.GetPosition(7, 5), board.GetPosition(8, 5));
-            board.Move(board.GetPosition(6, 3), board.GetPosition(6, 4));
-            board.Move(board.GetPosition(1, 2), board.GetPosition(1, 6));
-            board.Move(board.GetPosition(3, 6), board.GetPosition(1, 6));
+            board.Move(board.GetSquare(2, 6), board.GetSquare(3, 6));
+            board.Move(board.GetSquare(6, 5), board.GetSquare(7, 5));
+            board.Move(board.GetSquare(7, 3), board.GetSquare(8, 3));
+            board.Move(board.GetSquare(7, 5), board.GetSquare(8, 5));
+            board.Move(board.GetSquare(6, 3), board.GetSquare(6, 4));
+            board.Move(board.GetSquare(1, 2), board.GetSquare(1, 6));
+            board.Move(board.GetSquare(3, 6), board.GetSquare(1, 6));
 
             Assert.AreEqual(GameState.StaleMate, game.State);
         }
@@ -248,32 +248,32 @@ namespace ChessEngineTests
         {
             Game game = new Game(new Board());
             Board board = game.Board;
-            board.SetPosition(2, 4, new Pawn(board, PieceColor.White));
-            board.SetPosition(5, 4, new Pawn(board, PieceColor.White));
-            board.SetPosition(6, 3, new Pawn(board, PieceColor.White));
-            board.SetPosition(7, 3, new Pawn(board, PieceColor.White));
-            board.SetPosition(8, 3, new Pawn(board, PieceColor.White));
-            board.SetPosition(6, 7, new Rook(board, PieceColor.White));
-            board.SetPosition(3, 8, new Queen(board, PieceColor.White));
-            board.SetPosition(8, 2, new King(board, PieceColor.White));
-            board.SetPosition(2, 5, new Pawn(board, PieceColor.Black));
-            board.SetPosition(5, 5, new Pawn(board, PieceColor.Black));
-            board.SetPosition(7, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(8, 5, new Pawn(board, PieceColor.Black));
-            board.SetPosition(6, 4, new Knight(board, PieceColor.Black));
-            board.SetPosition(5, 3, new Rook(board, PieceColor.Black));
-            board.SetPosition(7, 5, new Queen(board, PieceColor.Black));
-            board.SetPosition(8, 7, new King(board, PieceColor.Black));
+            board.SetSquare(2, 4, new Pawn(board, PieceColor.White));
+            board.SetSquare(5, 4, new Pawn(board, PieceColor.White));
+            board.SetSquare(6, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(7, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(8, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(6, 7, new Rook(board, PieceColor.White));
+            board.SetSquare(3, 8, new Queen(board, PieceColor.White));
+            board.SetSquare(8, 2, new King(board, PieceColor.White));
+            board.SetSquare(2, 5, new Pawn(board, PieceColor.Black));
+            board.SetSquare(5, 5, new Pawn(board, PieceColor.Black));
+            board.SetSquare(7, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(8, 5, new Pawn(board, PieceColor.Black));
+            board.SetSquare(6, 4, new Knight(board, PieceColor.Black));
+            board.SetSquare(5, 3, new Rook(board, PieceColor.Black));
+            board.SetSquare(7, 5, new Queen(board, PieceColor.Black));
+            board.SetSquare(8, 7, new King(board, PieceColor.Black));
 
             game.Start(PieceColor.White);
-            board.Move(board.GetPosition(8, 3), board.GetPosition(8, 4));
-            board.Move(board.GetPosition(5, 3), board.GetPosition(5, 2));
-            board.Move(board.GetPosition(8, 2), board.GetPosition(8, 1));
-            board.Move(board.GetPosition(7, 5), board.GetPosition(7, 3));
-            board.Move(board.GetPosition(3, 8), board.GetPosition(8, 8));
-            board.Move(board.GetPosition(8, 7), board.GetPosition(8, 8));
-            board.Move(board.GetPosition(6, 7), board.GetPosition(7, 7));
-            board.Move(board.GetPosition(8, 8), board.GetPosition(7, 7));
+            board.Move(board.GetSquare(8, 3), board.GetSquare(8, 4));
+            board.Move(board.GetSquare(5, 3), board.GetSquare(5, 2));
+            board.Move(board.GetSquare(8, 2), board.GetSquare(8, 1));
+            board.Move(board.GetSquare(7, 5), board.GetSquare(7, 3));
+            board.Move(board.GetSquare(3, 8), board.GetSquare(8, 8));
+            board.Move(board.GetSquare(8, 7), board.GetSquare(8, 8));
+            board.Move(board.GetSquare(6, 7), board.GetSquare(7, 7));
+            board.Move(board.GetSquare(8, 8), board.GetSquare(7, 7));
 
             Assert.AreEqual(GameState.StaleMate, game.State);
         }

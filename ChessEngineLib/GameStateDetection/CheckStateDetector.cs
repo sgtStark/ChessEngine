@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using ChessEngineLib.ChessPieces;
 
 namespace ChessEngineLib.GameStateDetection
 {
+    using ChessPieces;
+
     public class CheckStateDetector
     {
         private readonly List<Square> _squaresOccupiedByOpponent;

@@ -26,38 +26,40 @@
         {
             var kingsideRookSquare = GetKingsideRookSquare(origin);
 
+            if (!destination.DistanceOfFilesIsOneTo(kingsideRookSquare)) return;
             if (origin.Color != kingsideRookSquare.Color) return;
             if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(kingsideRookSquare.Occupier is Rook)) return;
 
-            Board.SetPosition(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece());
-            Board.SetPosition(origin.File + 1, origin.Rank, kingsideRookSquare.Occupier);
+            Board.SetSquare(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece());
+            Board.SetSquare(origin.File + 1, origin.Rank, kingsideRookSquare.Occupier);
         }
 
         private Square GetKingsideRookSquare(Square origin)
         {
             return origin.Color == PieceColor.White
-                       ? Board.GetPosition(NUMBER_OF_THE_LAST_FILE, OFFICER_RANK_FOR_WHITE)
-                       : Board.GetPosition(NUMBER_OF_THE_LAST_FILE, OFFICER_RANK_FOR_BLACK);
+                       ? Board.GetSquare(NUMBER_OF_THE_LAST_FILE, OFFICER_RANK_FOR_WHITE)
+                       : Board.GetSquare(NUMBER_OF_THE_LAST_FILE, OFFICER_RANK_FOR_BLACK);
         }
 
         private void HandleQueensideCastling(Square origin, Square destination)
         {
             var queensideRookSquare = GetQueensideRookSquare(origin);
 
+            if (!destination.DistanceOfFilesIsTwoTo(queensideRookSquare)) return;
             if (origin.Color != queensideRookSquare.Color) return;
             if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(queensideRookSquare.Occupier is Rook)) return;
 
-            Board.SetPosition(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece());
-            Board.SetPosition(origin.File - 1, queensideRookSquare.Rank, queensideRookSquare.Occupier);
+            Board.SetSquare(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece());
+            Board.SetSquare(origin.File - 1, queensideRookSquare.Rank, queensideRookSquare.Occupier);
         }
 
         private Square GetQueensideRookSquare(Square origin)
         {
             return origin.Color == PieceColor.White
-                       ? Board.GetPosition(NUMBER_OF_THE_FIRST_FILE, OFFICER_RANK_FOR_WHITE)
-                       : Board.GetPosition(NUMBER_OF_THE_FIRST_FILE, OFFICER_RANK_FOR_BLACK);
+                       ? Board.GetSquare(NUMBER_OF_THE_FIRST_FILE, OFFICER_RANK_FOR_WHITE)
+                       : Board.GetSquare(NUMBER_OF_THE_FIRST_FILE, OFFICER_RANK_FOR_BLACK);
         }
 
         public override bool IsSpecialMove(Square origin, Square destination)
@@ -87,8 +89,8 @@
         private Square GetKingsideBlockingSquare(Square origin)
         {
             return origin.Color == PieceColor.White
-                       ? Board.GetPosition(origin.File + 1, OFFICER_RANK_FOR_WHITE)
-                       : Board.GetPosition(origin.File + 1, OFFICER_RANK_FOR_BLACK);
+                       ? Board.GetSquare(origin.File + 1, OFFICER_RANK_FOR_WHITE)
+                       : Board.GetSquare(origin.File + 1, OFFICER_RANK_FOR_BLACK);
         }
 
         private bool CheckQueenside(Square origin)
@@ -103,8 +105,8 @@
         private Square GetQueensideBlockingSquare(Square origin)
         {
             return origin.Color == PieceColor.White
-                       ? Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_WHITE)
-                       : Board.GetPosition(origin.File - 1, OFFICER_RANK_FOR_BLACK);
+                       ? Board.GetSquare(origin.File - 1, OFFICER_RANK_FOR_WHITE)
+                       : Board.GetSquare(origin.File - 1, OFFICER_RANK_FOR_BLACK);
         }
 
         public override MovingStrategy Clone(Board board)

@@ -1,0 +1,180 @@
+﻿<UserControl x:Class="ChessUI.Controls.Standard2DChessBoard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600">
+    <UserControl.Resources>
+
+        <!-- Geometria elementit -->
+        <RectangleGeometry x:Key="SquareGeometry1" Rect="0,0 100,100" />
+        <RectangleGeometry x:Key="SquareGeometry2" Rect="0,100 100,100" />
+        <RectangleGeometry x:Key="SquareGeometry3" Rect="100,0 100,100" />
+        <RectangleGeometry x:Key="SquareGeometry4" Rect="100,100 100,100" />
+        <RectangleGeometry x:Key="SelectionBounds" Rect="0,0 100,100" />
+        <RectangleGeometry x:Key="SelectionGeometry" Rect="20,20 60,60" />
+
+        <!-- Kynät -->
+        <Pen x:Key="SelectionPen" Brush="#99008D04" Thickness="4"/>
+
+        <!-- Siveltimet -->
+        <SolidColorBrush x:Key="BlackBoardBrush" Color="#B3595858"/>
+        <SolidColorBrush x:Key="WhiteSquareBrush" Color="#EBEAEA"/>
+        <SolidColorBrush x:Key="BlackSquareBrush" Color="#2E2E2E"/>
+        <DrawingBrush x:Key="SelectionBrush" Stretch="Uniform">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Geometry="{StaticResource SelectionBounds}" Brush="Transparent" />
+                        <GeometryDrawing Geometry="{StaticResource SelectionGeometry}" Pen="{StaticResource SelectionPen}"/>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+        <!-- Tyylit -->
+        <Style x:Key="MarginTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#CD1265AF"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="BoardStyle" TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <DrawingBrush Viewport="0,0,0.25,0.25" TileMode="Tile">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <DrawingGroup.Children>
+                                    <GeometryDrawing Geometry="{StaticResource SquareGeometry1}" Brush="{StaticResource WhiteSquareBrush}"/>
+                                    <GeometryDrawing Geometry="{StaticResource SquareGeometry2}" Brush="{StaticResource BlackSquareBrush}"/>
+                                    <GeometryDrawing Geometry="{StaticResource SquareGeometry3}" Brush="{StaticResource BlackSquareBrush}"/>
+                                    <GeometryDrawing Geometry="{StaticResource SquareGeometry4}" Brush="{StaticResource WhiteSquareBrush}"/>
+                                </DrawingGroup.Children>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    
+    <!-- Juuri -->
+    <Viewbox Stretch="Uniform">
+        
+        <!-- Kokonaisuus -->
+        <Canvas Background="#E6E6E6" Width="670" Height="670">
+            
+            <!-- Marginaali, tähän piirretään yläreunan FILE tasot(A, B, C, D, E, F, G ja H) -->
+            <UniformGrid Canvas.Top="0" Canvas.Left="35"
+                         Background="#E6E6E6"
+                         Width="600"
+                         Height="30"
+                         Rows="1"
+                         Columns="8">
+                <TextBlock Text="A" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="B" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="C" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="D" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="E" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="F" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="G" Style="{StaticResource MarginTextBlockStyle}" />
+                <TextBlock Text="H" Style="{StaticResource MarginTextBlockStyle}" />
+            </UniformGrid>
+        
+            <!-- Marginaali, tähän piirretään alareunan FILE tasot(A, B, C, D, E, F, G ja H) -->
+            <UniformGrid Canvas.Top="640" Canvas.Left="35"
+                         Background="#E6E6E6"
+                         Width="600"
+                         Height="30"
+                         Rows="1"
+                         Columns="8">
+            <TextBlock Text="A" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="B" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="C" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="D" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="E" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="F" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="G" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="H" Style="{StaticResource MarginTextBlockStyle}" />
+        </UniformGrid>
+            
+            <!-- Marginaali, tähän piirretään vasemman reunan RANK tasot(1, 2, 3, 4, 5, 6, 7, 8) -->
+            <UniformGrid Canvas.Top="35" Canvas.Left="0"
+                         Background="#E6E6E6"
+                         Width="30"
+                         Height="600"
+                         Rows="8"
+                         Columns="1">
+            <TextBlock Text="8" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="7" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="6" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="5" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="4" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="3" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="2" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="1" Style="{StaticResource MarginTextBlockStyle}" />
+        </UniformGrid>
+            
+            <!-- Marginaali, tähän piirretään oikean reunan RANK tasot(1, 2, 3, 4, 5, 6, 7, 8) -->
+            <UniformGrid Canvas.Top="35" Canvas.Left="640"
+                         Background="#E6E6E6"
+                         Width="30"
+                         Height="600"
+                         Rows="8"
+                         Columns="1">
+            <TextBlock Text="8" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="7" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="6" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="5" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="4" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="3" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="2" Style="{StaticResource MarginTextBlockStyle}" />
+            <TextBlock Text="1" Style="{StaticResource MarginTextBlockStyle}" />
+        </UniformGrid>
+
+            <!-- Shakkilaudan ruutujen reuna -->
+            <Rectangle Width="610"
+                       Height="610"
+                       Canvas.Top="30"
+                       Canvas.Left="30"
+                       Fill="{StaticResource BlackBoardBrush}"/>
+
+            <!-- Shakkilauta -->
+            <Canvas Name="ChessBoard" Canvas.Top="35" Canvas.Left="35"
+                    Width="600"
+                    Height="600"
+                    Background="#E6E6E6">
+<!--                    MouseLeftButtonDown="MouseLeftButtonPressed"-->
+
+                <!-- Ruutu taso (alin taso) -->
+                <Rectangle Style="{StaticResource BoardStyle}"
+                           Width="600"
+                           Height="600"/>
+                
+                <!-- Valinta taso (väli taso) -->
+                <Canvas Width="600" Height="600">
+                    <Rectangle Name="Selection"
+                           Width="100"
+                           Height="100"
+                           Fill="{StaticResource SelectionBrush}"
+                           Visibility="Hidden">
+                        <Rectangle.RenderTransform>
+                            <TranslateTransform/>
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                </Canvas>
+                
+                <!-- Nappula taso (päällimmäinen/ylä taso) -->
+                <Canvas Name="PieceLayer" Width="600" Height="600" />
+
+            </Canvas>
+
+        </Canvas>
+    </Viewbox>
+</UserControl>

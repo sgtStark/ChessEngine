@@ -6,7 +6,7 @@ namespace ChessEngineLib
     {
         public Square From { get; private set; }
 
-        private Square To { get; set; }
+        public Square To { get; private set; }
 
         public MoveEventArgs(Square from, Square to)
         {

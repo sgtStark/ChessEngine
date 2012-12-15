@@ -48,9 +48,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnOneSquareForward_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 1, new Pawn(board, PieceColor.White));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 1), board.GetPosition(1, 2));
+            var result = board.IsLegalMove(board.GetSquare(1, 1), board.GetSquare(1, 2));
 
             Assert.IsTrue(result);
         }
@@ -59,9 +59,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnOneSquareForward_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 6));
+            var result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 6));
 
             Assert.IsTrue(result);
         }
@@ -70,9 +70,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesTwoSquaresForward_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 1, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 1), board.GetPosition(1, 3));
+            bool result = board.IsLegalMove(board.GetSquare(1, 1), board.GetSquare(1, 3));
 
             Assert.IsFalse(result);
         }
@@ -81,9 +81,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesTwoSquaresForward_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 8, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 8, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 8), board.GetPosition(1, 6));
+            bool result = board.IsLegalMove(board.GetSquare(1, 8), board.GetSquare(1, 6));
 
             Assert.IsFalse(result);
         }
@@ -92,9 +92,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesTwoSquaresForwardFromStartingRank_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 5));
+            bool result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 5));
 
             Assert.IsTrue(result);
         }
@@ -103,9 +103,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesTwoSquaresForwardFromStartingRank_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 2, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 2), board.GetPosition(1, 4));
+            bool result = board.IsLegalMove(board.GetSquare(1, 2), board.GetSquare(1, 4));
 
             Assert.IsTrue(result);
         }
@@ -114,9 +114,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesOneSquareDiagonallyToRight_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 1, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 1), board.GetPosition(2, 2));
+            bool result = board.IsLegalMove(board.GetSquare(1, 1), board.GetSquare(2, 2));
 
             Assert.IsFalse(result);
         }
@@ -125,9 +125,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesOneSquareDiagonallyToRight_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(4, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(4, 7, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(4, 7), board.GetPosition(3, 6));
+            bool result = board.IsLegalMove(board.GetSquare(4, 7), board.GetSquare(3, 6));
 
             Assert.IsFalse(result);
         }
@@ -136,10 +136,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnAttacksOppositeColorPawnOneSquareForwardOnRightDiagonal_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
-            board.SetPosition(2, 3, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(2, 3, new Pawn(board, PieceColor.Black));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 2), board.GetPosition(2, 3));
+            var result = board.IsLegalMove(board.GetSquare(1, 2), board.GetSquare(2, 3));
 
             Assert.IsTrue(result);
         }
@@ -148,10 +148,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnAttacksOppositeColorPawnOneSquareForwardOnLeftDiagonal_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 2, new Pawn(board, PieceColor.White));
-            board.SetPosition(1, 3, new Pawn(board, PieceColor.Black));
+            board.SetSquare(2, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 3, new Pawn(board, PieceColor.Black));
 
-            var result = board.IsLegalMove(board.GetPosition(2, 2), board.GetPosition(1, 3));
+            var result = board.IsLegalMove(board.GetSquare(2, 2), board.GetSquare(1, 3));
 
             Assert.IsTrue(result);
         }
@@ -160,10 +160,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnAttacksOppositeColorPawnOneSquareForwardOnRightDiagonal_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(2, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(1, 6, new Pawn(board, PieceColor.White));
+            board.SetSquare(2, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 6, new Pawn(board, PieceColor.White));
 
-            var result = board.IsLegalMove(board.GetPosition(2, 7), board.GetPosition(1, 6));
+            var result = board.IsLegalMove(board.GetSquare(2, 7), board.GetSquare(1, 6));
 
             Assert.IsTrue(result);
         }
@@ -172,10 +172,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnAttacksOppositeColorPawnOneSquareForwardOnLeftDiagonal_ReturnsTrue()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(2, 6, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(2, 6, new Pawn(board, PieceColor.White));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(2, 6));
+            var result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(2, 6));
 
             Assert.IsTrue(result);
         }
@@ -184,9 +184,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesOneSquareToRight_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 1, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 1, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 1), board.GetPosition(2, 1));
+            bool result = board.IsLegalMove(board.GetSquare(1, 1), board.GetSquare(2, 1));
 
             Assert.IsFalse(result);
         }
@@ -195,9 +195,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesOneSquareBackward_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 3, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 3), board.GetPosition(1, 2));
+            bool result = board.IsLegalMove(board.GetSquare(1, 3), board.GetSquare(1, 2));
 
             Assert.IsFalse(result);
         }
@@ -206,9 +206,9 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesOneSquareBackward_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 8));
+            bool result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 8));
 
             Assert.IsFalse(result);
         }
@@ -217,10 +217,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesOneSquareForwardToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
-            board.SetPosition(1, 3, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 3, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 2), board.GetPosition(1, 3));
+            bool result = board.IsLegalMove(board.GetSquare(1, 2), board.GetSquare(1, 3));
 
             Assert.IsFalse(result);
         }
@@ -229,10 +229,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesOneSquareForwardToPositionWhichIsOccupiedBySameColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
-            board.SetPosition(1, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 3, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 2), board.GetPosition(1, 3));
+            bool result = board.IsLegalMove(board.GetSquare(1, 2), board.GetSquare(1, 3));
 
             Assert.IsFalse(result);
         }
@@ -241,10 +241,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesOneSquareForwardToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(1, 6, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 6, new Pawn(board, PieceColor.White));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 6));
+            bool result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 6));
 
             Assert.IsFalse(result);
         }
@@ -253,10 +253,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesOneSquareForwardToPositionWhichIsOccupiedBySameColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(1, 8, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 8, new Pawn(board, PieceColor.Black));
 
-            bool result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 8));
+            bool result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 8));
 
             Assert.IsFalse(result);
         }
@@ -265,10 +265,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_WhitePawnMovesTwoSquaresForwardWhileItsPathIsOccupiedBySameColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 2, new Pawn(board, PieceColor.White));
-            board.SetPosition(1, 3, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 2, new Pawn(board, PieceColor.White));
+            board.SetSquare(1, 3, new Pawn(board, PieceColor.White));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 2), board.GetPosition(1, 4));
+            var result = board.IsLegalMove(board.GetSquare(1, 2), board.GetSquare(1, 4));
 
             Assert.IsFalse(result);
         }
@@ -277,10 +277,10 @@ namespace ChessEngineTests.ChessPieceTests
         public void IsLegalMove_BlackPawnMovesTwoSquaresForwardWhileItsPathIsOccupiedBySameColorPiece_ReturnsFalse()
         {
             Board board = CreateEmptyBoard();
-            board.SetPosition(1, 7, new Pawn(board, PieceColor.Black));
-            board.SetPosition(1, 6, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 7, new Pawn(board, PieceColor.Black));
+            board.SetSquare(1, 6, new Pawn(board, PieceColor.Black));
 
-            var result = board.IsLegalMove(board.GetPosition(1, 7), board.GetPosition(1, 5));
+            var result = board.IsLegalMove(board.GetSquare(1, 7), board.GetSquare(1, 5));
 
             Assert.IsFalse(result);
         }
@@ -292,14 +292,14 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään valkoinen sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
-            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
+            board.Move(board.GetSquare(4, 4), board.GetSquare(4, 5));
 
             // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
             // En Passant hyökkäyksen ruutuun (3, 6)
-            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 5));
+            board.Move(board.GetSquare(3, 7), board.GetSquare(3, 5));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(3, 6));
+            var result = board.IsLegalMove(board.GetSquare(4, 5), board.GetSquare(3, 6));
 
             Assert.IsTrue(result);
         }
@@ -311,15 +311,15 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään valkoinen sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
-            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
+            board.Move(board.GetSquare(4, 4), board.GetSquare(4, 5));
 
             // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
             // En Passant hyökkäyksen ruutuun (3, 6)
-            board.Move(board.GetPosition(3, 7), board.GetPosition(3, 6));
-            board.Move(board.GetPosition(3, 6), board.GetPosition(3, 5));
+            board.Move(board.GetSquare(3, 7), board.GetSquare(3, 6));
+            board.Move(board.GetSquare(3, 6), board.GetSquare(3, 5));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(3, 6));
+            var result = board.IsLegalMove(board.GetSquare(4, 5), board.GetSquare(3, 6));
 
             Assert.IsFalse(result);
         }
@@ -331,14 +331,14 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään valkoinen sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
-            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
+            board.Move(board.GetSquare(4, 4), board.GetSquare(4, 5));
 
             // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
             // En Passant hyökkäyksen ruutuun (5, 6)
-            board.Move(board.GetPosition(5, 7), board.GetPosition(5, 5));
+            board.Move(board.GetSquare(5, 7), board.GetSquare(5, 5));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(5, 6));
+            var result = board.IsLegalMove(board.GetSquare(4, 5), board.GetSquare(5, 6));
 
             Assert.IsTrue(result);
         }
@@ -350,15 +350,15 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään valkoinen sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 2), board.GetPosition(4, 4));
-            board.Move(board.GetPosition(4, 4), board.GetPosition(4, 5));
+            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
+            board.Move(board.GetSquare(4, 4), board.GetSquare(4, 5));
 
             // Siirretään musta sotilas kaksi ruutua eteenpäin mahdollistaen valkoiselle
             // En Passant hyökkäyksen ruutuun (3, 6)
-            board.Move(board.GetPosition(5, 7), board.GetPosition(5, 6));
-            board.Move(board.GetPosition(5, 6), board.GetPosition(5, 5));
+            board.Move(board.GetSquare(5, 7), board.GetSquare(5, 6));
+            board.Move(board.GetSquare(5, 6), board.GetSquare(5, 5));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 5), board.GetPosition(5, 6));
+            var result = board.IsLegalMove(board.GetSquare(4, 5), board.GetSquare(5, 6));
 
             Assert.IsFalse(result);
         }
@@ -370,14 +370,14 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään musta sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
-            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
+            board.Move(board.GetSquare(4, 5), board.GetSquare(4, 4));
 
             // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
             // En Passant hyökkäyksen ruutuun (5, 3)
-            board.Move(board.GetPosition(5, 2), board.GetPosition(5, 4));
+            board.Move(board.GetSquare(5, 2), board.GetSquare(5, 4));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(5, 3));
+            var result = board.IsLegalMove(board.GetSquare(4, 4), board.GetSquare(5, 3));
 
             Assert.IsTrue(result);
         }
@@ -389,15 +389,15 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään musta sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
-            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
+            board.Move(board.GetSquare(4, 5), board.GetSquare(4, 4));
 
             // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
             // En Passant hyökkäyksen ruutuun (5, 3)
-            board.Move(board.GetPosition(5, 2), board.GetPosition(5, 3));
-            board.Move(board.GetPosition(5, 3), board.GetPosition(5, 4));
+            board.Move(board.GetSquare(5, 2), board.GetSquare(5, 3));
+            board.Move(board.GetSquare(5, 3), board.GetSquare(5, 4));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(5, 3));
+            var result = board.IsLegalMove(board.GetSquare(4, 4), board.GetSquare(5, 3));
 
             Assert.IsFalse(result);
         }
@@ -409,14 +409,14 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään musta sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
-            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
+            board.Move(board.GetSquare(4, 5), board.GetSquare(4, 4));
 
             // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
             // En Passant hyökkäyksen ruutuun (3, 3)
-            board.Move(board.GetPosition(3, 2), board.GetPosition(3, 4));
+            board.Move(board.GetSquare(3, 2), board.GetSquare(3, 4));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(3, 3));
+            var result = board.IsLegalMove(board.GetSquare(4, 4), board.GetSquare(3, 3));
 
             Assert.IsTrue(result);
         }
@@ -428,15 +428,15 @@ namespace ChessEngineTests.ChessPieceTests
             board.Setup();
 
             // Siirretään musta sotilas hyökkäys asetelmaan
-            board.Move(board.GetPosition(4, 7), board.GetPosition(4, 5));
-            board.Move(board.GetPosition(4, 5), board.GetPosition(4, 4));
+            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
+            board.Move(board.GetSquare(4, 5), board.GetSquare(4, 4));
 
             // Siirretään valkoinen sotilas kaksi ruutua eteenpäin mahdollistaen mustalle
             // En Passant hyökkäyksen ruutuun (3, 3)
-            board.Move(board.GetPosition(3, 2), board.GetPosition(3, 3));
-            board.Move(board.GetPosition(3, 3), board.GetPosition(3, 4));
+            board.Move(board.GetSquare(3, 2), board.GetSquare(3, 3));
+            board.Move(board.GetSquare(3, 3), board.GetSquare(3, 4));
 
-            var result = board.IsLegalMove(board.GetPosition(4, 4), board.GetPosition(3, 3));
+            var result = board.IsLegalMove(board.GetSquare(4, 4), board.GetSquare(3, 3));
 
             Assert.IsFalse(result);
         }

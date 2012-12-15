@@ -47,18 +47,18 @@ namespace ChessEngineLib.ChessPieces
             if (origin.AlongFile(destination))
             {
                 for (int file = origin.File; file < destination.File; file++)
-                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
+                    positionsBetweenToReturn.Add(Board.GetSquare(file, origin.Rank));
 
                 for (int file = origin.File; file > destination.File; file--)
-                    positionsBetweenToReturn.Add(Board.GetPosition(file, origin.Rank));
+                    positionsBetweenToReturn.Add(Board.GetSquare(file, origin.Rank));
             }
             else if (origin.AlongRank(destination))
             {
                 for (int rank = origin.Rank; rank < destination.Rank; rank++)
-                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+                    positionsBetweenToReturn.Add(Board.GetSquare(origin.File, rank));
 
                 for (int rank = origin.Rank; rank > destination.Rank; rank--)
-                    positionsBetweenToReturn.Add(Board.GetPosition(origin.File, rank));
+                    positionsBetweenToReturn.Add(Board.GetSquare(origin.File, rank));
             }
             else if (origin.DiagonallyTo(destination))
             {
@@ -70,7 +70,7 @@ namespace ChessEngineLib.ChessPieces
                 {
                     while (startingFile <= destination.File && startingRank <= destination.File)
                     {
-                        positionsBetweenToReturn.Add(Board.GetPosition(startingFile, startingRank));
+                        positionsBetweenToReturn.Add(Board.GetSquare(startingFile, startingRank));
                         startingFile += 1;
                         startingRank -= 1;
                     }
@@ -80,7 +80,7 @@ namespace ChessEngineLib.ChessPieces
                 {
                     while (startingFile >= destination.File && startingRank <= destination.Rank)
                     {
-                        positionsBetweenToReturn.Add(Board.GetPosition(startingFile, startingRank));
+                        positionsBetweenToReturn.Add(Board.GetSquare(startingFile, startingRank));
                         startingFile -= 1;
                         startingRank += 1;
                     }
@@ -90,7 +90,7 @@ namespace ChessEngineLib.ChessPieces
                 {
                     while (startingFile <= destination.File && startingRank <= destination.Rank)
                     {
-                        positionsBetweenToReturn.Add(Board.GetPosition(startingFile, startingRank));
+                        positionsBetweenToReturn.Add(Board.GetSquare(startingFile, startingRank));
                         startingFile += 1;
                         startingRank += 1;
                     }
@@ -100,7 +100,7 @@ namespace ChessEngineLib.ChessPieces
                 {
                     while (startingFile >= destination.File && startingRank >= destination.Rank)
                     {
-                        positionsBetweenToReturn.Add(Board.GetPosition(startingFile, startingRank));
+                        positionsBetweenToReturn.Add(Board.GetSquare(startingFile, startingRank));
                         startingFile -= 1;
                         startingRank -= 1;
                     }

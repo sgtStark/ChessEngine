@@ -277,6 +277,7 @@
 - Lisätty testit ja toteutus CheckMate tarkastukselle.
 - Lisätty testit ja toteutus StaleMate-tarkastukselle.
 
+
 11.11.2012
 -- TODO: Laadi test DSL siirroille ja/tai nappuloiden asetukselle.
 -- TODO: DrawByRepetition tarkastus
@@ -292,3 +293,36 @@
 - Refactoroitu Game-luokasta aiemmin toteutetun toiminnallisuuden ylimääräinen monimutkaisuus ja toisteisuus pois.
 - Poistettu testi luokista regionit.
 - Poistettu täysin käyttämätön Helpers-kansio ja AssertExtensions-luokka ChessEngineTests-projektista.
+
+
+25.11.2012
+-- TODO: Laadi test DSL siirroille ja/tai nappuloiden asetukselle.
+-- TODO: DrawByRepetition tarkastus
+-- TODO: DrawInsufficientMaterial tarkastus
+-- TODO: Draw50MoveRule tarkastus
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+
+29.11.2012
+-- TODO: Laadi test DSL siirroille ja/tai nappuloiden asetukselle.
+-- TODO: DrawByRepetition tarkastus
+-- TODO: DrawInsufficientMaterial tarkastus
+-- TODO: Draw50MoveRule tarkastus
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+
+15.12.2012
+-- TODO: Laadi test DSL siirroille ja/tai nappuloiden asetukselle.
+-- TODO: DrawByRepetition tarkastus
+-- TODO: DrawInsufficientMaterial tarkastus
+-- TODO: Draw50MoveRule tarkastus
+-- TODO: Kun käyttäjä antaa virheelliset parametrit position-luokalle on nostettava InvalidPositionException.
+-- TODO: Toteuta Promotion siirtojen tarkastukset.	TÄTÄ PITÄÄ MIETTIÄ MYÖHEMMIN, RIIPPUU PALJON KÄYTTÖLIITTYMÄN RAJAPINNASTA
+-- TODO: Tee testit tallennukselle ja lataukselle (save & load)
+
+- Korjattu sivuvaikutus Castling siirroista, jossa myös toinen torni(Rook) siirtyi samalla kerralla omaan Castling ruutuunsa.
+- Refactoroitu toisteisuutta KingTests ja BoardTests -luokista.

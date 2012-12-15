@@ -47,5 +47,10 @@ namespace ChessEngineLib.ChessPieces
         {
             return 0;
         }
+
+        public override string ToString()
+        {
+            return Color + GetType().Name;
+        }
     }
 }

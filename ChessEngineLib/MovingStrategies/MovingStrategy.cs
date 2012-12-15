@@ -16,8 +16,8 @@
         public virtual void Move(Square origin, Square destination)
         {
             MoveCount++;
-            Board.SetPosition(origin.File, origin.Rank, new NullPiece());
-            Board.SetPosition(destination.File, destination.Rank, origin.Occupier);
+            Board.SetSquare(origin.File, origin.Rank, new NullPiece());
+            Board.SetSquare(destination.File, destination.Rank, origin.Occupier);
         }
 
         public abstract bool IsSpecialMove(Square origin, Square destination);
