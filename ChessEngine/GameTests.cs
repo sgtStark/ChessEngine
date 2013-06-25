@@ -8,14 +8,20 @@ namespace ChessEngineTests
     [TestClass]
     public class GameTests : ChessEngineTestBase
     {
+        [TestInitialize]
+        public void InitializationBeforeEveryTest()
+        {
+            InitializeGame();
+        }
+
         [TestMethod]
         public void GetBoard_AfterCreatingNewGame_ReturnsSetupBoard()
         {
-            Game game = CreateNewGame();
+            Board.Setup();
             Board expected = new Board();
             expected.Setup();
 
-            var actual = game.Board;
+            var actual = Board;
 
             Assert.AreEqual(expected, actual);
         }
@@ -23,9 +29,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void PlayerToMove_BeforeGameIsStarted_ReturnsEmpty()
         {
-            Game game = CreateNewGame();
-
-            var result = game.PlayerToMove;
+            var result = Game.PlayerToMove;
 
             Assert.AreEqual(PieceColor.Empty, result);
         }
@@ -33,10 +37,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void PlayerToMove_AfterGameIsStarted_ReturnsWhite()
         {
-            Game game = CreateNewGame();
-
-            game.Start();
-            var result = game.PlayerToMove;
+            Game.Start();
+            var result = Game.PlayerToMove;
 
             Assert.AreEqual(PieceColor.White, result);
         }
@@ -44,12 +46,11 @@ namespace ChessEngineTests
         [TestMethod]
         public void PlayerToMove_WhiteMakesAMoveBeforeStartingTheGame_ReturnsBlack()
         {
-            Game game = CreateNewGame();
             const PieceColor expected = PieceColor.Black;
 
-            Board board = game.Board;
-            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
-            var actual = game.PlayerToMove;
+            Board.Setup();
+            Board.Move(GetSquare(4, 2), GetSquare(4, 4));
+            var actual = Game.PlayerToMove;
 
             Assert.AreEqual(expected, actual);
         }
@@ -57,13 +58,12 @@ namespace ChessEngineTests
         [TestMethod]
         public void PlayerToMove_AfterBothPlayersHaveMovedOnce_ReturnsWhite()
         {
-            Game game = CreateNewGame();
             const PieceColor expected = PieceColor.White;
 
-            Board board = game.Board;
-            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 4));
-            board.Move(board.GetSquare(4, 7), board.GetSquare(4, 5));
-            var actual = game.PlayerToMove;
+            Board.Setup();
+            Board.Move(GetSquare(4, 2), GetSquare(4, 4));
+            Board.Move(GetSquare(4, 7), GetSquare(4, 5));
+            var actual = Game.PlayerToMove;
 
             Assert.AreEqual(expected, actual);
         }
@@ -71,211 +71,198 @@ namespace ChessEngineTests
         [TestMethod]
         public void GameState_WhenGameIsCreatedWithSetupBoard_GameStateIsSetupMode()
         {
-            Game game = CreateNewGame();
-
-            Assert.AreEqual(GameState.SetupMode, game.State);
+            Assert.AreEqual(GameState.SetupMode, Game.State);
         }
 
         [TestMethod]
         public void GameState_WhenGameIsCreatedWithSetupBoardAndStartHasBeenCalled_GameStateIsNormal()
         {
-            Game game = CreateNewGame();
+            Game.Start();
 
-            game.Start();
-
-            Assert.AreEqual(GameState.Normal, game.State);
+            Assert.AreEqual(GameState.Normal, Game.State);
         }
 
         [TestMethod]
         public void GameState_AfterWhiteMovesToCheckTheBlackKing_GameStateIsCheck()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(5, 1, new King(board, PieceColor.White));
-            board.SetSquare(5, 8, new King(board, PieceColor.Black));
-            board.SetSquare(1, 1, new Rook(board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 1, new Rook(Board, PieceColor.White));
 
-            game.Start();
-            board.Move(board.GetSquare(1, 1), board.GetSquare(1, 2));
-            board.Move(board.GetSquare(5, 8), board.GetSquare(4, 8));
-            board.Move(board.GetSquare(1, 2), board.GetSquare(4, 2));
+            Game.Start();
+            Board.Move(GetSquare(1, 1), GetSquare(1, 2));
+            Board.Move(GetSquare(5, 8), GetSquare(4, 8));
+            Board.Move(GetSquare(1, 2), GetSquare(4, 2));
 
-            Assert.AreEqual(GameState.Check, game.State);
+            Assert.AreEqual(GameState.Check, Game.State);
         }
 
         [TestMethod]
         public void GameState_AfterBlackMovesToCheckTheWhiteKing_GameStateIsCheck()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(5, 1, new King(board, PieceColor.White));
-            board.SetSquare(5, 8, new King(board, PieceColor.Black));
-            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 8, new Rook(Board, PieceColor.Black));
 
-            game.Start();
-            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1));
+            Game.Start();
+            Board.Move(GetSquare(1, 8), GetSquare(1, 1));
 
-            Assert.AreEqual(GameState.Check, game.State);
+            Assert.AreEqual(GameState.Check, Game.State);
         }
 
         [TestMethod]
         public void GameState_AfterBlackKingIsMovedToSafeSquare_GameStateIsNormal()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(5, 1, new King(board, PieceColor.White));
-            board.SetSquare(5, 8, new King(board, PieceColor.Black));
-            board.SetSquare(1, 1, new Rook(board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 1, new Rook(Board, PieceColor.White));
 
-            game.Start();
-            board.Move(board.GetSquare(1, 1), board.GetSquare(1, 2));
-            board.Move(board.GetSquare(5, 8), board.GetSquare(4, 8));
-            board.Move(board.GetSquare(1, 2), board.GetSquare(4, 2));
-            board.Move(board.GetSquare(4, 8), board.GetSquare(3, 7));
+            Game.Start();
+            Board.Move(GetSquare(1, 1), GetSquare(1, 2));
+            Board.Move(GetSquare(5, 8), GetSquare(4, 8));
+            Board.Move(GetSquare(1, 2), GetSquare(4, 2));
+            Board.Move(GetSquare(4, 8), GetSquare(3, 7));
 
-            Assert.AreEqual(GameState.Normal, game.State);
+            Assert.AreEqual(GameState.Normal, Game.State);
         }
 
         [TestMethod]
         public void GameState_AfterWhiteKingIsMovedToSafeSquare_GameStateIsNormal()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(5, 1, new King(board, PieceColor.White));
-            board.SetSquare(5, 8, new King(board, PieceColor.Black));
-            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 8, new Rook(Board, PieceColor.Black));
 
-            game.Start();
-            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1));
-            board.Move(board.GetSquare(5, 1), board.GetSquare(5, 2));
+            Game.Start();
+            Board.Move(GetSquare(1, 8), GetSquare(1, 1));
+            Board.Move(GetSquare(5, 1), GetSquare(5, 2));
 
-            Assert.AreEqual(GameState.Normal, game.State);
+            Assert.AreEqual(GameState.Normal, Game.State);
         }
 
         [TestMethod]
         public void GameState_AfterWhiteMovesAnotherPieceToRemoveTheCheckOnWhiteKing_GameStateIsNormal()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(5, 1, new King(board, PieceColor.White));
-            board.SetSquare(4, 2, new Rook(board, PieceColor.White));
-            board.SetSquare(5, 8, new King(board, PieceColor.Black));
-            board.SetSquare(1, 8, new Rook(board, PieceColor.Black));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(4, 2, new Rook(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 8, new Rook(Board, PieceColor.Black));
 
-            game.Start();
-            board.Move(board.GetSquare(1, 8), board.GetSquare(1, 1)); // BlackRook Checks WhiteKing
-            board.Move(board.GetSquare(4, 2), board.GetSquare(4, 1)); // WhiteRook Is Moved To Block The Check
+            Game.Start();
+            Board.Move(GetSquare(1, 8), GetSquare(1, 1)); // BlackRook Checks WhiteKing
+            Board.Move(GetSquare(4, 2), GetSquare(4, 1)); // WhiteRook Is Moved To Block The Check
 
-            Assert.AreEqual(GameState.Normal, game.State);
+            Assert.AreEqual(GameState.Normal, Game.State);
         }
 
         [TestMethod]
         public void GameState_WhiteMovesToCheckTheBlackKingAndBlackHasNoLegalMoves_GameStateIsCheckMate()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(1, 6, new King(board, PieceColor.White));
-            board.SetSquare(1, 8, new King(board, PieceColor.Black));
-            board.SetSquare(4, 6, new Bishop(board, PieceColor.White));
-            board.SetSquare(2, 5, new Bishop(board, PieceColor.White));
+            Board.SetSquare(1, 6, new King(Board, PieceColor.White));
+            Board.SetSquare(1, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(4, 6, new Bishop(Board, PieceColor.White));
+            Board.SetSquare(2, 5, new Bishop(Board, PieceColor.White));
 
-            game.Start(PieceColor.White);
-            board.Move(board.GetSquare(2, 5), board.GetSquare(3, 6));
+            Game.Start(Board.GetPosition(), PieceColor.White);
+            Board.Move(GetSquare(2, 5), GetSquare(3, 6));
 
-            Assert.AreEqual(GameState.CheckMate, game.State);
+            Assert.AreEqual(GameState.CheckMate, Game.State);
         }
 
         [TestMethod]
         public void GameState_BlackMovesToCheckTheWhiteKingAndWhiteHasNoLegalMoves_GameStateIsCheckMate()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(8, 1, new King(board, PieceColor.White));
-            board.SetSquare(8, 3, new King(board, PieceColor.Black));
-            board.SetSquare(7, 4, new Bishop(board, PieceColor.Black));
-            board.SetSquare(5, 3, new Bishop(board, PieceColor.Black));
+            Board.SetSquare(8, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(8, 3, new King(Board, PieceColor.Black));
+            Board.SetSquare(7, 4, new Bishop(Board, PieceColor.Black));
+            Board.SetSquare(5, 3, new Bishop(Board, PieceColor.Black));
 
-            game.Start(PieceColor.Black);
-            board.Move(board.GetSquare(7, 4), board.GetSquare(6, 3));
+            Game.Start(Board.GetPosition(), PieceColor.Black);
+            Board.Move(GetSquare(7, 4), GetSquare(6, 3));
 
-            Assert.AreEqual(GameState.CheckMate, game.State);
+            Assert.AreEqual(GameState.CheckMate, Game.State);
         }
 
         [TestMethod]
         public void GameState_BlackMovesKingToGetOutOfCheckAndWhiteCanNotCheckMateInOneMove_GameStateIsStaleMate()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(3, 4, new King(board, PieceColor.White));
-            board.SetSquare(3, 6, new Queen(board, PieceColor.White));
-            board.SetSquare(1, 6, new King(board, PieceColor.Black));
+            Board.SetSquare(3, 4, new King(Board, PieceColor.White));
+            Board.SetSquare(3, 6, new Queen(Board, PieceColor.White));
+            Board.SetSquare(1, 6, new King(Board, PieceColor.Black));
 
-            game.Start(PieceColor.Black);
-            Assert.AreEqual(GameState.Check, game.State);
+            Game.Start(Board.GetPosition(), PieceColor.Black);
+            Assert.AreEqual(GameState.Check, Game.State);
 
-            board.Move(board.GetSquare(1, 6), board.GetSquare(1, 5));
+            Board.Move(GetSquare(1, 6), GetSquare(1, 5));
 
-            Assert.AreEqual(GameState.StaleMate, game.State);
+            Assert.AreEqual(GameState.StaleMate, Game.State);
         }
 
         // http://en.wikipedia.org/wiki/Stalemate
         [TestMethod]
         public void GameState_PlayMatulovicVersusMinevPositionIntoStaleMate_GameStateIsStaleMate()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(1, 6, new Pawn(board, PieceColor.White));
-            board.SetSquare(2, 6, new Rook(board, PieceColor.White));
-            board.SetSquare(6, 3, new Pawn(board, PieceColor.White));
-            board.SetSquare(7, 3, new King(board, PieceColor.White));
-            board.SetSquare(6, 5, new King(board, PieceColor.Black));
-            board.SetSquare(1, 2, new Rook(board, PieceColor.Black));
+            Board.SetSquare(1, 6, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(2, 6, new Rook(Board, PieceColor.White));
+            Board.SetSquare(6, 3, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(7, 3, new King(Board, PieceColor.White));
+            Board.SetSquare(6, 5, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 2, new Rook(Board, PieceColor.Black));
 
-            game.Start(PieceColor.White);
-            board.Move(board.GetSquare(2, 6), board.GetSquare(3, 6));
-            board.Move(board.GetSquare(6, 5), board.GetSquare(7, 5));
-            board.Move(board.GetSquare(7, 3), board.GetSquare(8, 3));
-            board.Move(board.GetSquare(7, 5), board.GetSquare(8, 5));
-            board.Move(board.GetSquare(6, 3), board.GetSquare(6, 4));
-            board.Move(board.GetSquare(1, 2), board.GetSquare(1, 6));
-            board.Move(board.GetSquare(3, 6), board.GetSquare(1, 6));
+            Game.Start(Board.GetPosition(), PieceColor.White);
+            Board.Move(GetSquare(2, 6), GetSquare(3, 6));
+            Board.Move(GetSquare(6, 5), GetSquare(7, 5));
+            Board.Move(GetSquare(7, 3), GetSquare(8, 3));
+            Board.Move(GetSquare(7, 5), GetSquare(8, 5));
+            Board.Move(GetSquare(6, 3), GetSquare(6, 4));
+            Board.Move(GetSquare(1, 2), GetSquare(1, 6));
+            Board.Move(GetSquare(3, 6), GetSquare(1, 6));
 
-            Assert.AreEqual(GameState.StaleMate, game.State);
+            Assert.AreEqual(GameState.StaleMate, Game.State);
         }
 
         [TestMethod]
         public void GameState_PlayEvansVersusReshevskyPositionIntoStaleMate_GameStateIsStaleMate()
         {
-            Game game = new Game(new Board());
-            Board board = game.Board;
-            board.SetSquare(2, 4, new Pawn(board, PieceColor.White));
-            board.SetSquare(5, 4, new Pawn(board, PieceColor.White));
-            board.SetSquare(6, 3, new Pawn(board, PieceColor.White));
-            board.SetSquare(7, 3, new Pawn(board, PieceColor.White));
-            board.SetSquare(8, 3, new Pawn(board, PieceColor.White));
-            board.SetSquare(6, 7, new Rook(board, PieceColor.White));
-            board.SetSquare(3, 8, new Queen(board, PieceColor.White));
-            board.SetSquare(8, 2, new King(board, PieceColor.White));
-            board.SetSquare(2, 5, new Pawn(board, PieceColor.Black));
-            board.SetSquare(5, 5, new Pawn(board, PieceColor.Black));
-            board.SetSquare(7, 7, new Pawn(board, PieceColor.Black));
-            board.SetSquare(8, 5, new Pawn(board, PieceColor.Black));
-            board.SetSquare(6, 4, new Knight(board, PieceColor.Black));
-            board.SetSquare(5, 3, new Rook(board, PieceColor.Black));
-            board.SetSquare(7, 5, new Queen(board, PieceColor.Black));
-            board.SetSquare(8, 7, new King(board, PieceColor.Black));
+            Board.SetSquare(2, 4, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(5, 4, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(6, 3, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(7, 3, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(8, 3, new Pawn(Board, PieceColor.White));
+            Board.SetSquare(6, 7, new Rook(Board, PieceColor.White));
+            Board.SetSquare(3, 8, new Queen(Board, PieceColor.White));
+            Board.SetSquare(8, 2, new King(Board, PieceColor.White));
+            Board.SetSquare(2, 5, new Pawn(Board, PieceColor.Black));
+            Board.SetSquare(5, 5, new Pawn(Board, PieceColor.Black));
+            Board.SetSquare(7, 7, new Pawn(Board, PieceColor.Black));
+            Board.SetSquare(8, 5, new Pawn(Board, PieceColor.Black));
+            Board.SetSquare(6, 4, new Knight(Board, PieceColor.Black));
+            Board.SetSquare(5, 3, new Rook(Board, PieceColor.Black));
+            Board.SetSquare(7, 5, new Queen(Board, PieceColor.Black));
+            Board.SetSquare(8, 7, new King(Board, PieceColor.Black));
 
-            game.Start(PieceColor.White);
-            board.Move(board.GetSquare(8, 3), board.GetSquare(8, 4));
-            board.Move(board.GetSquare(5, 3), board.GetSquare(5, 2));
-            board.Move(board.GetSquare(8, 2), board.GetSquare(8, 1));
-            board.Move(board.GetSquare(7, 5), board.GetSquare(7, 3));
-            board.Move(board.GetSquare(3, 8), board.GetSquare(8, 8));
-            board.Move(board.GetSquare(8, 7), board.GetSquare(8, 8));
-            board.Move(board.GetSquare(6, 7), board.GetSquare(7, 7));
-            board.Move(board.GetSquare(8, 8), board.GetSquare(7, 7));
+            Game.Start(Board.GetPosition(), PieceColor.White);
+            Board.Move(GetSquare(8, 3), GetSquare(8, 4));
+            Board.Move(GetSquare(5, 3), GetSquare(5, 2));
+            Board.Move(GetSquare(8, 2), GetSquare(8, 1));
+            Board.Move(GetSquare(7, 5), GetSquare(7, 3));
+            Board.Move(GetSquare(3, 8), GetSquare(8, 8));
+            Board.Move(GetSquare(8, 7), GetSquare(8, 8));
+            Board.Move(GetSquare(6, 7), GetSquare(7, 7));
+            Board.Move(GetSquare(8, 8), GetSquare(7, 7));
 
-            Assert.AreEqual(GameState.StaleMate, game.State);
+            Assert.AreEqual(GameState.StaleMate, Game.State);
+        }
+
+        [TestMethod]
+        public void GameState_WhitePawnMovesToTheEightRank_GameStateIsPromotion()
+        {
+            Board.SetSquare(1, 7, new Pawn(Board, PieceColor.White));
+
+            Game.Start(Board.GetPosition(), PieceColor.White);
+            Board.Move(GetSquare(1, 7), GetSquare(1, 8));
+
+            Assert.AreEqual(GameState.Promotion, Game.State);
         }
     }
 }

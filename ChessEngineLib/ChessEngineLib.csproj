@@ -51,12 +51,12 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="ChessPieces\Pawn.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameStateDetection\CheckStateDetector.cs" />
-    <Compile Include="MoveEventArgs.cs" />
     <Compile Include="MovingStrategies\MovingStrategy.cs" />
     <Compile Include="MovingStrategies\KingMovingStrategy.cs" />
     <Compile Include="MovingStrategies\NormalMovingStrategy.cs" />
     <Compile Include="MovingStrategies\PawnMovingStrategy.cs" />
+    <Compile Include="BoardObserver.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -16,7 +16,7 @@
         public virtual void Move(Square origin, Square destination)
         {
             MoveCount++;
-            Board.SetSquare(origin.File, origin.Rank, new NullPiece());
+            Board.SetSquare(origin.File, origin.Rank, new NullPiece(Board));
             Board.SetSquare(destination.File, destination.Rank, origin.Occupier);
         }
 

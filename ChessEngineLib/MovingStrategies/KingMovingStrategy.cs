@@ -31,7 +31,7 @@
             if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(kingsideRookSquare.Occupier is Rook)) return;
 
-            Board.SetSquare(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece());
+            Board.SetSquare(kingsideRookSquare.File, kingsideRookSquare.Rank, new NullPiece(Board));
             Board.SetSquare(origin.File + 1, origin.Rank, kingsideRookSquare.Occupier);
         }
 
@@ -51,7 +51,7 @@
             if (origin.DistanceOfFilesIsNotTwoTo(destination)) return;
             if (!(queensideRookSquare.Occupier is Rook)) return;
 
-            Board.SetSquare(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece());
+            Board.SetSquare(queensideRookSquare.File, queensideRookSquare.Rank, new NullPiece(Board));
             Board.SetSquare(origin.File - 1, queensideRookSquare.Rank, queensideRookSquare.Occupier);
         }
 

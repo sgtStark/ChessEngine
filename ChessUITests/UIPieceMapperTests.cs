@@ -8,6 +8,7 @@ namespace ChessEngineTests
     [TestClass]
     public class UIPieceMapperTests
     {
+        [Ignore]
         [TestMethod]
         public void Rectangle_EqualsWorksForComplexRectangleObject_ReturnsTrue()
         {

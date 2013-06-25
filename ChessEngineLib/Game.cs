@@ -1,33 +1,17 @@
-using System.Linq;
-using System.Collections.Generic;
-
 namespace ChessEngineLib
 {
-    using GameStateDetection;
+    using ChessPieces;
 
-    public class Game
+    public class Game : BoardObserver
     {
-        private readonly List<Square> _allSquares;
-        private readonly List<Square> _squaresOccupiedByPlayer;
-        private readonly List<Square> _squaresOccupiedByOpponent;
-        private readonly CheckStateDetector _checkStateDetector;
-
-        public Board Board { get; private set; }
         public GameState State { get; private set; }
         public PieceColor PlayerToMove { get; private set; }
 
-
         public Game(Board board)
         {
-            Board = board;
-            board.OnMove += OnChessPieceMoved;
+            board.Attach(this);
             State = GameState.SetupMode;
             PlayerToMove = PieceColor.Empty;
-
-            _allSquares = new List<Square>();
-            _squaresOccupiedByPlayer = new List<Square>();
-            _squaresOccupiedByOpponent = new List<Square>();
-            _checkStateDetector = new CheckStateDetector();
         }
 
         public void Start()
@@ -36,99 +20,61 @@ namespace ChessEngineLib
             PlayerToMove = PieceColor.White;
         }
 
-        public void Start(PieceColor playerToMove)
+        public void Start(Position startingPosition, PieceColor playerToMove)
         {
             State = GameState.Normal;
             PlayerToMove = playerToMove;
-            Update(playerToMove == PieceColor.White ? PieceColor.Black : PieceColor.White);
+            UpdateGameState(new Square(0, 0, new NullPiece(null)),
+                            new Square(0, 0, new NullPiece(null)),
+                            startingPosition,
+                            PlayerToMove.GetOppositeColor());
         }
 
-        private void OnChessPieceMoved(object sender, MoveEventArgs e)
+        private void UpdateGameState(Square from, Square to, Position newPosition, PieceColor playerWhoDidTheMove)
         {
-            Update(e.From.Color);
-        }
-
-        private void Update(PieceColor lastMovedColor)
-        {
-            UpdatePlayerToMove(lastMovedColor);
-            UpdateSquareDistribution();
-
-            if (EitherKingIsChecked())
+            if (PlayerMovedPawnToPromotionRank(from, to))
             {
-                State = PlayerHasLegalMoves() ? GameState.Check : GameState.CheckMate;
+                State = GameState.Promotion;
+            }
+            else if (newPosition.WhiteKingIsInCheck() || newPosition.BlackKingIsInCheck())
+            {
+                State = newPosition.HasLegalMoves(PlayerToMove) ? GameState.Check : GameState.CheckMate;
             }
             else
             {
-                State = PlayerHasLegalMoves() && OpponentHasLegalMoves() ? GameState.Normal : GameState.StaleMate;
+                State = newPosition.HasLegalMoves(PlayerToMove) &&
+                        newPosition.HasLegalMoves(playerWhoDidTheMove)
+                            ? GameState.Normal
+                            : GameState.StaleMate;
             }
+        }
+
+        private static bool PlayerMovedPawnToPromotionRank(Square from, Square to)
+        {
+            if (!(from.Occupier is Pawn))
+                return false;
+
+            var playerMovedPawnToPromotionRank = false;
+
+            if (from.Color == PieceColor.White)
+                playerMovedPawnToPromotionRank = from.Rank == 7 && to.Rank == 8;
+
+            if (from.Color == PieceColor.Black)
+                playerMovedPawnToPromotionRank = from.Rank == 2 && to.Rank == 1;
+
+            return playerMovedPawnToPromotionRank;
+        }
+
+        public override void OnMove(Square from, Square to, Position newPosition)
+        {
+            var playerWhoDidTheMove = from.Color;
+            UpdatePlayerToMove(playerWhoDidTheMove);
+            UpdateGameState(from, to, newPosition, playerWhoDidTheMove);
         }
 
         private void UpdatePlayerToMove(PieceColor lastMovedColor)
         {
             PlayerToMove = lastMovedColor == PieceColor.White ? PieceColor.Black : PieceColor.White;
-        }
-
-        private void UpdateSquareDistribution()
-        {
-            _allSquares.Clear();
-            Board.Iterate(square => _allSquares.Add(square));
-
-            _squaresOccupiedByPlayer.Clear();
-            Board.Iterate(square =>
-            {
-                if (square.Color == PlayerToMove)
-                    _squaresOccupiedByPlayer.Add(square);
-            });
-
-            _squaresOccupiedByOpponent.Clear();
-            Board.Iterate(square =>
-            {
-                if (square.Color.IsOppositeColor(PlayerToMove))
-                    _squaresOccupiedByOpponent.Add(square);
-            });
-        }
-
-        private bool EitherKingIsChecked()
-        {
-            return _checkStateDetector.KingIsChecked(Board, PieceColor.White)
-                   || _checkStateDetector.KingIsChecked(Board, PieceColor.Black);
-        }
-
-        private bool PlayerHasLegalMoves()
-        {
-            var boolToReturn = false;
-
-            foreach (var origin in _squaresOccupiedByPlayer)
-            {
-                _allSquares.Remove(origin);
-
-                if (_allSquares.Any(destination => KingIsReleasedBy(origin, destination)))
-                    boolToReturn = true;
-            }
-
-            return boolToReturn;
-        }
-
-        private bool OpponentHasLegalMoves()
-        {
-            var boolToReturn = false;
-
-            foreach (var origin in _squaresOccupiedByOpponent)
-            {
-                _allSquares.Remove(origin);
-
-                if (_allSquares.Any(destination => KingIsReleasedBy(origin, destination)))
-                    boolToReturn = true;
-            }
-
-            return boolToReturn;
-        }
-
-        private bool KingIsReleasedBy(Square origin, Square destination)
-        {
-            if (!Board.IsLegalMove(origin, destination)) return false;
-            var simulation = Board.SimulatedMove(origin, destination);
-            return !_checkStateDetector.KingIsChecked(simulation, PlayerToMove);
         }
     }
 }

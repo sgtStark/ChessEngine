@@ -8,12 +8,10 @@ namespace ChessEngineTests.ChessPieceTests
     [TestClass]
     public class KingTests : ChessEngineTestBase
     {
-        private Board _board;
-
         [TestInitialize]
         public void InitializationBeforeEveryTest()
         {
-            _board = CreateEmptyBoard();
+            InitializeBoard();
         }
 
         [TestMethod]
@@ -40,9 +38,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareForward_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(5, 2));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(5, 2));
 
             Assert.IsTrue(result);
         }
@@ -50,9 +48,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesTwoSquaresForward_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(5, 3));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(5, 3));
 
             Assert.IsFalse(result);
         }
@@ -60,9 +58,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareRight_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(6, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(6, 1));
 
             Assert.IsTrue(result);
         }
@@ -70,9 +68,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareForwardOnTheRightDiagonal_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(6, 2));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(6, 2));
 
             Assert.IsTrue(result);
         }
@@ -80,10 +78,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareForwardToPositionWhichIsOccupiedBySameColorPiece_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(5, 2, new Pawn(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 2, new Pawn(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(5, 2));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(5, 2));
 
             Assert.IsFalse(result);
         }
@@ -91,10 +89,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesOneSquareForwardToPositionWhichIsOccupiedBySameColorPiece_ReturnsFalse()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(5, 7, new Pawn(_board, PieceColor.Black));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(5, 7, new Pawn(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(5, 7));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(5, 7));
 
             Assert.IsFalse(result);
         }
@@ -102,10 +100,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesOneSquareForwardToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsTrue()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(5, 7, new Pawn(_board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(5, 7, new Pawn(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(5, 7));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(5, 7));
 
             Assert.IsTrue(result);
         }
@@ -113,10 +111,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareForwardToPositionWhichIsOccupiedByOppositeColorPiece_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.Black));
-            _board.SetSquare(5, 2, new Pawn(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.Black));
+            Board.SetSquare(5, 2, new Pawn(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(5, 2));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(5, 2));
 
             Assert.IsTrue(result);
         }
@@ -124,10 +122,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesOneSquareLeftAndSevenSquaresForward_ReturnsFalse()
         {
-            _board.SetSquare(4, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
+            Board.SetSquare(4, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(4, 1), _board.GetSquare(5, 8));
+            var result = IsLegalMove(GetSquare(4, 1), GetSquare(5, 8));
 
             Assert.IsFalse(result);
         }
@@ -135,10 +133,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToKingsideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(8, 1, new Rook(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(8, 1, new Rook(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(7, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(7, 1));
 
             Assert.IsTrue(result);
         }
@@ -146,11 +144,11 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToKingsideCastlingPositionAndPathIsObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(6, 1, new Bishop(_board, PieceColor.White));
-            _board.SetSquare(8, 1, new Rook(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(6, 1, new Bishop(Board, PieceColor.White));
+            Board.SetSquare(8, 1, new Rook(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(7, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(7, 1));
 
             Assert.IsFalse(result);
         }
@@ -158,12 +156,12 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToKingsideCastlingPositionWhenItHasAlreadyBeenMovedAndPathIsNotObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(8, 1, new Rook(_board, PieceColor.White));
-            _board.Move(_board.GetSquare(5, 1), _board.GetSquare(6, 1));
-            _board.Move(_board.GetSquare(6, 1), _board.GetSquare(5, 1));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(8, 1, new Rook(Board, PieceColor.White));
+            Board.Move(Board.GetSquare(5, 1), Board.GetSquare(6, 1));
+            Board.Move(Board.GetSquare(6, 1), Board.GetSquare(5, 1));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(7, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(7, 1));
 
             Assert.IsFalse(result);
         }
@@ -171,10 +169,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToKingsideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(8, 8, new Rook(_board, PieceColor.Black));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(8, 8, new Rook(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(7, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(7, 8));
 
             Assert.IsTrue(result);
         }
@@ -182,11 +180,11 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToKingsideCastlingPositionAndPathIsObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(6, 8, new Bishop(_board, PieceColor.Black));
-            _board.SetSquare(8, 8, new Rook(_board, PieceColor.Black));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(6, 8, new Bishop(Board, PieceColor.Black));
+            Board.SetSquare(8, 8, new Rook(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(7, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(7, 8));
 
             Assert.IsFalse(result);
         }
@@ -194,12 +192,12 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToKingsideCastlingPositionWhenItHasAlreadyBeenMovedAndPathIsNotObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(8, 8, new Rook(_board, PieceColor.Black));
-            _board.Move(_board.GetSquare(5, 8), _board.GetSquare(6, 8));
-            _board.Move(_board.GetSquare(6, 8), _board.GetSquare(5, 8));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(8, 8, new Rook(Board, PieceColor.Black));
+            Board.Move(Board.GetSquare(5, 8), Board.GetSquare(6, 8));
+            Board.Move(Board.GetSquare(6, 8), Board.GetSquare(5, 8));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(7, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(7, 8));
 
             Assert.IsFalse(result);
         }
@@ -207,10 +205,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToKingsideCastlingPositionOnBlackTerritoryAndPathIsNotObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.White));
-            _board.SetSquare(8, 8, new Rook(_board, PieceColor.White));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.White));
+            Board.SetSquare(8, 8, new Rook(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(7, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(7, 8));
 
             Assert.IsFalse(result);
         }
@@ -218,10 +216,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToKingsideCastlingPositionOnWhiteTerritoryAndPathIsNotObscured_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.Black));
-            _board.SetSquare(8, 1, new Rook(_board, PieceColor.Black));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.Black));
+            Board.SetSquare(8, 1, new Rook(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(7, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(7, 1));
 
             Assert.IsFalse(result);
         }
@@ -229,10 +227,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToQueensideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
-            _board.SetSquare(1, 1, new Rook(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
+            Board.SetSquare(1, 1, new Rook(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(3, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(3, 1));
 
             Assert.IsTrue(result);
         }
@@ -240,10 +238,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToQueensideCastlingPositionAndPathIsNotObscured_ReturnsTrue()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(1, 8, new Rook(_board, PieceColor.Black));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 8, new Rook(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(3, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(3, 8));
 
             Assert.IsTrue(result);
         }
@@ -251,9 +249,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesToQueensideCastlingPositionAndThereIsNoRookInTheCorner_ReturnsFalse()
         {
-            _board.SetSquare(5, 1, new King(_board, PieceColor.White));
+            Board.SetSquare(5, 1, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 1), _board.GetSquare(3, 1));
+            var result = IsLegalMove(GetSquare(5, 1), GetSquare(3, 1));
 
             Assert.IsFalse(result);
         }
@@ -261,9 +259,9 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_BlackKingMovesToQueensideCastlingPositionAndThereIsNoRookInTheCorner_ReturnsFalse()
         {
-            _board.SetSquare(5, 8, new King(_board, PieceColor.Black));
+            Board.SetSquare(5, 8, new King(Board, PieceColor.Black));
 
-            var result = _board.IsLegalMove(_board.GetSquare(5, 8), _board.GetSquare(3, 8));
+            var result = IsLegalMove(GetSquare(5, 8), GetSquare(3, 8));
 
             Assert.IsFalse(result);
         }
@@ -271,10 +269,10 @@ namespace ChessEngineTests.ChessPieceTests
         [TestMethod]
         public void IsLegalMove_WhiteKingMovesIntoAttackedSquare_ReturnsFalse()
         {
-            _board.SetSquare(1, 8, new King(_board, PieceColor.Black));
-            _board.SetSquare(1, 6, new King(_board, PieceColor.White));
+            Board.SetSquare(1, 8, new King(Board, PieceColor.Black));
+            Board.SetSquare(1, 6, new King(Board, PieceColor.White));
 
-            var result = _board.IsLegalMove(_board.GetSquare(1, 8), _board.GetSquare(1, 7));
+            var result = IsLegalMove(GetSquare(1, 8), GetSquare(1, 7));
 
             Assert.IsFalse(result);
         }

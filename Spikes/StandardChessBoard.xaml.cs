@@ -29,64 +29,64 @@ namespace ChessUI
             InitializeComponent();
             _board = new Board();
             _model = new Game(_board);
-            _model.Board.Setup();
+//            _model.Board.Setup();
             _pieces = new Shape[9,9];
             DrawBoard();
-            _board.OnMove += OnMove;
+//            _board.OnMove += OnMove;
         }
 
-        private void OnMove(object sender, MoveEventArgs e)
-        {
-            _storyboard = new Storyboard();
-            _storyboard.FillBehavior = FillBehavior.HoldEnd;
-
-            var xAxisAnimation = new DoubleAnimation
-                                     {
-                                         To = CalculateX(e.To),
-                                         Duration = new Duration(TimeSpan.FromMilliseconds(600))
-                                     };
-
-            Storyboard.SetTargetName(xAxisAnimation, _pieces[e.From.File, e.From.Rank].Name);
-            Storyboard.SetTargetProperty(xAxisAnimation, new PropertyPath("(0).(1)", RenderTransformProperty, TranslateTransform.XProperty));
-            xAxisAnimation.EasingFunction = new PowerEase();
-            xAxisAnimation.Freeze();
-
-            var yAxisAnimation = new DoubleAnimation
-                (
-                    CalculateY(e.To),
-                    new Duration(TimeSpan.FromMilliseconds(600))
-                );
-
-            Storyboard.SetTargetName(yAxisAnimation, _pieces[e.From.File, e.From.Rank].Name);
-            Storyboard.SetTargetProperty(yAxisAnimation, new PropertyPath("(0).(1)", RenderTransformProperty, TranslateTransform.YProperty));
-            yAxisAnimation.EasingFunction = new PowerEase();
-            yAxisAnimation.Freeze();
-
-            _storyboard.Children.Add(xAxisAnimation);
-            _storyboard.Children.Add(yAxisAnimation);
-
-            if (e.To.Occupier.Color != PieceColor.Empty)
-            {
-                var opacityAnimation = new DoubleAnimation
-                    (
-                        0.0,
-                        new Duration(TimeSpan.FromMilliseconds(400))
-                    );
-
-                opacityAnimation.BeginTime = TimeSpan.FromMilliseconds(200);
-                Storyboard.SetTargetName(opacityAnimation, _pieces[e.To.File, e.To.Rank].Name);
-                Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(OpacityProperty));
-
-                opacityAnimation.Freeze();
-
-                _storyboard.Children.Add(opacityAnimation);
-            }
-
-            _storyboard.Completed += (s, args) => DrawBoard();
-            _storyboard.Freeze();
-
-            _storyboard.Begin(PieceLayer, HandoffBehavior.Compose);
-        }
+//        private void OnMove(object sender, MoveEventArgs e)
+//        {
+//            _storyboard = new Storyboard();
+//            _storyboard.FillBehavior = FillBehavior.HoldEnd;
+//
+//            var xAxisAnimation = new DoubleAnimation
+//                                     {
+//                                         To = CalculateX(e.To),
+//                                         Duration = new Duration(TimeSpan.FromMilliseconds(600))
+//                                     };
+//
+//            Storyboard.SetTargetName(xAxisAnimation, _pieces[e.From.File, e.From.Rank].Name);
+//            Storyboard.SetTargetProperty(xAxisAnimation, new PropertyPath("(0).(1)", RenderTransformProperty, TranslateTransform.XProperty));
+//            xAxisAnimation.EasingFunction = new PowerEase();
+//            xAxisAnimation.Freeze();
+//
+//            var yAxisAnimation = new DoubleAnimation
+//                (
+//                    CalculateY(e.To),
+//                    new Duration(TimeSpan.FromMilliseconds(600))
+//                );
+//
+//            Storyboard.SetTargetName(yAxisAnimation, _pieces[e.From.File, e.From.Rank].Name);
+//            Storyboard.SetTargetProperty(yAxisAnimation, new PropertyPath("(0).(1)", RenderTransformProperty, TranslateTransform.YProperty));
+//            yAxisAnimation.EasingFunction = new PowerEase();
+//            yAxisAnimation.Freeze();
+//
+//            _storyboard.Children.Add(xAxisAnimation);
+//            _storyboard.Children.Add(yAxisAnimation);
+//
+//            if (e.To.Occupier.Color != PieceColor.Empty)
+//            {
+//                var opacityAnimation = new DoubleAnimation
+//                    (
+//                        0.0,
+//                        new Duration(TimeSpan.FromMilliseconds(400))
+//                    );
+//
+//                opacityAnimation.BeginTime = TimeSpan.FromMilliseconds(200);
+//                Storyboard.SetTargetName(opacityAnimation, _pieces[e.To.File, e.To.Rank].Name);
+//                Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(OpacityProperty));
+//
+//                opacityAnimation.Freeze();
+//
+//                _storyboard.Children.Add(opacityAnimation);
+//            }
+//
+//            _storyboard.Completed += (s, args) => DrawBoard();
+//            _storyboard.Freeze();
+//
+//            _storyboard.Begin(PieceLayer, HandoffBehavior.Compose);
+//        }
 
         private void DrawBoard()
         {
@@ -94,13 +94,13 @@ namespace ChessUI
 
             PieceLayer.Children.Clear();
 
-            _board.Iterate(square =>
-                               {
-                                   if (square.Color != PieceColor.Empty)
-                                   {
-                                        _pieces[square.File, square.Rank] = CreateVisualPiece(square);
-                                   }
-                               });
+//            _board.Iterate(square =>
+//                               {
+//                                   if (square.Color != PieceColor.Empty)
+//                                   {
+//                                        _pieces[square.File, square.Rank] = CreateVisualPiece(square);
+//                                   }
+//                               });
         }
 
         private Rectangle CreateVisualPiece(Square square)
@@ -153,7 +153,7 @@ namespace ChessUI
             }
             else
             {
-                if (squareClicked.Occupier.Equals(new NullPiece())) return;
+                if (squareClicked.Occupier.Equals(new NullPiece(_board))) return;
 
                 PieceSelection.RenderTransform = new TranslateTransform(CalculateX(squareClicked), CalculateY(squareClicked));
                 PieceSelection.Visibility = Visibility.Visible;
@@ -173,14 +173,11 @@ namespace ChessUI
 
         private double CalculateX(Square square)
         {
-//            var result = (square.File * CalculateSquareSize() - 12.5) - CalculateSquareSize();
-            var result = (square.File * CalculateSquareSize()) - CalculateSquareSize();
-            return result;
+            return (square.File * CalculateSquareSize()) - CalculateSquareSize();
         }
 
         private double CalculateY(Square square)
         {
-//            return (CalculateSquareSize() * 8) - (square.Rank * CalculateSquareSize() + 12.5);
             return (CalculateSquareSize() * 8) - (square.Rank * CalculateSquareSize());
         }
     }

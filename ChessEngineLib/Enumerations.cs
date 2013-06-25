@@ -11,16 +11,33 @@ namespace ChessEngineLib
     {
         SetupMode,
         Normal,
+        Promotion,
         Check,
         CheckMate,
-        StaleMate
+        StaleMate,
     }
 
     public static class PieceColorExtensions
     {
-        public static bool IsOppositeColor(this PieceColor pieceColor, PieceColor otherPieceColor)
+        private const int PAWN_CHAIN_RANK_FOR_WHITE = 2;
+        private const int PAWN_CHAIN_RANK_FOR_BLACK = 7;
+
+        private const int OFFICER_RANK_FOR_WHITE = 1;
+        private const int OFFICER_RANK_FOR_BLACK = 8;
+
+        public static int PawnChainRank(this PieceColor pieceColor)
         {
-            return (pieceColor != PieceColor.Empty && pieceColor != otherPieceColor && otherPieceColor != PieceColor.Empty);
+            return pieceColor == PieceColor.White ? PAWN_CHAIN_RANK_FOR_WHITE : PAWN_CHAIN_RANK_FOR_BLACK;
+        }
+
+        public static int OfficerRank(this PieceColor pieceColor)
+        {
+            return pieceColor == PieceColor.White ? OFFICER_RANK_FOR_WHITE : OFFICER_RANK_FOR_BLACK;
+        }
+
+        public static PieceColor GetOppositeColor(this PieceColor pieceColor)
+        {
+            return pieceColor == PieceColor.White ? PieceColor.Black : PieceColor.White;
         }
     }
 }

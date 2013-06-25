@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ChessEngineLib.ChessPieces
 {
@@ -7,13 +7,11 @@ namespace ChessEngineLib.ChessPieces
     public class King : ChessPiece
     {
         private readonly MovingStrategy _movingStrategy;
-        private readonly List<Square> _opponentSquares;
 
         public King(Board board, PieceColor color)
             : base(board, color)
         {
             _movingStrategy = new KingMovingStrategy(Board);
-            _opponentSquares = new List<Square>();
         }
 
         public override bool IsLegalMove(Square origin, Square destination)
@@ -29,25 +27,10 @@ namespace ChessEngineLib.ChessPieces
 
         private bool DestinationIsAttacked(Square destination)
         {
-            var boolToReturn = false;
-            _opponentSquares.Clear();
-            Board.Iterate(HandleIteration);
+            var currentPosition = Board.GetPosition();
 
-            foreach (var opponentSquare in _opponentSquares)
-            {
-                if (opponentSquare.Occupier.Attacks(opponentSquare, destination))
-                {
-                    boolToReturn = true;
-                    break;
-                }
-            }
-            return boolToReturn;
-        }
-
-        private void HandleIteration(Square square)
-        {
-            if (Color.IsOppositeColor(square.Color))
-                _opponentSquares.Add(square);
+            return currentPosition.SquaresOccupiedByPiecesWith(Color.GetOppositeColor())
+                                  .Any(opponentSquare => opponentSquare.Occupier.Attacks(opponentSquare, destination));
         }
 
         private bool MovingOneSquareLeftOrRight(Square origin, Square destination)

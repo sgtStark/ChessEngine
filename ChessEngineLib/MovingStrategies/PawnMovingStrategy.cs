@@ -1,4 +1,6 @@
-﻿namespace ChessEngineLib.MovingStrategies
+﻿using System;
+
+namespace ChessEngineLib.MovingStrategies
 {
     using ChessPieces;
 
@@ -15,8 +17,8 @@
         public override void Move(Square origin, Square destination)
         {
             base.Move(origin, destination);
-
             HandleEnPassant(origin, destination);
+            HandlePromotion(origin, destination);
         }
 
         private void HandleEnPassant(Square origin, Square destination)
@@ -27,7 +29,13 @@
             var enPassantOccupier = enPassantPosition.Occupier;
             if (enPassantOccupier.MoveCount != 1) return;
 
-            Board.SetSquare(enPassantPosition.File, enPassantPosition.Rank, new NullPiece());
+            Board.SetSquare(enPassantPosition.File, enPassantPosition.Rank, new NullPiece(Board));
+        }
+
+        private void HandlePromotion(Square origin, Square destination)
+        {
+            if (origin.Rank != 7 || destination.Rank != 8) return;
+
         }
 
         private Square GetEnPassantSquare(Square origin, Square destination)

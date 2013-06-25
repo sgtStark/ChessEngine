@@ -4,21 +4,29 @@
 
     public class ChessEngineTestBase
     {
-        protected static Board CreateEmptyBoard()
+        protected Board Board;
+        protected Game Game;
+
+        protected void InitializeBoard()
         {
-            return new Board();
+            Board = new Board();
         }
 
-        protected static Game CreateNewGame()
+        protected Square GetSquare(int file, int rank)
         {
-            return new Game(CreateSetupBoard());
+            return Board.GetSquare(file, rank);
         }
 
-        private static Board CreateSetupBoard()
+        protected bool IsLegalMove(Square origin, Square destination)
         {
-            var boardToReturn = CreateEmptyBoard();
-            boardToReturn.Setup();
-            return boardToReturn;
+            var position = Board.GetPosition();
+            return position.MoveIsLegal(origin, destination);
+        }
+
+        protected void InitializeGame()
+        {
+            InitializeBoard();
+            Game = new Game(Board);
         }
     }
 }

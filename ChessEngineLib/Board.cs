@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ChessEngineLib
 {
@@ -15,20 +16,13 @@ namespace ChessEngineLib
         private const int NUMBER_OF_THE_LAST_FILE = 8;
         private const int NUMBER_OF_THE_LAST_RANK = 8;
 
-        private const int PAWN_CHAIN_RANK_FOR_WHITE = 2;
-        private const int PAWN_CHAIN_RANK_FOR_BLACK = 7;
-
-        private const int OFFICER_RANK_FOR_WHITE = 1;
-        private const int OFFICER_RANK_FOR_BLACK = 8;
-
-
         private readonly Square[,] _squareMatrix;
-
-        public event EventHandler<MoveEventArgs> OnMove;
+        private readonly List<BoardObserver> _boardObservers;
 
         public Board()
         {
             _squareMatrix = new Square[DEFAULT_NUMBER_OF_FILES, DEFAULT_NUMBER_OF_RANKS];
+            _boardObservers = new List<BoardObserver>();
             Initialize();
         }
 
@@ -38,9 +32,19 @@ namespace ChessEngineLib
             {
                 for (int rank = 0; rank < DEFAULT_NUMBER_OF_RANKS; rank++)
                 {
-                    _squareMatrix[file, rank] = new Square(file, rank, new NullPiece());
+                    _squareMatrix[file, rank] = new Square(file, rank, new NullPiece(this));
                 }
             }
+        }
+
+        public void Attach(BoardObserver boardObserver)
+        {
+            _boardObservers.Add(boardObserver);
+        }
+
+        public void Detach(BoardObserver boardObserver)
+        {
+            _boardObservers.Remove(boardObserver);
         }
 
         public void Setup()
@@ -52,48 +56,35 @@ namespace ChessEngineLib
 
         private void InitializeChessPieces(PieceColor pieceColor)
         {
-            // P‰‰tell‰‰n sotilaiden ja upseereiden rivinumerot
-            var pawnChainRank = pieceColor == PieceColor.White ? PAWN_CHAIN_RANK_FOR_WHITE : PAWN_CHAIN_RANK_FOR_BLACK;
-            var officerRank = pieceColor == PieceColor.White ? OFFICER_RANK_FOR_WHITE : OFFICER_RANK_FOR_BLACK;
+            // Pawns
+            SetSquare(1, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(2, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(3, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(4, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(5, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(6, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(7, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
+            SetSquare(8, pieceColor.PawnChainRank(), new Pawn(this, pieceColor));
 
-            // Sotilaat
-            SetSquare(1, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(2, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(3, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(4, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(5, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(6, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(7, pawnChainRank, new Pawn(this, pieceColor));
-            SetSquare(8, pawnChainRank, new Pawn(this, pieceColor));
-
-            // Tornit
-            SetSquare(1, officerRank, new Rook(this, pieceColor));
-            SetSquare(8, officerRank, new Rook(this, pieceColor));
-
-            // Hevoset
-            SetSquare(2, officerRank, new Knight(this, pieceColor));
-            SetSquare(7, officerRank, new Knight(this, pieceColor));
-
-            // L‰hetit
-            SetSquare(3, officerRank, new Bishop(this, pieceColor));
-            SetSquare(6, officerRank, new Bishop(this, pieceColor));
-
-            // Kuningatar
-            SetSquare(4, officerRank, new Queen(this, pieceColor));
-
-            // Kuningas
-            SetSquare(5, officerRank, new King(this, pieceColor));
+            // Officers
+            SetSquare(1, pieceColor.OfficerRank(), new Rook(this, pieceColor));
+            SetSquare(8, pieceColor.OfficerRank(), new Rook(this, pieceColor));
+            SetSquare(2, pieceColor.OfficerRank(), new Knight(this, pieceColor));
+            SetSquare(7, pieceColor.OfficerRank(), new Knight(this, pieceColor));
+            SetSquare(3, pieceColor.OfficerRank(), new Bishop(this, pieceColor));
+            SetSquare(6, pieceColor.OfficerRank(), new Bishop(this, pieceColor));
+            SetSquare(4, pieceColor.OfficerRank(), new Queen(this, pieceColor));
+            SetSquare(5, pieceColor.OfficerRank(), new King(this, pieceColor));
         }
 
-        public void Iterate(Action<Square> onIteration)
+        public Position GetPosition()
         {
-            for (int file = NUMBER_OF_THE_FIRST_FILE; file < DEFAULT_NUMBER_OF_FILES; file++)
-            {
-                for (int rank = NUMBER_OF_THE_FIRST_RANK; rank < DEFAULT_NUMBER_OF_RANKS; rank++)
-                {
-                    onIteration.Invoke(_squareMatrix[file, rank]);
-                }
-            }
+            var allSquares = new List<Square>();
+
+            foreach (var square in _squareMatrix)
+                allSquares.Add(square);
+
+            return new Position(allSquares);
         }
 
         public Square GetSquare(int file, int rank)
@@ -111,7 +102,7 @@ namespace ChessEngineLib
 
         private Square CreateNullSquare(int file, int rank)
         {
-            return new Square(file, rank, new NullPiece());
+            return new Square(file, rank, new NullPiece(this));
         }
 
         public void SetSquare(int file, int rank, ChessPiece occupier)
@@ -121,66 +112,38 @@ namespace ChessEngineLib
             _squareMatrix[file, rank] = new Square(file, rank, occupier);
         }
 
-        public bool IsLegalMove(Square origin, Square destination)
-        {
-            var chessPiece = origin.Occupier;
-            var movingStrategy = chessPiece.GetMovingStrategy();
-
-            if (chessPiece.IsLegalMove(origin, destination)) return true;
-            if (movingStrategy.IsSpecialMove(origin, destination)) return true;
-
-            return false;
-        }
-
         public void Move(Square origin, Square destination)
         {
-            if (!IsLegalMove(origin, destination)) return;
+            var currentPosition = GetPosition();
+            if (currentPosition.MoveIsIllegal(origin, destination)) return;
 
             var occupier = origin.Occupier;
             var movingStrategy = occupier.GetMovingStrategy();
 
             movingStrategy.Move(origin, destination);
-            FireOnMoveEvent(new MoveEventArgs(origin, destination));
+            NotifyBoardObservers(origin, destination);
         }
 
-        public Board SimulatedMove(Square origin, Square destination)
+        private void NotifyBoardObservers(Square origin, Square destination)
         {
-            var simulatedBoard = new Board();
-
-            foreach (var square in _squareMatrix)
-            {
-                simulatedBoard.SetSquare(square.File, square.Rank, square.Occupier.Clone(simulatedBoard));
-            }
-
-            simulatedBoard.Move
-                (
-                    simulatedBoard.GetSquare(origin.File, origin.Rank),
-                    simulatedBoard.GetSquare(destination.File, destination.Rank)
-                );
-
-            return simulatedBoard;
-        }
-
-        private void FireOnMoveEvent(MoveEventArgs eventArgs)
-        {
-            if (OnMove != null)
-            {
-                OnMove.Invoke(this, eventArgs);
-            }
+            var newPosition = GetPosition();
+            _boardObservers.ForEach(boardObserver => boardObserver.OnMove(origin, destination, newPosition));
         }
 
         public bool IsLightSquare(int file, int rank)
         {
-            // Kun sarake on jaollinen itsell‰‰n ja rivi ei ole 
-            // jaollinen itsell‰‰n on kyseess‰ vaalea ruutu
-            // Kun sarake ei ole jaollinen itsell‰‰n ja rivi on 
-            // jaollinen itsell‰‰n on kyseess‰ vaalea ruutu
-            bool boolToReturn = file % 2 == 0
-                                && rank % 2 != 0
-                                || file % 2 != 0
-                                && rank % 2 == 0;
+            return file % 2 == 0 &&
+                   rank % 2 != 0 ||
+                   file % 2 != 0 &&
+                   rank % 2 == 0;
+        }
 
-            return boolToReturn;
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (Board)) return false;
+            return Equals((Board) obj);
         }
 
         private bool Equals(Board other)
@@ -199,14 +162,6 @@ namespace ChessEngineLib
             }
 
             return boolToReturn;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Board)) return false;
-            return Equals((Board) obj);
         }
 
         public override int GetHashCode()

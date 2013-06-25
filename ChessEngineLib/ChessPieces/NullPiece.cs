@@ -2,8 +2,8 @@
 {
     public class NullPiece : ChessPiece
     {
-        public NullPiece()
-            : base(null, PieceColor.Empty)
+        public NullPiece(Board board)
+            : base(board, PieceColor.Empty)
         {
         }
 
@@ -21,7 +21,7 @@
 
         public override ChessPiece Clone(Board board)
         {
-            var clone = new NullPiece()
+            var clone = new NullPiece(board)
                 {
                     MovingStrategy = MovingStrategy.Clone(board)
                 };

@@ -106,30 +106,6 @@ namespace ChessUI.VisualChessPieces
             return (int)_pieceLayer.Width / 8;
         }
 
-//                <DrawingBrush x:Key="WhitePawn" Stretch="Uniform" Viewbox="0,0 100,100" ViewboxUnits="Absolute">
-//            <DrawingBrush.Drawing>
-//                <DrawingGroup>
-//                    <DrawingGroup.Children>
-//                        <GeometryDrawing Brush="{StaticResource PieceShadowBrush}">
-//                            <GeometryDrawing.Geometry>
-//                                <PathGeometry Figures="{StaticResource PawnGeometryFigures}" Transform="{StaticResource PieceShadowTransform}"/>
-//                            </GeometryDrawing.Geometry>
-//                        </GeometryDrawing>
-//                        <GeometryDrawing Brush="{StaticResource WhitePieceBackgroundBrush}" Pen="{StaticResource PieceBackgroundPen}">
-//                            <GeometryDrawing.Geometry>
-//                                <PathGeometry Figures="{StaticResource PawnGeometryFigures}" Transform="{StaticResource PieceTransform}"/>
-//                            </GeometryDrawing.Geometry>
-//                        </GeometryDrawing>
-//                        <GeometryDrawing Brush="{StaticResource PawnHighlight}">
-//                            <GeometryDrawing.Geometry>
-//                                <PathGeometry Figures="{StaticResource PawnGeometryFigures}" Transform="{StaticResource PieceTransform}"/>
-//                            </GeometryDrawing.Geometry>
-//                        </GeometryDrawing>
-//                    </DrawingGroup.Children>
-//                </DrawingGroup>
-//            </DrawingBrush.Drawing>
-//        </DrawingBrush>
-
         private static string CreateName(Square square)
         {
             return square.Occupier.GetType().Name +

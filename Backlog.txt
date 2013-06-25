@@ -326,3 +326,7 @@
 
 - Korjattu sivuvaikutus Castling siirroista, jossa myös toinen torni(Rook) siirtyi samalla kerralla omaan Castling ruutuunsa.
 - Refactoroitu toisteisuutta KingTests ja BoardTests -luokista.
+
+
+23.6.2013
+-- TODO: Tee iso refactorointi ??
